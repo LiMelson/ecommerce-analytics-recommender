@@ -1,0 +1,48 @@
+# JavaScript dependencies and generated output
+node_modules/
+dist/
+coverage/
+.vite/
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+
+# Downloaded data and generated model artifacts
+/data/*
+!/data/README.md
+/artifacts/
+/models/
+/checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+*.pickle
+*.joblib
+*.npz
+
+# Local authoring output, archives, and temporary files
+/work/
+*.zip
+*.7z
+*.rar
+*.log
+~$*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
