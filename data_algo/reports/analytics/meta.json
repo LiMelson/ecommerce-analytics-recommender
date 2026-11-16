@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-11-16T04:33:24.347460+00:00",
+  "events": 1079354,
+  "users": 52687,
+  "items": 81693,
+  "categories": 658,
+  "brands": 3130,
+  "time_range_utc": {
+    "min": "2019-10-01T00:08:55+00:00",
+    "max": "2019-11-30T23:59:58+00:00"
+  },
+  "timezone": "Asia/Shanghai",
+  "behavior_labels": {
+    "pv": "浏览",
+    "fav": "收藏",
+    "cart": "加购",
+    "buy": "购买",
+    "remove_from_cart": "移出购物车"
+  },
+  "schema": [
+    "user_id",
+    "item_id",
+    "category_id",
+    "category_code",
+    "brand",
+    "behavior_type",
+    "raw_event_type",
+    "event_time",
+    "price",
+    "session_id"
+  ],
+  "caveats": [
+    "没有年龄/性别/城市字段，不推断人口属性",
+    "没有订单号/数量，金额按购买事件单价汇总，每条按 1 件计，不是订单 GMV",
+    "没有收藏（fav）事件，漏斗为 浏览 -> 加购 -> 购买",
+    "留存为样本首现留存，不是注册留存",
+    "category_code / brand 缺失保持 null，不编造"
+  ],
+  "sample_meta": {
+    "engine": "duckdb",
+    "per_mille": 10,
+    "seed": 20261116,
+    "rows": 1079354,
+    "users": 52687,
+    "time_min": "2019-10-01T00:08:55",
+    "time_max": "2019-11-30T23:59:58",
+    "behavior_counts": {
+      "pv": 1024977,
+      "fav": 0,
+      "cart": 37698,
+      "buy": 16679,
+      "remove_from_cart": 0
+    },
+    "price_count": 1079354,
+    "price_sum": 312643973.25,
+    "output": "data\\processed\\events_sample.parquet",
+    "dedupe": "SELECT DISTINCT（写入时去重）",
+    "elapsed_seconds": 213.9,
+    "generated_at": "2026-11-16T04:30:41.240236+00:00"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "engine": "duckdb",
+  "per_mille": 10,
+  "seed": 20261116,
+  "rows": 1079354,
+  "users": 52687,
+  "time_min": "2019-10-01T00:08:55",
+  "time_max": "2019-11-30T23:59:58",
+  "behavior_counts": {
+    "pv": 1024977,
+    "fav": 0,
+    "cart": 37698,
+    "buy": 16679,
+    "remove_from_cart": 0
+  },
+  "price_count": 1079354,
+  "price_sum": 312643973.25,
+  "output": "data\\processed\\events_sample.parquet",
+  "dedupe": "SELECT DISTINCT（写入时去重）",
+  "elapsed_seconds": 213.9,
+  "generated_at": "2026-11-16T04:30:41.240236+00:00"
+}

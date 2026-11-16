@@ -1,0 +1,651 @@
+{
+  "buy_events": 16679,
+  "amount": 5121739.119999999,
+  "categories": [
+    {
+      "category_id": "2053013555631882655",
+      "label": "数码电子 / electronics.smartphone",
+      "category_code": "electronics.smartphone",
+      "brand": null,
+      "count": 7456,
+      "users": 3218,
+      "amount": 3486278.61,
+      "event_share": 0.447,
+      "amount_share": 0.6807
+    },
+    {
+      "category_id": "2053013553559896355",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 1109,
+      "users": 728,
+      "amount": 68144.56,
+      "event_share": 0.0665,
+      "amount_share": 0.0133
+    },
+    {
+      "category_id": "2053013554658804075",
+      "label": "数码电子 / electronics.audio.headphone",
+      "category_code": "electronics.audio.headphone",
+      "brand": null,
+      "count": 753,
+      "users": 436,
+      "amount": 97403.81,
+      "event_share": 0.0451,
+      "amount_share": 0.019
+    },
+    {
+      "category_id": "2053013554415534427",
+      "label": "数码电子 / electronics.video.tv",
+      "category_code": "electronics.video.tv",
+      "brand": null,
+      "count": 502,
+      "users": 316,
+      "amount": 212263.47999999998,
+      "event_share": 0.0301,
+      "amount_share": 0.0414
+    },
+    {
+      "category_id": "2053013558920217191",
+      "label": "电脑办公 / computers.notebook",
+      "category_code": "computers.notebook",
+      "brand": null,
+      "count": 357,
+      "users": 207,
+      "amount": 200146.23,
+      "event_share": 0.0214,
+      "amount_share": 0.0391
+    },
+    {
+      "category_id": "2053013563810775923",
+      "label": "家电 / appliances.kitchen.washer",
+      "category_code": "appliances.kitchen.washer",
+      "brand": null,
+      "count": 315,
+      "users": 223,
+      "amount": 92084.93,
+      "event_share": 0.0189,
+      "amount_share": 0.018
+    },
+    {
+      "category_id": "2053013553341792533",
+      "label": "数码电子 / electronics.clocks",
+      "category_code": "electronics.clocks",
+      "brand": null,
+      "count": 291,
+      "users": 186,
+      "amount": 85525.09999999999,
+      "event_share": 0.0174,
+      "amount_share": 0.0167
+    },
+    {
+      "category_id": "2053013565983425517",
+      "label": "家电 / appliances.environment.vacuum",
+      "category_code": "appliances.environment.vacuum",
+      "brand": null,
+      "count": 261,
+      "users": 212,
+      "amount": 35973.33,
+      "event_share": 0.0156,
+      "amount_share": 0.007
+    },
+    {
+      "category_id": "2053013563651392361",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 205,
+      "users": 143,
+      "amount": 42979.8,
+      "event_share": 0.0123,
+      "amount_share": 0.0084
+    },
+    {
+      "category_id": "2053013553375346967",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 185,
+      "users": 124,
+      "amount": 5602.039999999999,
+      "event_share": 0.0111,
+      "amount_share": 0.0011
+    },
+    {
+      "category_id": "2053013563173241677",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 185,
+      "users": 133,
+      "amount": 6917.43,
+      "event_share": 0.0111,
+      "amount_share": 0.0014
+    },
+    {
+      "category_id": "2053013563584283495",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 158,
+      "users": 83,
+      "amount": 62108.240000000005,
+      "event_share": 0.0095,
+      "amount_share": 0.0121
+    },
+    {
+      "category_id": "2053013563693335403",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 150,
+      "users": 99,
+      "amount": 25824.940000000002,
+      "event_share": 0.009,
+      "amount_share": 0.005
+    },
+    {
+      "category_id": "2053013563911439225",
+      "label": "家电 / appliances.kitchen.refrigerators",
+      "category_code": "appliances.kitchen.refrigerators",
+      "brand": null,
+      "count": 140,
+      "users": 113,
+      "amount": 52057.09,
+      "event_share": 0.0084,
+      "amount_share": 0.0102
+    },
+    {
+      "category_id": "2053013556168753601",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 134,
+      "users": 102,
+      "amount": 16483.879999999997,
+      "event_share": 0.008,
+      "amount_share": 0.0032
+    },
+    {
+      "category_id": "2053013563970159485",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 125,
+      "users": 89,
+      "amount": 29338.379999999997,
+      "event_share": 0.0075,
+      "amount_share": 0.0057
+    },
+    {
+      "category_id": "2053013553853497655",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 119,
+      "users": 104,
+      "amount": 8092.920000000001,
+      "event_share": 0.0071,
+      "amount_share": 0.0016
+    },
+    {
+      "category_id": "2053013561218695907",
+      "label": "未分类",
+      "category_code": null,
+      "brand": null,
+      "count": 113,
+      "users": 49,
+      "amount": 42415.91,
+      "event_share": 0.0068,
+      "amount_share": 0.0083
+    },
+    {
+      "category_id": "2053013561579406073",
+      "label": "数码电子 / electronics.clocks",
+      "category_code": "electronics.clocks",
+      "brand": null,
+      "count": 113,
+      "users": 84,
+      "amount": 12604.840000000002,
+      "event_share": 0.0068,
+      "amount_share": 0.0025
+    },
+    {
+      "category_id": "2172371436436455782",
+      "label": "数码电子 / electronics.tablet",
+      "category_code": "electronics.tablet",
+      "brand": null,
+      "count": 106,
+      "users": 65,
+      "amount": 21633.33,
+      "event_share": 0.0064,
+      "amount_share": 0.0042
+    }
+  ],
+  "brands": [
+    {
+      "brand": "samsung",
+      "label": null,
+      "category_code": null,
+      "count": 3732,
+      "users": 1942,
+      "amount": 1000327.5700000001,
+      "event_share": 0.2238,
+      "amount_share": 0.1953
+    },
+    {
+      "brand": "apple",
+      "label": null,
+      "category_code": null,
+      "count": 3231,
+      "users": 1327,
+      "amount": 2502691.34,
+      "event_share": 0.1937,
+      "amount_share": 0.4886
+    },
+    {
+      "brand": "xiaomi",
+      "label": null,
+      "category_code": null,
+      "count": 1249,
+      "users": 753,
+      "amount": 199193.99,
+      "event_share": 0.0749,
+      "amount_share": 0.0389
+    },
+    {
+      "brand": "huawei",
+      "label": null,
+      "category_code": null,
+      "count": 508,
+      "users": 317,
+      "amount": 99857.45000000001,
+      "event_share": 0.0305,
+      "amount_share": 0.0195
+    },
+    {
+      "brand": "oppo",
+      "label": null,
+      "category_code": null,
+      "count": 300,
+      "users": 177,
+      "amount": 66369.66,
+      "event_share": 0.018,
+      "amount_share": 0.013
+    },
+    {
+      "brand": "lucente",
+      "label": null,
+      "category_code": null,
+      "count": 288,
+      "users": 149,
+      "amount": 83710.89,
+      "event_share": 0.0173,
+      "amount_share": 0.0163
+    },
+    {
+      "brand": "cordiant",
+      "label": null,
+      "category_code": null,
+      "count": 277,
+      "users": 206,
+      "amount": 12551.12,
+      "event_share": 0.0166,
+      "amount_share": 0.0025
+    },
+    {
+      "brand": "sony",
+      "label": null,
+      "category_code": null,
+      "count": 195,
+      "users": 111,
+      "amount": 69819.79000000001,
+      "event_share": 0.0117,
+      "amount_share": 0.0136
+    },
+    {
+      "brand": "lg",
+      "label": null,
+      "category_code": null,
+      "count": 175,
+      "users": 145,
+      "amount": 68605.15000000001,
+      "event_share": 0.0105,
+      "amount_share": 0.0134
+    },
+    {
+      "brand": "artel",
+      "label": null,
+      "category_code": null,
+      "count": 160,
+      "users": 120,
+      "amount": 26053.57,
+      "event_share": 0.0096,
+      "amount_share": 0.0051
+    },
+    {
+      "brand": "acer",
+      "label": null,
+      "category_code": null,
+      "count": 116,
+      "users": 78,
+      "amount": 66989.71,
+      "event_share": 0.007,
+      "amount_share": 0.0131
+    },
+    {
+      "brand": "lenovo",
+      "label": null,
+      "category_code": null,
+      "count": 116,
+      "users": 86,
+      "amount": 48736.840000000004,
+      "event_share": 0.007,
+      "amount_share": 0.0095
+    },
+    {
+      "brand": "triangle",
+      "label": null,
+      "category_code": null,
+      "count": 112,
+      "users": 82,
+      "amount": 5609.91,
+      "event_share": 0.0067,
+      "amount_share": 0.0011
+    },
+    {
+      "brand": "vitek",
+      "label": null,
+      "category_code": null,
+      "count": 110,
+      "users": 95,
+      "amount": 4148.0599999999995,
+      "event_share": 0.0066,
+      "amount_share": 0.0008
+    },
+    {
+      "brand": "elenberg",
+      "label": null,
+      "category_code": null,
+      "count": 107,
+      "users": 90,
+      "amount": 3451.12,
+      "event_share": 0.0064,
+      "amount_share": 0.0007
+    },
+    {
+      "brand": "nokian",
+      "label": null,
+      "category_code": null,
+      "count": 105,
+      "users": 81,
+      "amount": 7951.170000000001,
+      "event_share": 0.0063,
+      "amount_share": 0.0016
+    },
+    {
+      "brand": "bosch",
+      "label": null,
+      "category_code": null,
+      "count": 101,
+      "users": 91,
+      "amount": 20457.76,
+      "event_share": 0.0061,
+      "amount_share": 0.004
+    },
+    {
+      "brand": "hp",
+      "label": null,
+      "category_code": null,
+      "count": 97,
+      "users": 76,
+      "amount": 28553.56,
+      "event_share": 0.0058,
+      "amount_share": 0.0056
+    },
+    {
+      "brand": "philips",
+      "label": null,
+      "category_code": null,
+      "count": 91,
+      "users": 75,
+      "amount": 7588.050000000001,
+      "event_share": 0.0055,
+      "amount_share": 0.0015
+    },
+    {
+      "brand": "indesit",
+      "label": null,
+      "category_code": null,
+      "count": 88,
+      "users": 76,
+      "amount": 21993.82,
+      "event_share": 0.0053,
+      "amount_share": 0.0043
+    }
+  ],
+  "items": [
+    {
+      "item_id": "1004856",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 592,
+      "users": 397,
+      "amount": 76483.43,
+      "event_share": 0.0355,
+      "amount_share": 0.0149
+    },
+    {
+      "item_id": "1004767",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 452,
+      "users": 312,
+      "amount": 112049.97,
+      "event_share": 0.0271,
+      "amount_share": 0.0219
+    },
+    {
+      "item_id": "1005115",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 326,
+      "users": 213,
+      "amount": 309668.57,
+      "event_share": 0.0195,
+      "amount_share": 0.0605
+    },
+    {
+      "item_id": "4804056",
+      "label": null,
+      "category_code": "electronics.audio.headphone",
+      "brand": "apple",
+      "count": 300,
+      "users": 176,
+      "amount": 48957.54,
+      "event_share": 0.018,
+      "amount_share": 0.0096
+    },
+    {
+      "item_id": "1004833",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 256,
+      "users": 158,
+      "amount": 43912.79,
+      "event_share": 0.0153,
+      "amount_share": 0.0086
+    },
+    {
+      "item_id": "1004870",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 252,
+      "users": 185,
+      "amount": 71229.31000000001,
+      "event_share": 0.0151,
+      "amount_share": 0.0139
+    },
+    {
+      "item_id": "1002544",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 251,
+      "users": 140,
+      "amount": 117592.49999999999,
+      "event_share": 0.015,
+      "amount_share": 0.023
+    },
+    {
+      "item_id": "1004249",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 215,
+      "users": 117,
+      "amount": 162264.08000000002,
+      "event_share": 0.0129,
+      "amount_share": 0.0317
+    },
+    {
+      "item_id": "1004836",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 159,
+      "users": 122,
+      "amount": 36772.149999999994,
+      "event_share": 0.0095,
+      "amount_share": 0.0072
+    },
+    {
+      "item_id": "1005100",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 155,
+      "users": 108,
+      "amount": 21487.79,
+      "event_share": 0.0093,
+      "amount_share": 0.0042
+    },
+    {
+      "item_id": "5100816",
+      "label": null,
+      "category_code": null,
+      "brand": "xiaomi",
+      "count": 154,
+      "users": 110,
+      "amount": 4562.0199999999995,
+      "event_share": 0.0092,
+      "amount_share": 0.0009
+    },
+    {
+      "item_id": "1005105",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 151,
+      "users": 97,
+      "amount": 207559.18,
+      "event_share": 0.0091,
+      "amount_share": 0.0405
+    },
+    {
+      "item_id": "1002524",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 131,
+      "users": 71,
+      "amount": 70328.03,
+      "event_share": 0.0079,
+      "amount_share": 0.0137
+    },
+    {
+      "item_id": "1004838",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "oppo",
+      "count": 126,
+      "users": 76,
+      "amount": 20825.77000000001,
+      "event_share": 0.0076,
+      "amount_share": 0.0041
+    },
+    {
+      "item_id": "1004873",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "samsung",
+      "count": 126,
+      "users": 90,
+      "amount": 46753.89000000001,
+      "event_share": 0.0076,
+      "amount_share": 0.0091
+    },
+    {
+      "item_id": "1002633",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 108,
+      "users": 68,
+      "amount": 39576.009999999995,
+      "event_share": 0.0065,
+      "amount_share": 0.0077
+    },
+    {
+      "item_id": "1004741",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "xiaomi",
+      "count": 96,
+      "users": 71,
+      "amount": 18256.72,
+      "event_share": 0.0058,
+      "amount_share": 0.0036
+    },
+    {
+      "item_id": "1005113",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "apple",
+      "count": 90,
+      "users": 7,
+      "amount": 94004.85,
+      "event_share": 0.0054,
+      "amount_share": 0.0184
+    },
+    {
+      "item_id": "1004565",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "huawei",
+      "count": 88,
+      "users": 51,
+      "amount": 14688.42,
+      "event_share": 0.0053,
+      "amount_share": 0.0029
+    },
+    {
+      "item_id": "1005160",
+      "label": null,
+      "category_code": "electronics.smartphone",
+      "brand": "xiaomi",
+      "count": 85,
+      "users": 63,
+      "amount": 17669.36999999999,
+      "event_share": 0.0051,
+      "amount_share": 0.0034
+    }
+  ],
+  "note": "购买事件聚合；购买用户数独立去重；数量相同按 ID 稳定排序"
+}
