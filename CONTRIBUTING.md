@@ -37,7 +37,7 @@ git push -u origin feat/your-task
 
 1. 推送分支后，在 GitHub 打开 Pull Request，目标分支选择 `main`。
 2. 描述本次改动、关联接口、运行方式和验证结果；界面改动可附截图。
-3. 由组长或另一位成员检查；前端改动至少运行 `npm test` 和 `npm run build`（在 `frontend/` 内）。
+3. 由组长或另一位成员检查；前端改动运行 `npm test`、`npm run test:ui` 和 `npm run build`（在 `frontend/` 内）。后端运行 pytest 和 Ruff；涉及数据库、导入与统计时同时运行隔离数据库集成测试，具体命令见 `backend/README.md`。
 4. 修复反馈后合并，优先使用 Squash and merge，保留清楚的功能记录。
 5. 组员再更新本地 `main`，下一项任务从最新 `main` 创建分支。
 
@@ -62,6 +62,8 @@ git merge origin/main
 - 统计结果标明数据版本，模型产物同时保存 ID 映射、训练配置与数据版本。
 - 训练算法和参数由开发团队固定，推荐页面不让操作人员选择超参数。
 - 修改现有接口时，在 PR 中说明影响并同步调用方，避免同名字段含义发生变化。
+- 当前接口协议见 [接口文档](docs/接口文档.md) 与 [OpenAPI JSON](docs/openapi.json)，数据和模型交付见 [交付约定](docs/数据与算法交付约定.md)。修改接口后同步更新 JSON 与文档。
+- 仓库提供 GitHub Actions，检查前端测试、构建、后端检查及 MySQL + ClickHouse 集成；工作流中的固定口令仅用于隔离 CI 服务，不是开发或生产密码。
 
 ## 各模块交付内容
 

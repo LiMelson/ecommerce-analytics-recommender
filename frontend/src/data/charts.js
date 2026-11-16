@@ -63,8 +63,9 @@ export function rankingOption(values, field = 'category', dark = false) {
 
 export function segmentOption(profiles) {
   const groups = new Map(); profiles.forEach(p => groups.set(p.segment, (groups.get(p.segment) || 0) + 1));
+  const data = profiles.length && 'value' in profiles[0] ? profiles : [...groups].map(([name, value]) => ({ name, value }));
   return { ...base(), tooltip: { ...base().tooltip, trigger: 'item' }, legend: { orient: 'vertical', left: '57%', top: 'middle', itemGap: 15 },
-    series: [{ type: 'pie', radius: ['48%', '73%'], center: ['28%', '50%'], avoidLabelOverlap: true, label: { show: false }, itemStyle: { borderColor: '#fff', borderWidth: 3, borderRadius: 4 }, data: [...groups].map(([name, value]) => ({ name, value })) }],
+    series: [{ type: 'pie', radius: ['48%', '73%'], center: ['28%', '50%'], avoidLabelOverlap: true, label: { show: false }, itemStyle: { borderColor: '#fff', borderWidth: 3, borderRadius: 4 }, data }],
   };
 }
 
