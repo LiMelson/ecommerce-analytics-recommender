@@ -4,7 +4,7 @@ import csv
 import hashlib
 import re
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 COLUMNS = {"user_id", "item_id", "category_id", "behavior_type", "timestamp"}
 REQUIRED = COLUMNS - {"category_id"}
@@ -98,6 +98,16 @@ def file_hash(path):
 
 
 def safe_inbox(settings, relative_path):
+    windows_path, posix_path = PureWindowsPath(relative_path), PurePosixPath(relative_path)
+    if (
+        windows_path.drive
+        or windows_path.is_absolute()
+        or posix_path.is_absolute()
+        or ".." in windows_path.parts
+        or ".." in posix_path.parts
+        or any(ord(c) < 32 for c in relative_path)
+    ):
+        raise ImportValidationError("只接受收件目录内的相对文件名，不接受绝对路径或上级目录")
     root = (settings.instance_dir / "inbox").resolve()
     path = (root / relative_path).resolve()
     if not path.is_relative_to(root) or not path.is_file() or path.suffix.lower() not in {".csv", ".parquet"}:

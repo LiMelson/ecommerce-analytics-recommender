@@ -99,6 +99,13 @@ def test_server_file_listing_and_boundary(admin, app):
     assert response.status_code == 200
     assert [item["relative_path"] for item in response.json()["items"]] == ["dataset.csv"]
     assert admin.post("/api/v1/datasets/import-local", json={"relative_path": "../.env"}).status_code == 422
+    assert (
+        admin.post(
+            "/api/v1/datasets/import-local", json={"relative_path": r"\\untrusted.invalid\share\data.csv"}
+        ).status_code
+        == 422
+    )
+    assert admin.post("/api/v1/datasets/import-local", json={"relative_path": "C:/outside/data.csv"}).status_code == 422
 
 
 def test_recovered_job_cannot_publish_late_result(admin, app):
