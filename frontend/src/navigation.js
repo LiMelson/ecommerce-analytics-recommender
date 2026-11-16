@@ -12,12 +12,12 @@ export const navigation = [
   ] },
   { id: 'recommend', title: '智能推荐', icon: 'Sparkles', description: '根据浏览、收藏、加购及购买行为，为指定用户生成推荐。' },
   { id: 'data', title: '数据管理', icon: 'Database', description: '导入和查询用户行为数据，检查字段与数据质量。' },
-  { id: 'logs', title: '日志管理', icon: 'ScrollText', description: '查看数据导入、推荐生成及演示任务的操作记录。' },
+  { id: 'logs', title: '日志管理', icon: 'ScrollText', description: '查看登录、数据导入、账号管理等操作记录。' },
   { id: 'messages', title: '系统留言', icon: 'MessageSquare', description: '记录项目反馈、待办事项与改进建议。' },
   { id: 'system', title: '系统管理', icon: 'Settings', children: [
-    { id: 'accounts', title: '用户管理', description: '管理展示版账号及角色。' },
+    { id: 'accounts', title: '用户管理', description: '创建团队账号，管理角色、密码与启停状态。' },
     { id: 'roles', title: '角色权限', description: '查看管理员与分析员的角色划分。' },
   ] },
-  { id: 'personal', title: '个人信息', icon: 'UserRound', description: '查看与编辑当前展示账号的资料。' },
+  { id: 'personal', title: '个人信息', icon: 'UserRound', description: '查看与编辑个人资料，修改登录密码。' },
 ];
 export const pageMap = Object.fromEntries(navigation.flatMap(p => p.children ? p.children.map(c => [c.id, { ...c, icon: 'ChartNoAxesCombined', parent: p.title }]) : [[p.id, p]]));

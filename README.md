@@ -1,92 +1,103 @@
 # 电商平台用户行为分析与精准推荐系统
 
-电商用户行为分析、用户画像与个性化商品推荐课程项目。团队规模 4 人，计划开发周期约 1 个月。
+四人课程项目：用户行为分析、用户画像和商品推荐工作台。当前已实现 **Vue 3 前端 + FastAPI 后端 + MySQL 业务库 + ClickHouse 行为分析库**，数据清洗和推荐算法由对应组员继续开发。
 
-**当前已完成可运行的 Vue 前端演示，后端、真实数据处理与推荐模型尚未实现。** 前端默认使用可复现的虚构样本，推荐和训练按钮分别执行前端规则及状态流程演示。
+## 当前进度
 
-## 本地运行前端
+| 部分 | 状态 |
+|---|---|
+| 登录、账号、角色权限、资料与密码管理 | 已接通数据库和服务端校验 |
+| CSV/Parquet 导入、任务、数据版本与导出 | 已实现；支持服务器大文件分批入库 |
+| 首页、大屏、趋势、漏斗、RF、留存、排行、画像 | 已接通后端统计与服务端分页 |
+| 留言、操作日志 | 已持久化 |
+| 模型版本登记与推理服务适配 | 已实现接入协议，等待算法组交付 |
+| 数据清洗、真实推荐训练、模型选择 | 由数据和算法负责人实现 |
 
-安装 Node.js 24，然后在终端执行：
+网站操作人员不选择算法或超参数。服务未接入时如实提示状态，不运行假训练或伪造推荐。现有本地联调数据可以使用明确标记的虚构样本，不能把它当作 Kaggle 真实数据或算法效果。
+
+## 本地启动
 
 ```sh
 git clone https://github.com/LiMelson/ecommerce-analytics-recommender.git
-cd ecommerce-analytics-recommender/frontend
-npm ci
-npm run dev
+cd ecommerce-analytics-recommender
 ```
 
-浏览器访问 <http://127.0.0.1:5173/>。若已经克隆项目，直接进入 `frontend/` 运行后两条命令。端口 5173 被占用时，请先关闭之前启动的开发服务器。
-
-验证与构建：
+准备 Python 3.11、Node.js 24、MySQL 8 和 Docker Desktop。先按 [后端运行说明](backend/README.md) 安装依赖并在本地填写 `backend/.env`；再安装前端依赖：
 
 ```sh
-npm test
-npm run build
+cd frontend
+npm ci
 ```
 
-`npm run build` 生成 `frontend/dist/`；构建产物不提交到仓库。详细功能、CSV 限制与数据口径见 [前端说明](frontend/README.md)。
+Windows 在仓库根目录运行：
 
-## 界面预览
+```powershell
+./scripts/start-local.ps1
+```
 
-### 首页
+- 工作台：<http://127.0.0.1:5173/>
+- API 文档：<http://127.0.0.1:8000/api/docs>
+- 首次管理员为 `admin`，随机密码保存在本机 `backend/instance/first-admin.txt`。
+- 停止本项目 API/worker：`./scripts/stop-local.ps1`，数据库和数据保持保留。
 
-![首页预览](frontend/docs/home-preview.jpg)
+后端、前端分别启动及各平台命令见各自 README。默认只在本机访问，没有自动部署到公网。
 
-### 每日趋势分析
+## 架构
 
-![每日趋势分析预览](frontend/docs/daily-preview.jpg)
+```mermaid
+flowchart LR
+    UI[Vue 工作台] --> API[FastAPI]
+    API --> MYSQL[(MySQL\n账号、权限、任务、版本、留言、日志)]
+    API --> CH[(ClickHouse\n行为明细与统计汇总)]
+    MYSQL --> WORKER[独立导入与导出 worker]
+    FILES[数据组标准 CSV / Parquet] --> WORKER
+    WORKER --> CH
+    WORKER --> MYSQL
+    TRAIN[算法组固定配置训练与推理服务] --> API
+    PARQUET[完整训练 Parquet 与固定时间划分] --> TRAIN
+```
 
-### 智能推荐
-
-![智能推荐预览](frontend/docs/recommend-preview.jpg)
+查询只访问已完成的数据版本。导入失败不替换当前版本，任务与查询分进程运行。模型版本必须与当前数据版本兼容。
 
 ## 目录
 
 ```text
-ecommerce-analytics-recommender/
-├── frontend/             # 已实现的 Vue 3 + Vite + ECharts 前端
-├── backend/              # 后端规划说明，尚无服务代码
-├── recommendation/       # 推荐算法开发约定，尚无训练代码
-├── data/                 # 数据获取说明；实际数据留在本地
-├── docs/                 # 文献、后端规划与数据集调研
-├── 项目需求文档.docx      # 早期需求与架构文档
-├── CONTRIBUTING.md       # 分支、提交、联调与合并流程
-└── README.md
+frontend/          Vue 页面、API 调用、组件与测试
+backend/           API、ORM、迁移、导入 worker、测试
+infra/             ClickHouse Docker 配置与资源限制
+scripts/           Windows 本地启动与停止脚本
+recommendation/    算法负责人开发区域与交付说明
+data/              数据说明；实际文件不进入 Git
+docs/              接口、数据库、协议、调研与验收记录
+项目需求文档.docx   早期需求与 Mermaid 架构参考
 ```
 
-## 开发范围与当前状态
+## 团队开发
 
-| 部分 | 当前状态 | 下一步 |
-|---|---|---|
-| 首页、大屏、趋势、漏斗、RF 分群、留存、排行 | 前端展示与样本计算已完成 | 改为查询后端统计结果 |
-| 行为数据管理与用户画像 | 浏览器内演示，刷新恢复样本 | 接入数据清洗、数据库、查询与持久化 |
-| 智能推荐 | 前端规则预览 | 建立热门推荐、ItemCF、BPR 实验与模型服务 |
-| 训练任务 | 状态流程演示 | 先使用开发者训练脚本，再视需要增加固定配置的管理员任务 |
-| 账号、权限、留言与日志 | 前端会话演示 | 核心推荐流程完成后再补齐服务端能力 |
+按 [协作指南](CONTRIBUTING.md) 在独立分支开发，通过 PR 合并。联调以 [接口文档](docs/接口文档.md)、[OpenAPI JSON](docs/openapi.json) 和 [数据与算法交付约定](docs/数据与算法交付约定.md) 为准。
 
-首版以真实行为数据、推荐实验、模型加载与推荐查询为重点。算法和超参数由开发团队固定，网站操作人员选择匿名用户并获取推荐。当前界面仍保留方案选择和参数演示入口，接入后端时需要按此要求调整。
+数据集、模型权重、个人 `.env`、密码文件、依赖、构建产物和本地缓存均不提交。数据与训练文件使用各自固定版本，避免通过网页导出全量训练数据。
 
-RFM 页面目前只计算 R、F，金额 M 缺失；样本首次出现日期不等于注册日期；购买事件数量不等于订单数。源数据没有收藏、商品名称或图片时，应如实标明缺失。
+## 验证与容量
 
-## 拟采用的后端路线
+后端提供账号/权限与格式校验测试、隔离 MySQL + ClickHouse 集成测试、可选百万条生成数据负载测试；前端提供纯函数测试、页面 API 接入测试和生产构建。
 
-- API 服务：Python + FastAPI。
-- 存储：MySQL 保存查询数据、聚合结果及元数据，CSV/Parquet 保存实验数据文件。
-- 训练：独立 Python 脚本，按实验需要使用 PyTorch 等库。
-- 推荐：服务启动时加载选定模型及 ID 映射；前端请求推荐时不执行模型训练。
-- 接口：计划使用 `/api/v1` 前缀，具体请求、返回结构和错误格式需在联调前确认。
+已进行的检查、实际耗时和容量边界见 [后端验收记录](docs/后端验收记录.md)。**百万级验证不代表已验证亿级全量容量**；真实全量上线前仍要根据字段、用户/商品基数、磁盘与查询范围压测。
 
-以上为规划，不代表依赖或后端代码已经安装、实现。API 建议与数据集候选见 [后端开发清单与 Kaggle 数据集调研](docs/后端开发清单与Kaggle数据集调研.md)。
+## 其他文档
 
-## 团队文档
+- [数据库设计](docs/数据库设计.md)
+- [前端说明](frontend/README.md)
+- [后端说明](backend/README.md)
+- [数据来源说明](data/README.md)
+- [Kaggle 数据集调研](docs/后端开发清单与Kaggle数据集调研.md)
+- [早期文献调研](docs/文献调研与技术路线建议.md)
+- [早期需求 Word](项目需求文档.docx)：部分设想已经收敛，当前行为以接口文档及代码为准。
 
-- [团队协作指南](CONTRIBUTING.md)：每人开发自己的分支，通过 Pull Request 合并。
-- [前端说明](frontend/README.md)：运行方式、页面功能、数据边界和接入位置。
-- [后端开发清单与 Kaggle 数据集调研](docs/后端开发清单与Kaggle数据集调研.md)：当前首版范围、接口方向和候选数据集。
-- [文献调研与技术路线建议](docs/文献调研与技术路线建议.md)：早期文献和扩展方案，部分内容超出当前首版范围。
-- [项目需求文档（Word）](项目需求文档.docx)：此前整理的需求与 Mermaid 架构图，保留供参考；训练参数选择等旧方案以后续范围约定为准。
-- [数据说明](data/README.md)：数据来源和本地目录约定。
+原型界面参考：
 
-## 提交边界
+![首页设计参考](frontend/docs/home-preview.jpg)
 
-提交源码、依赖锁定文件、测试、配置示例、截图和项目文档。实际数据、模型权重、环境密钥、`node_modules/`、构建产物及本地文档制作缓存已加入忽略规则。各成员在自己的电脑上安装依赖，不需要相互传递 `node_modules` 或整个项目压缩包。
+![每日趋势设计参考](frontend/docs/daily-preview.jpg)
+
+![推荐页早期设计参考，当前已移除调参入口](frontend/docs/recommend-preview.jpg)

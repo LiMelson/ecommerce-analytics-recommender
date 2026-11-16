@@ -1,0 +1,12 @@
+alembic==1.20.1
+clickhouse-connect==0.15.1
+fastapi==0.163.1
+httpx==0.28.1
+pwdlib[argon2]==0.4.2
+pydantic-settings==2.16.3
+pymysql[rsa]==1.2.4
+pyarrow==23.0.1
+python-multipart==0.0.33
+pytest==9.2.0
+ruff==0.17.5
+uvicorn==0.54.0

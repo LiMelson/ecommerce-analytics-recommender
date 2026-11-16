@@ -1,0 +1,176 @@
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 9%;
+  align-items: center;
+  padding: 8vh 10%;
+  background:
+    radial-gradient(ellipse at 15% 80%, #dff0eb 0, transparent 45%), #f3f7f8;
+}
+.login-intro .brand-logo {
+  display: inline-flex;
+  width: 58px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.login-intro .eyebrow {
+  display: block;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+  color: #4b889c;
+}
+.login-intro h1 {
+  font-size: clamp(30px, 3.5vw, 50px);
+  line-height: 1.6;
+  letter-spacing: -1px;
+  color: #213b4a;
+  margin: 0 0 20px;
+}
+.login-intro > p {
+  font-size: 15px;
+  color: #6e858e;
+}
+.login-features {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+}
+.login-features span {
+  padding: 9px 15px;
+  border: 1px solid #d3e1e5;
+  border-radius: 7px;
+  color: #66858b;
+  font-size: 12px;
+}
+.login-card {
+  padding: 42px;
+  max-width: 460px;
+  box-shadow: 0 18px 70px #23424f09;
+}
+.login-card h2 {
+  font-size: 25px;
+  margin: 12px 0;
+}
+.login-card form {
+  margin-top: 32px;
+  display: grid;
+  gap: 16px;
+}
+.login-card form > .button {
+  justify-content: space-between;
+  padding: 13px 18px;
+}
+.login-card .section-note {
+  line-height: 1.9;
+  margin-top: 28px;
+}
+.login-card .error-message {
+  margin: 0;
+}
+.loading-notice {
+  font-size: 12px;
+  color: #668d9c;
+  margin-bottom: 12px;
+}
+.main-content > .info-strip {
+  margin-bottom: 16px;
+}
+.info-strip .text-button {
+  margin-left: auto;
+  white-space: nowrap;
+}
+.user-picker {
+  padding: 15px 20px;
+  margin: 15px 0;
+}
+.user-picker form {
+  display: flex;
+  gap: 12px;
+}
+.user-picker form input {
+  flex: 1;
+  max-width: 400px;
+}
+.user-picker .pagination {
+  border: 0;
+  padding: 14px 0 0;
+}
+.recommend-controls input {
+  min-width: 200px;
+}
+.dataset-version {
+  display: block;
+  font-family: monospace;
+  color: #8b9ba4;
+  margin-top: 5px;
+  font-size: 10px;
+}
+.dataset-content .panel-heading {
+  margin-top: 25px;
+}
+.dataset-content td .badge {
+  margin-left: 8px;
+}
+.personal-form form > .button + .button {
+  margin-left: 12px;
+}
+.backend-banner {
+  margin-bottom: 15px;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.dataset-content .error-message {
+  max-width: 320px;
+  display: inline-block;
+}
+.pagination > div {
+  gap: 12px;
+}
+.recommendation-panel .empty-state p {
+  max-width: 600px;
+}
+.source-badge {
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: 1fr;
+    padding: 7vh 6%;
+    gap: 40px;
+  }
+  .login-intro {
+    max-width: 460px;
+    margin: auto;
+  }
+  .login-intro h1 {
+    font-size: 30px;
+  }
+  .login-intro h1 br {
+    display: none;
+  }
+  .login-intro .brand-logo {
+    margin-bottom: 15px;
+  }
+  .login-features {
+    display: none;
+  }
+  .login-card {
+    width: 100%;
+    margin: auto;
+    padding: 30px;
+  }
+  .user-picker form input {
+    min-width: 0;
+  }
+  .recommend-controls input {
+    min-width: 120px;
+  }
+}

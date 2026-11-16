@@ -46,3 +46,10 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+/backend/instance/
+/backend/uploads/
+/backend/exports/
+/infra/.env
+*.db
+*.db-shm
+*.db-wal
