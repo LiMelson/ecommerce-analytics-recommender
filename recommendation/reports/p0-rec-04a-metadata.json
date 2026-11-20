@@ -1,0 +1,226 @@
+{
+  "models": {
+    "bpr_mf_buy_v1": {
+      "asset_file": "bpr_mf_buy_v1.asset",
+      "asset_sha256": "27dcd8d1bdda54387d2bd9ee303a8aade1022a3afb4bb076b7843572810b1155",
+      "built_at_utc": "2026-11-20T15:31:02.680109+00:00",
+      "candidate_items": 75327,
+      "fit_start": "2019-10-01T00:00:00+00:00",
+      "kind": "bpr",
+      "loaded": true,
+      "model": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "model_version": "bpr_mf_buy_v1",
+        "protocol_version": "purchase_global_utc_v1",
+        "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "train_cutoff_exclusive": "2019-11-21T20:24:00+00:00"
+      },
+      "parameters": {
+        "batch_size": 128,
+        "dimensions": 16,
+        "epochs": 40,
+        "learning_rate": 0.05,
+        "negatives_per_positive": 3,
+        "regularization": 0.01,
+        "seed": 20261120
+      },
+      "provenance": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dependencies": {
+          "duckdb": "2.0.0",
+          "numpy": "2.5.5",
+          "pandas": "3.1.1",
+          "pyarrow": "26.0.1",
+          "pytest": "9.2.0",
+          "scipy": "1.18.1"
+        },
+        "git_branch": "feat/p0-rec-04a",
+        "git_head": "0d25a9f131235c9a011a05e01928dca034db2b0f",
+        "git_worktree_dirty": true,
+        "logical_cpu_count": 32,
+        "platform": "Windows-11-10.0.26100-SP0",
+        "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "python": "3.12.6",
+        "reference_report_sha256": {
+          "p0-rec-01-benchmark": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+          "p0-rec-02-test": "dadb3c416943740f7643ab655b6fa162ac08c08c526725cca1a4ddd7d9ef95e8",
+          "p0-rec-03-test": "456b549eaa673af9e8005bd0034dc627cf8cb165b2c38d02ea00bafc711b9922"
+        },
+        "source_sha256": {
+          "config/bpr_v1.json": "5919e11712e08b5c85a5383e32c41ddc32e1be6a6f0aafb94f170358135bc139",
+          "config/itemcf_v1.json": "7355bbaefe1f1efcda57fffbce0cd2af837a852e6e3d44e4a874833a1a90d7c5",
+          "config/popular_v1.json": "cd1c4ff816102edb39c0556aa08f28b3986c8800e74d7ae4aae2c9e4d525dc23",
+          "data_algo/data_algo/__init__.py": "18c58ac3c2897132ca0ae6d8a6d6348160d5a356904b0fd33f4c52a76f9b5bc2",
+          "data_algo/data_algo/io_utils.py": "ef2f4009a8beffd32e85ece543760a802cd33548a8c6d2d1530ed22080817132",
+          "data_algo/data_algo/path_utils.py": "ea4f3d44c66bff49c1a6ae74f393b3f82863d4804b0299e9b31e520d6a32149f",
+          "data_algo/data_algo/schema.py": "7552e6a62da26cd9d3fdabadaaed11c3acda1e849ec8732e356a808576e15429",
+          "data_algo/data_algo/website_export.py": "4ebdf973d4628b80bca0b5582a42fe2c007f825a512eea053e7a17911dcbbda6",
+          "data_algo/requirements.txt": "77771904e0fc13bc8c211e244a4c9b83174ff34276387b31eedada5c3cc4cbac",
+          "docs/P0-REC-01-Benchmark.md": "6b9233e41bb0801cca2b4fdc697ea23b7756348709ffd1bdcb7100782c8e8773",
+          "recommendation/__init__.py": "5c94263bd979aa133c36e9841a3c0541dee642c61d1811faae4a6e2873790527",
+          "recommendation/assets.py": "c7dbd7958427bb575a012f3024873ab08be47428f61a982db9e03b02445cd9d6",
+          "recommendation/benchmark.py": "f4d32366e18da9bb135152189be70065b8e1d2a30d56f8ecd8b764440a4fa143",
+          "recommendation/bpr.py": "6c23dcca426825000ef83a91f11ffece1195dd8b222287c8ca10745cec5adecf",
+          "recommendation/bpr_experiment.py": "c5209af5d35a3be7c32fe18e10d46a44bd2f9bb2c01b6f3a01ee6486b0b3a95b",
+          "recommendation/bpr_io.py": "74760f75a27ab1120dcf575f51b7c983d2d424deef1372d872ec94472026feab",
+          "recommendation/delivery.py": "683157c0538b2d22315c3d6b1579ee71d73e2693d83d2becc4aa23ab98299520",
+          "recommendation/delivery_check.py": "bac44ba2a931b3fddf66f052141e84c72d7efc9fd873eb027c79d1f660a5ad15",
+          "recommendation/engine.py": "9337d811e529629190e0d516d8c107f6a6ed5ee10da1edc40ecf3bdedd3f1753",
+          "recommendation/itemcf.py": "f50d119806001d811772911312561bbfa10163a30060ba5284e7aecf3c565685",
+          "recommendation/itemcf_experiment.py": "25d403de5e1096b74b28abf13d5ff914cf335e8ab4045645331a55b5204efefa",
+          "recommendation/popular.py": "4c02b7d931f0b89b5fb0866feced6513c60df2482118e0992935a6dc416f83c8",
+          "recommendation/requirements.txt": "b13fe5d741a8dc0ca61dd68d44d6e92dd68abd6ba3ed39e4bd22b4bd3b7c3c45",
+          "recommendation/run.py": "9319a8dee1c6079b3a8e5d7aea399ec7b69650504820d59712f7c46ea8e79647",
+          "recommendation/sample.py": "9236cf136843c886335f17a491ebb83cef059edeb60d3fac6f0939382bb19747",
+          "recommendation/training_snapshot.py": "983150a52a91de68ae5e8c68f1363c1ae69cdb92555babbbd597f1e107377755"
+        }
+      },
+      "training_snapshot_sha256": "95a6fc7a551b2385beac77fa09783ed45d2de9dd7b003e7a725db0f6e6ab1f02"
+    },
+    "itemcf_v1": {
+      "asset_file": "itemcf_v1.asset",
+      "asset_sha256": "d0cd836bb123ab0d67a9945b2160a201ac7713dbcf93e01ed6239ca79b91f739",
+      "built_at_utc": "2026-11-20T15:30:59.423271+00:00",
+      "candidate_items": 75327,
+      "fit_start": "2019-10-01T00:00:00+00:00",
+      "kind": "itemcf",
+      "loaded": true,
+      "model": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "model_version": "itemcf_v1",
+        "protocol_version": "purchase_global_utc_v1",
+        "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "train_cutoff_exclusive": "2019-11-21T20:24:00+00:00"
+      },
+      "parameters": {
+        "block_rows": 256,
+        "max_history": 100,
+        "neighbors": 80
+      },
+      "provenance": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dependencies": {
+          "duckdb": "2.0.0",
+          "numpy": "2.5.5",
+          "pandas": "3.1.1",
+          "pyarrow": "26.0.1",
+          "pytest": "9.2.0",
+          "scipy": "1.18.1"
+        },
+        "git_branch": "feat/p0-rec-04a",
+        "git_head": "0d25a9f131235c9a011a05e01928dca034db2b0f",
+        "git_worktree_dirty": true,
+        "logical_cpu_count": 32,
+        "platform": "Windows-11-10.0.26100-SP0",
+        "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "python": "3.12.6",
+        "reference_report_sha256": {
+          "p0-rec-01-benchmark": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+          "p0-rec-02-test": "dadb3c416943740f7643ab655b6fa162ac08c08c526725cca1a4ddd7d9ef95e8",
+          "p0-rec-03-test": "456b549eaa673af9e8005bd0034dc627cf8cb165b2c38d02ea00bafc711b9922"
+        },
+        "source_sha256": {
+          "config/bpr_v1.json": "5919e11712e08b5c85a5383e32c41ddc32e1be6a6f0aafb94f170358135bc139",
+          "config/itemcf_v1.json": "7355bbaefe1f1efcda57fffbce0cd2af837a852e6e3d44e4a874833a1a90d7c5",
+          "config/popular_v1.json": "cd1c4ff816102edb39c0556aa08f28b3986c8800e74d7ae4aae2c9e4d525dc23",
+          "data_algo/data_algo/__init__.py": "18c58ac3c2897132ca0ae6d8a6d6348160d5a356904b0fd33f4c52a76f9b5bc2",
+          "data_algo/data_algo/io_utils.py": "ef2f4009a8beffd32e85ece543760a802cd33548a8c6d2d1530ed22080817132",
+          "data_algo/data_algo/path_utils.py": "ea4f3d44c66bff49c1a6ae74f393b3f82863d4804b0299e9b31e520d6a32149f",
+          "data_algo/data_algo/schema.py": "7552e6a62da26cd9d3fdabadaaed11c3acda1e849ec8732e356a808576e15429",
+          "data_algo/data_algo/website_export.py": "4ebdf973d4628b80bca0b5582a42fe2c007f825a512eea053e7a17911dcbbda6",
+          "data_algo/requirements.txt": "77771904e0fc13bc8c211e244a4c9b83174ff34276387b31eedada5c3cc4cbac",
+          "docs/P0-REC-01-Benchmark.md": "6b9233e41bb0801cca2b4fdc697ea23b7756348709ffd1bdcb7100782c8e8773",
+          "recommendation/__init__.py": "5c94263bd979aa133c36e9841a3c0541dee642c61d1811faae4a6e2873790527",
+          "recommendation/assets.py": "c7dbd7958427bb575a012f3024873ab08be47428f61a982db9e03b02445cd9d6",
+          "recommendation/benchmark.py": "f4d32366e18da9bb135152189be70065b8e1d2a30d56f8ecd8b764440a4fa143",
+          "recommendation/bpr.py": "6c23dcca426825000ef83a91f11ffece1195dd8b222287c8ca10745cec5adecf",
+          "recommendation/bpr_experiment.py": "c5209af5d35a3be7c32fe18e10d46a44bd2f9bb2c01b6f3a01ee6486b0b3a95b",
+          "recommendation/bpr_io.py": "74760f75a27ab1120dcf575f51b7c983d2d424deef1372d872ec94472026feab",
+          "recommendation/delivery.py": "683157c0538b2d22315c3d6b1579ee71d73e2693d83d2becc4aa23ab98299520",
+          "recommendation/delivery_check.py": "bac44ba2a931b3fddf66f052141e84c72d7efc9fd873eb027c79d1f660a5ad15",
+          "recommendation/engine.py": "9337d811e529629190e0d516d8c107f6a6ed5ee10da1edc40ecf3bdedd3f1753",
+          "recommendation/itemcf.py": "f50d119806001d811772911312561bbfa10163a30060ba5284e7aecf3c565685",
+          "recommendation/itemcf_experiment.py": "25d403de5e1096b74b28abf13d5ff914cf335e8ab4045645331a55b5204efefa",
+          "recommendation/popular.py": "4c02b7d931f0b89b5fb0866feced6513c60df2482118e0992935a6dc416f83c8",
+          "recommendation/requirements.txt": "b13fe5d741a8dc0ca61dd68d44d6e92dd68abd6ba3ed39e4bd22b4bd3b7c3c45",
+          "recommendation/run.py": "9319a8dee1c6079b3a8e5d7aea399ec7b69650504820d59712f7c46ea8e79647",
+          "recommendation/sample.py": "9236cf136843c886335f17a491ebb83cef059edeb60d3fac6f0939382bb19747",
+          "recommendation/training_snapshot.py": "983150a52a91de68ae5e8c68f1363c1ae69cdb92555babbbd597f1e107377755"
+        }
+      },
+      "training_snapshot_sha256": "95a6fc7a551b2385beac77fa09783ed45d2de9dd7b003e7a725db0f6e6ab1f02"
+    },
+    "popular_v1": {
+      "asset_file": "popular_v1.asset",
+      "asset_sha256": "9b5877926de569427d9a79b0a8adac1242d63ea93cbad8accb5224e8fc1abd5f",
+      "built_at_utc": "2026-11-20T15:30:58.832103+00:00",
+      "candidate_items": 75327,
+      "fit_start": "2019-10-01T00:00:00+00:00",
+      "kind": "popular",
+      "loaded": true,
+      "model": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "model_version": "popular_v1",
+        "protocol_version": "purchase_global_utc_v1",
+        "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "train_cutoff_exclusive": "2019-11-21T20:24:00+00:00"
+      },
+      "parameters": {},
+      "provenance": {
+        "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+        "dependencies": {
+          "duckdb": "2.0.0",
+          "numpy": "2.5.5",
+          "pandas": "3.1.1",
+          "pyarrow": "26.0.1",
+          "pytest": "9.2.0",
+          "scipy": "1.18.1"
+        },
+        "git_branch": "feat/p0-rec-04a",
+        "git_head": "0d25a9f131235c9a011a05e01928dca034db2b0f",
+        "git_worktree_dirty": true,
+        "logical_cpu_count": 32,
+        "platform": "Windows-11-10.0.26100-SP0",
+        "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+        "python": "3.12.6",
+        "reference_report_sha256": {
+          "p0-rec-01-benchmark": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+          "p0-rec-02-test": "dadb3c416943740f7643ab655b6fa162ac08c08c526725cca1a4ddd7d9ef95e8",
+          "p0-rec-03-test": "456b549eaa673af9e8005bd0034dc627cf8cb165b2c38d02ea00bafc711b9922"
+        },
+        "source_sha256": {
+          "config/bpr_v1.json": "5919e11712e08b5c85a5383e32c41ddc32e1be6a6f0aafb94f170358135bc139",
+          "config/itemcf_v1.json": "7355bbaefe1f1efcda57fffbce0cd2af837a852e6e3d44e4a874833a1a90d7c5",
+          "config/popular_v1.json": "cd1c4ff816102edb39c0556aa08f28b3986c8800e74d7ae4aae2c9e4d525dc23",
+          "data_algo/data_algo/__init__.py": "18c58ac3c2897132ca0ae6d8a6d6348160d5a356904b0fd33f4c52a76f9b5bc2",
+          "data_algo/data_algo/io_utils.py": "ef2f4009a8beffd32e85ece543760a802cd33548a8c6d2d1530ed22080817132",
+          "data_algo/data_algo/path_utils.py": "ea4f3d44c66bff49c1a6ae74f393b3f82863d4804b0299e9b31e520d6a32149f",
+          "data_algo/data_algo/schema.py": "7552e6a62da26cd9d3fdabadaaed11c3acda1e849ec8732e356a808576e15429",
+          "data_algo/data_algo/website_export.py": "4ebdf973d4628b80bca0b5582a42fe2c007f825a512eea053e7a17911dcbbda6",
+          "data_algo/requirements.txt": "77771904e0fc13bc8c211e244a4c9b83174ff34276387b31eedada5c3cc4cbac",
+          "docs/P0-REC-01-Benchmark.md": "6b9233e41bb0801cca2b4fdc697ea23b7756348709ffd1bdcb7100782c8e8773",
+          "recommendation/__init__.py": "5c94263bd979aa133c36e9841a3c0541dee642c61d1811faae4a6e2873790527",
+          "recommendation/assets.py": "c7dbd7958427bb575a012f3024873ab08be47428f61a982db9e03b02445cd9d6",
+          "recommendation/benchmark.py": "f4d32366e18da9bb135152189be70065b8e1d2a30d56f8ecd8b764440a4fa143",
+          "recommendation/bpr.py": "6c23dcca426825000ef83a91f11ffece1195dd8b222287c8ca10745cec5adecf",
+          "recommendation/bpr_experiment.py": "c5209af5d35a3be7c32fe18e10d46a44bd2f9bb2c01b6f3a01ee6486b0b3a95b",
+          "recommendation/bpr_io.py": "74760f75a27ab1120dcf575f51b7c983d2d424deef1372d872ec94472026feab",
+          "recommendation/delivery.py": "683157c0538b2d22315c3d6b1579ee71d73e2693d83d2becc4aa23ab98299520",
+          "recommendation/delivery_check.py": "bac44ba2a931b3fddf66f052141e84c72d7efc9fd873eb027c79d1f660a5ad15",
+          "recommendation/engine.py": "9337d811e529629190e0d516d8c107f6a6ed5ee10da1edc40ecf3bdedd3f1753",
+          "recommendation/itemcf.py": "f50d119806001d811772911312561bbfa10163a30060ba5284e7aecf3c565685",
+          "recommendation/itemcf_experiment.py": "25d403de5e1096b74b28abf13d5ff914cf335e8ab4045645331a55b5204efefa",
+          "recommendation/popular.py": "4c02b7d931f0b89b5fb0866feced6513c60df2482118e0992935a6dc416f83c8",
+          "recommendation/requirements.txt": "b13fe5d741a8dc0ca61dd68d44d6e92dd68abd6ba3ed39e4bd22b4bd3b7c3c45",
+          "recommendation/run.py": "9319a8dee1c6079b3a8e5d7aea399ec7b69650504820d59712f7c46ea8e79647",
+          "recommendation/sample.py": "9236cf136843c886335f17a491ebb83cef059edeb60d3fac6f0939382bb19747",
+          "recommendation/training_snapshot.py": "983150a52a91de68ae5e8c68f1363c1ae69cdb92555babbbd597f1e107377755"
+        }
+      },
+      "training_snapshot_sha256": "95a6fc7a551b2385beac77fa09783ed45d2de9dd7b003e7a725db0f6e6ab1f02"
+    }
+  }
+}
