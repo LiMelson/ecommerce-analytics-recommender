@@ -1,8 +1,10 @@
 """Binary implicit ItemCF using bounded sparse co-occurrence blocks."""
 
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from heapq import nsmallest
+from types import MappingProxyType
 
 import numpy as np
 import pandas as pd
@@ -12,6 +14,7 @@ from data_algo.data_algo.schema import CORE_BEHAVIORS
 
 from .benchmark import nearest_rank
 from .popular import COLD_FALLBACK, ModelMetadata, PopularModel, Ranking
+from .training_snapshot import training_snapshot_sha256
 
 ITEMCF = "itemcf_cosine"
 FILL = "popular_fill"
@@ -129,9 +132,38 @@ def cosine_neighbors(interactions, config):
 
 @dataclass(frozen=True)
 class ItemCFPick:
+    """A ranked item with a source-specific diagnostic score."""
+
     item_id: str
     score: float
     source: str
+
+
+@dataclass(frozen=True)
+class _FittedCSR:
+    """Own immutable copies of the CSR buffers used by the ranker."""
+
+    shape: tuple[int, int]
+    _data: tuple[bytes, np.dtype]
+    _indices: tuple[bytes, np.dtype]
+    _indptr: tuple[bytes, np.dtype]
+
+    @classmethod
+    def from_matrix(cls, matrix):
+        buffers = ((array.tobytes(), array.dtype) for array in (matrix.data, matrix.indices, matrix.indptr))
+        return cls(matrix.shape, *buffers)
+
+    @property
+    def data(self):
+        return np.frombuffer(*self._data)
+
+    @property
+    def indices(self):
+        return np.frombuffer(*self._indices)
+
+    @property
+    def indptr(self):
+        return np.frombuffer(*self._indptr)
 
 
 @dataclass(frozen=True)
@@ -139,9 +171,9 @@ class ItemCFModel:
     fallback: PopularModel
     items: tuple[str, ...]
     metadata: ModelMetadata
-    _user_rows: dict[str, int]
-    _interactions: csr_matrix
-    _neighbors: csr_matrix
+    _user_rows: Mapping[str, int]
+    _interactions: _FittedCSR
+    _neighbors: _FittedCSR
 
     @property
     def history(self):
@@ -157,11 +189,21 @@ class ItemCFModel:
             raise ValueError("ItemCF training events are outside the fitted history window")
         if len(events) != sum(history.event_counts.values()):
             raise ValueError("ItemCF must use the full shared history for candidate and purchase policy")
+        if training_snapshot_sha256(events) != fallback.training_snapshot_sha256:
+            raise ValueError("ItemCF training snapshot content does not match the fitted Popular model")
         items = tuple(sorted(history.catalog))
         matrix, user_rows, profile = binary_interactions(events, items, config.max_history)
         neighbors, diagnostics = cosine_neighbors(matrix, config)
         metadata = replace(fallback.metadata, model_version=model_version)
-        return cls(fallback, items, metadata, user_rows, matrix, neighbors), {
+        model = cls(
+            fallback,
+            items,
+            metadata,
+            MappingProxyType(user_rows),
+            _FittedCSR.from_matrix(matrix),
+            _FittedCSR.from_matrix(neighbors),
+        )
+        return model, {
             **profile,
             **diagnostics,
             "interaction_shape": list(matrix.shape),
@@ -171,6 +213,7 @@ class ItemCFModel:
         }
 
     def recommend(self, user_id: str, k: int) -> Ranking[ItemCFPick]:
+        """Return final rank order; raw scores from different sources are incomparable."""
         # PopularModel validates the arguments and applies the same purchase filter.
         row = self._user_rows.get(user_id) if isinstance(user_id, str) else None
         if row is None:
@@ -185,11 +228,14 @@ class ItemCFModel:
         blocked = self.history.blocked(user_id)
         scores = defaultdict(float)
         left, right = self._interactions.indptr[row : row + 2]
+        neighbor_offsets, neighbor_items, similarities = (
+            self._neighbors.indptr,
+            self._neighbors.indices,
+            self._neighbors.data,
+        )
         for seed in self._interactions.indices[left:right]:
-            first, last = self._neighbors.indptr[seed : seed + 2]
-            for index, similarity in zip(
-                self._neighbors.indices[first:last], self._neighbors.data[first:last], strict=True
-            ):
+            first, last = neighbor_offsets[seed : seed + 2]
+            for index, similarity in zip(neighbor_items[first:last], similarities[first:last], strict=True):
                 if self.items[index] not in blocked:
                     scores[index] += float(similarity)
         best = nsmallest(k, scores.items(), key=lambda entry: (-entry[1], entry[0]))

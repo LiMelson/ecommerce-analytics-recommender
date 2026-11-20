@@ -1,3 +1,4 @@
+from dataclasses import FrozenInstanceError
 from math import sqrt
 
 import numpy as np
@@ -51,6 +52,8 @@ def toy():
 
 def test_hand_calculated_cosines_and_binary_interactions(toy):
     model, _, stats = models(toy)
+    frozen = model._neighbors
+    graph = csr_matrix((frozen.data, frozen.indices, frozen.indptr), shape=frozen.shape)
     expected = {
         ("A", "B"): 1 / sqrt(2),
         ("A", "C"): 1 / 2,
@@ -60,10 +63,10 @@ def test_hand_calculated_cosines_and_binary_interactions(toy):
     }
     for (a, b), score in expected.items():
         i, j = model.items.index(a), model.items.index(b)
-        assert float(model._neighbors[i, j]) == pytest.approx(score)
-        assert float(model._neighbors[j, i]) == pytest.approx(score)
-    assert model._neighbors[model.items.index("A"), model.items.index("E")] == 0
-    assert model._neighbors.diagonal().sum() == 0
+        assert float(graph[i, j]) == pytest.approx(score)
+        assert float(graph[j, i]) == pytest.approx(score)
+    assert graph[model.items.index("A"), model.items.index("E")] == 0
+    assert graph.diagonal().sum() == 0
     assert stats["positive_events"] == 8
     assert stats["interaction_nonzeros"] == 7
     assert stats["before_history_limit"]["unordered_cooccurrence_contributions"] == 5
@@ -131,6 +134,69 @@ def test_refuses_future_and_incomplete_training_without_mutating_history(toy):
         ItemCFModel.fit(toy.iloc[:-1], popular, ItemCFConfig(5, 2), model_version="itemcf_v1")
     assert original.blocked("甲") == {"A"}
     assert "A" not in list(model.rank_ids("甲", 10))
+
+
+@pytest.mark.parametrize(
+    "field,replacement",
+    [
+        ("user_id", "new-user"),
+        ("user_id", "乙"),
+        ("item_id", "B"),
+        ("behavior_type", "cart"),
+        ("event_time", START + pd.Timedelta(minutes=5)),
+        ("category_id", "different-category"),
+    ],
+)
+def test_rejects_same_size_substituted_snapshot(toy, field, replacement):
+    _, popular, _ = models(toy)
+    altered = toy.copy()
+    altered.loc[0, field] = replacement
+    with pytest.raises(ValueError, match="training snapshot content does not match"):
+        ItemCFModel.fit(altered, popular, ItemCFConfig(5, 2), model_version="itemcf_v1")
+
+
+def test_reordered_snapshot_with_duplicates_and_nulls_is_equivalent(toy):
+    data = toy.assign(brand=None, price=[None, 0.0, -0.0, 4.0, None, 1.0, 2.0, 3.0, None])
+    model, popular, _ = models(data)
+    shuffled = data.sample(frac=1, random_state=19).reset_index(drop=True).loc[:, data.columns[::-1]]
+    rebuilt, _ = ItemCFModel.fit(shuffled, popular, ItemCFConfig(5, 2), model_version="itemcf_v1")
+    assert rebuilt.recommend("甲", 10) == model.recommend("甲", 10)
+
+
+def test_fitted_snapshot_detects_mutation_of_original_frame(toy):
+    _, popular, _ = models(toy)
+    toy.loc[0, "behavior_type"] = "cart"
+    with pytest.raises(ValueError, match="training snapshot content does not match"):
+        ItemCFModel.fit(toy, popular, ItemCFConfig(5, 2), model_version="itemcf_v1")
+
+
+def test_fitted_state_blocks_external_mutation_without_changing_rankings(toy):
+    model, _, _ = models(toy)
+    before = model.recommend("甲", 10)
+    with pytest.raises(TypeError):
+        model._user_rows["甲"] = model._user_rows["乙"]
+    for matrix in (model._interactions, model._neighbors):
+        for buffer in (matrix.data, matrix.indices, matrix.indptr):
+            with pytest.raises(ValueError, match="read-only"):
+                buffer[0] = 0
+            with pytest.raises(ValueError):
+                buffer.setflags(write=True)
+        with pytest.raises(FrozenInstanceError):
+            matrix.indices = matrix.indices.copy()
+        assert matrix.indices is not matrix.indices
+    assert model.recommend("甲", 10) == before
+
+
+def test_mixed_ranking_keeps_itemcf_before_raw_higher_score_fallback(toy):
+    noisy = pd.concat((toy, frame(("other", "popular", "buy"), ("other", "popular", "buy"))))
+    model, _, _ = models(noisy)
+    ranking = model.recommend("甲", 3)
+    assert [(pick.item_id, pick.source) for pick in ranking.items] == [
+        ("B", ITEMCF),
+        ("C", ITEMCF),
+        ("popular", FILL),
+    ]
+    assert ranking.items[2].score > ranking.items[0].score
 
 
 def test_history_cap_uses_most_recent_unique_items_without_shrinking_policy():

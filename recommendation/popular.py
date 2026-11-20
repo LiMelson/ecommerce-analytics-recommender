@@ -6,6 +6,7 @@ from re import fullmatch
 from typing import Generic, TypeVar
 
 from .benchmark import History
+from .training_snapshot import training_snapshot_sha256
 
 POPULAR = "popular_purchase_count"
 COLD_FALLBACK = "cold_start_popular_purchase_count"
@@ -50,12 +51,14 @@ class PopularModel:
     metadata: ModelMetadata
     history: History
     ordered: tuple[Candidate, ...]
+    training_snapshot_sha256: str
 
     @classmethod
     def fit(
         cls, events, cutoff, *, dataset_id, model_version, sample_sha256, protocol_version, code_sha256, fit_start=None
     ):
         history = History.fit(events, cutoff, fit_start=fit_start)
+        snapshot_sha256 = training_snapshot_sha256(events)
         # At equal timestamps, choose the smallest category string for that item.
         known = events.loc[events["category_id"].notna() & ~events["category_id"].isin(["", "unknown"])]
         latest = known.sort_values(["event_time", "category_id"], ascending=[False, True])
@@ -66,6 +69,7 @@ class PopularModel:
             ModelMetadata(dataset_id, model_version, sample_sha256, protocol_version, cutoff.isoformat(), code_sha256),
             history,
             tuple(Candidate(item, categories.get(item, ""), counts.get(item, 0)) for item in ordered),
+            snapshot_sha256,
         )
 
     def recommend(self, user_id: str, k: int) -> Ranking[Candidate]:
