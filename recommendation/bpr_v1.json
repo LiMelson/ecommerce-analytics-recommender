@@ -1,0 +1,11 @@
+{
+  "model_version": "bpr_mf_buy_v1",
+  "positive_definition": "distinct_user_item_buy",
+  "negative_definition": "uniform_known_catalog_minus_training_buy_positives",
+  "selection_order": ["max_ndcg", "max_recall", "min_dimensions", "min_epochs", "config_order"],
+  "trials": [
+    {"id": "d16_e40", "dimensions": 16, "epochs": 40, "learning_rate": 0.05, "regularization": 0.01, "batch_size": 128, "negatives_per_positive": 3, "seed": 20261120},
+    {"id": "d16_e80", "dimensions": 16, "epochs": 80, "learning_rate": 0.05, "regularization": 0.01, "batch_size": 128, "negatives_per_positive": 3, "seed": 20261120},
+    {"id": "d32_e80", "dimensions": 32, "epochs": 80, "learning_rate": 0.05, "regularization": 0.01, "batch_size": 128, "negatives_per_positive": 3, "seed": 20261120}
+  ]
+}
