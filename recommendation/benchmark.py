@@ -1,10 +1,11 @@
 """Shared full-catalog benchmark for future purchases."""
 
 from collections import Counter
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 from itertools import pairwise
 from math import ceil, fsum, log2
+from types import MappingProxyType
 
 import pandas as pd
 
@@ -27,6 +28,42 @@ def split_events(events, boundaries):
     if not ((times >= boundaries[0]) & (times < boundaries[-1])).all():
         raise ValueError("Missing timestamps or events outside the observation window")
     return tuple(events.loc[(times >= start) & (times < end)] for start, end in pairwise(boundaries))
+
+
+@dataclass(frozen=True)
+class BenchmarkStage:
+    fit_events: pd.DataFrame
+    target_events: pd.DataFrame
+    fit_start: pd.Timestamp
+    cutoff: pd.Timestamp
+    target_end: pd.Timestamp
+    fit_rows: int
+    target_rows: int
+
+    @classmethod
+    def from_split(cls, split, boundaries, phase):
+        train, validation, test = split
+        start, validation_start, test_start, end = boundaries
+        if phase == "validation":
+            return cls(train, validation, start, validation_start, test_start, len(train), len(validation))
+        if phase == "test":
+            refit = pd.concat((train, validation), ignore_index=True)
+            return cls(refit, test, start, test_start, end, len(train) + len(validation), len(test))
+        raise ValueError("Unknown benchmark phase")
+
+    def validate(self):
+        bounds = (self.fit_start, self.cutoff, self.target_end)
+        if any(timestamp.tz is None for timestamp in bounds) or not self.fit_start < self.cutoff < self.target_end:
+            raise ValueError("Benchmark boundaries must be timezone-aware and strictly increasing")
+        for name, frame, start, end, rows in (
+            ("Fit", self.fit_events, self.fit_start, self.cutoff, self.fit_rows),
+            ("Target", self.target_events, self.cutoff, self.target_end, self.target_rows),
+        ):
+            if len(frame) != rows:
+                raise ValueError(f"{name} window row count does not match the full split")
+            times = frame["event_time"]
+            if not (times.ge(start) & times.lt(end)).all():
+                raise ValueError(f"{name} window has events outside its start-inclusive, end-exclusive bounds")
 
 
 def nearest_rank(values, percentile):
@@ -65,18 +102,31 @@ def _purchase_sets(events):
 class History:
     cutoff: pd.Timestamp
     catalog: frozenset[str]
-    event_counts: dict[str, int]
-    purchased: dict[str, frozenset[str]]
+    event_counts: Mapping[str, int]
+    purchased: Mapping[str, frozenset[str]]
+    fit_start: pd.Timestamp | None = None
+
+    def __post_init__(self):
+        object.__setattr__(self, "catalog", frozenset(self.catalog))
+        object.__setattr__(self, "event_counts", MappingProxyType(dict(self.event_counts)))
+        object.__setattr__(
+            self,
+            "purchased",
+            MappingProxyType({user_id: frozenset(items) for user_id, items in self.purchased.items()}),
+        )
 
     @classmethod
-    def fit(cls, events, cutoff):
+    def fit(cls, events, cutoff, *, fit_start=None):
         if not events["event_time"].lt(cutoff).all():
             raise ValueError("Training history includes an event at or after the cutoff")
+        if fit_start is not None and (fit_start >= cutoff or not events["event_time"].ge(fit_start).all()):
+            raise ValueError("Training history starts outside the declared fit window")
         return cls(
             cutoff,
             frozenset(events["item_id"]),
             events["user_id"].value_counts().to_dict(),
             _purchase_sets(events),
+            fit_start,
         )
 
     def blocked(self, user_id):
@@ -160,7 +210,7 @@ def _user_counts(labels, ranking, k):
 
 
 def evaluate(
-    window,
+    stage: BenchmarkStage,
     history: History,
     bands: HistoryBands,
     rank: Callable[[str, int], Iterable[str]],
@@ -169,8 +219,12 @@ def evaluate(
     """Evaluate every window user with one fixed history, candidate policy and K."""
     if k < 1:
         raise ValueError("k must be positive")
-    if not window["event_time"].ge(history.cutoff).all():
-        raise ValueError("Evaluation window overlaps training history")
+    stage.validate()
+    if history.cutoff != stage.cutoff or history.fit_start != stage.fit_start:
+        raise ValueError("History bounds do not match the benchmark fit window")
+    if sum(history.event_counts.values()) != stage.fit_rows:
+        raise ValueError("History row count does not match the full benchmark fit window")
+    window = stage.target_events
     groups = ("overall", *SEGMENTS)
     empty_labels = Labels(frozenset(), frozenset(), frozenset(), frozenset())
     zero_counts = dict.fromkeys(_user_counts(empty_labels, (), k), 0)

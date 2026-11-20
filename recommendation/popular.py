@@ -3,11 +3,13 @@
 from dataclasses import dataclass
 from itertools import islice
 from re import fullmatch
+from typing import Generic, TypeVar
 
 from .benchmark import History
 
 POPULAR = "popular_purchase_count"
 COLD_FALLBACK = "cold_start_popular_purchase_count"
+RankedItem = TypeVar("RankedItem")
 
 
 @dataclass(frozen=True)
@@ -38,9 +40,9 @@ class Candidate:
 
 
 @dataclass(frozen=True)
-class Ranking:
+class Ranking(Generic[RankedItem]):
     source: str
-    items: tuple[Candidate, ...]
+    items: tuple[RankedItem, ...]
 
 
 @dataclass(frozen=True)
@@ -50,8 +52,10 @@ class PopularModel:
     ordered: tuple[Candidate, ...]
 
     @classmethod
-    def fit(cls, events, cutoff, *, dataset_id, model_version, sample_sha256, protocol_version, code_sha256):
-        history = History.fit(events, cutoff)
+    def fit(
+        cls, events, cutoff, *, dataset_id, model_version, sample_sha256, protocol_version, code_sha256, fit_start=None
+    ):
+        history = History.fit(events, cutoff, fit_start=fit_start)
         # At equal timestamps, choose the smallest category string for that item.
         known = events.loc[events["category_id"].notna() & ~events["category_id"].isin(["", "unknown"])]
         latest = known.sort_values(["event_time", "category_id"], ascending=[False, True])
@@ -64,7 +68,7 @@ class PopularModel:
             tuple(Candidate(item, categories.get(item, ""), counts.get(item, 0)) for item in ordered),
         )
 
-    def recommend(self, user_id: str, k: int) -> Ranking:
+    def recommend(self, user_id: str, k: int) -> Ranking[Candidate]:
         if not isinstance(user_id, str) or not 1 <= len(user_id) <= 128:
             raise ValueError("user_id must be a string of length 1–128")
         if type(k) is not int or k < 1:

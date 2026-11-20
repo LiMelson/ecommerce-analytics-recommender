@@ -6,13 +6,23 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 
-from recommendation.benchmark import History, HistoryBands, evaluate, ranking_metrics, split_events, time_boundaries
+from recommendation.benchmark import (
+    BenchmarkStage,
+    History,
+    HistoryBands,
+    evaluate,
+    ranking_metrics,
+    split_events,
+    time_boundaries,
+)
 from recommendation.popular import COLD_FALLBACK, POPULAR, PopularModel, local_dataset_id
 from recommendation.run import run_benchmark
 from recommendation.sample import read_sample, sha256_file
 
 DIGEST = "a" * 64
+START = pd.Timestamp("2019-10-01", tz="UTC")
 CUTOFF = pd.Timestamp("2019-10-02", tz="UTC")
+END = pd.Timestamp("2019-10-05", tz="UTC")
 MODEL_CONFIG = {
     "dataset_id": local_dataset_id(DIGEST),
     "sample_sha256": DIGEST,
@@ -26,6 +36,10 @@ def events(*rows):
     frame = pd.DataFrame(rows, columns=["event_time", "user_id", "item_id", "behavior_type", "category_id"])
     frame["event_time"] = pd.to_datetime(frame["event_time"], utc=True, format="ISO8601")
     return frame
+
+
+def stage_for(fit, target):
+    return BenchmarkStage(fit, target, START, CUTOFF, END, len(fit), len(target))
 
 
 @pytest.fixture
@@ -42,7 +56,7 @@ def training():
 
 @pytest.fixture
 def model(training):
-    return PopularModel.fit(training, CUTOFF, **MODEL_CONFIG)
+    return PopularModel.fit(training, CUTOFF, fit_start=START, **MODEL_CONFIG)
 
 
 def test_global_boundaries_and_strict_split():
@@ -171,7 +185,7 @@ def test_evaluator_counts_no_purchase_future_products_repeats_and_cold(training,
         ("2019-10-04", "9007199254740995", "10", "pv", ""),
     )
     bands = HistoryBands.fit(training)
-    report = evaluate(future, model.history, bands, model.rank_ids, 10)
+    report = evaluate(stage_for(training, future), model.history, bands, model.rank_ids, 10)
     overall = report["groups"]["overall"]
     assert overall["counts"]["users"] == 4
     assert overall["counts"]["users_with_purchases"] == 2
@@ -200,19 +214,60 @@ def test_evaluator_counts_no_purchase_future_products_repeats_and_cold(training,
 def test_evaluator_enforces_shared_candidates_and_counts_empty_rankings(model, training):
     future = events(("2019-10-02", "001", "05", "buy", ""))
     bands = HistoryBands.fit(training)
+    stage = stage_for(training, future)
     for invalid in ("unseen", "0007"):
         with pytest.raises(ValueError, match="candidate policy"):
-            evaluate(future, model.history, bands, lambda *_, item=invalid: [item], 10)
-    report = evaluate(future, model.history, bands, lambda *_: [], 10)
+            evaluate(stage, model.history, bands, lambda *_, item=invalid: [item], 10)
+    report = evaluate(stage, model.history, bands, lambda *_: [], 10)
     assert report["groups"]["overall"]["primary"]["recall"] == 0
     assert report["groups"]["overall"]["counts"]["effective_users_with_empty_recommendations"] == 1
     assert report["coverage"]["primary_rate"] == 0
-    with pytest.raises(ValueError, match="overlaps"):
-        evaluate(training, model.history, bands, model.rank_ids, 10)
-    history = History.fit(training.iloc[:0], CUTOFF)
-    report = evaluate(future, history, bands, lambda *_: [], 10)
+    with pytest.raises(ValueError, match="Target window has events outside"):
+        evaluate(stage_for(training, training), model.history, bands, model.rank_ids, 10)
+    history = History.fit(training.iloc[:0], CUTOFF, fit_start=START)
+    report = evaluate(stage_for(training.iloc[:0], future), history, bands, lambda *_: [], 10)
     assert report["coverage"]["primary_rate"] is None
     assert report["groups"]["overall"]["all_purchase_targets"]["ndcg"] == 0
+
+
+def test_history_mappings_defensively_copy_and_reject_mutation(training, model):
+    counts, purchased = {"001": 1}, {"001": {"0007"}}
+    history = History(CUTOFF, {"0007"}, counts, purchased, START)
+    counts.clear()
+    purchased["001"].clear()
+    assert history.event_counts == {"001": 1}
+    assert history.blocked("001") == {"0007"}
+    stage = stage_for(training, events(("2019-10-02", "001", "05", "buy", "")))
+    bands = HistoryBands.fit(training)
+    before = evaluate(stage, model.history, bands, model.rank_ids, 10)
+    with pytest.raises(TypeError):
+        model.history.event_counts["001"] = 0
+    with pytest.raises(TypeError):
+        model.history.purchased["001"] = frozenset()
+    with pytest.raises(AttributeError):
+        model.history.catalog.add("future")
+    assert "0007" not in list(model.rank_ids("001", 10))
+    assert evaluate(stage, model.history, bands, model.rank_ids, 10) == before
+
+
+def test_eval_detects_truncated_windows_out_of_range_events_and_history_mismatch(training, model):
+    target = events(("2019-10-02", "001", "05", "buy", ""))
+    stage = stage_for(training, target)
+    bands = HistoryBands.fit(training)
+    for invalid in (replace(stage, fit_events=training.iloc[1:]), replace(stage, target_events=target.iloc[0:0])):
+        with pytest.raises(ValueError, match="row count"):
+            evaluate(invalid, model.history, bands, model.rank_ids, 10)
+    for bad_time in (START, END):
+        invalid = replace(stage, target_events=target.assign(event_time=bad_time))
+        with pytest.raises(ValueError, match="Target window has events outside"):
+            evaluate(invalid, model.history, bands, model.rank_ids, 10)
+    with pytest.raises(ValueError, match="strictly increasing"):
+        evaluate(replace(stage, target_end=CUTOFF), model.history, bands, model.rank_ids, 10)
+    for invalid in (replace(model.history, cutoff=END), replace(model.history, fit_start=START - pd.Timedelta(days=1))):
+        with pytest.raises(ValueError, match="History bounds"):
+            evaluate(stage, invalid, bands, model.rank_ids, 10)
+    with pytest.raises(ValueError, match="History row count"):
+        evaluate(stage, History.fit(training.iloc[1:], CUTOFF, fit_start=START), bands, model.rank_ids, 10)
 
 
 def test_parquet_storage_and_version_checks(tmp_path):

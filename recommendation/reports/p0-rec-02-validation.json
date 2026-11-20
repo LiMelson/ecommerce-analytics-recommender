@@ -1,0 +1,1193 @@
+{
+  "frozen_popular_evaluation": {
+    "coverage": {
+      "all_window_users_distinct_items": 15,
+      "all_window_users_rate": 0.0002466415640363714,
+      "candidate_catalog": 60817,
+      "primary_distinct_items": 14,
+      "primary_rate": 0.00023019879310061332
+    },
+    "future_items": {
+      "distinct_items_in_window": 14510,
+      "distinct_purchased_items": 190,
+      "distinct_user_item_purchase_pairs": 193,
+      "purchase_events": 219,
+      "share_of_purchase_pairs": 0.056432748538011696
+    },
+    "groups": {
+      "cold": {
+        "all_purchase_targets": {
+          "hr": 0.20658682634730538,
+          "ndcg": 0.10090043456026933,
+          "precision": 0.023053892215568864,
+          "recall": 0.16662940353060113,
+          "users": 668
+        },
+        "counts": {
+          "distinct_user_item_purchase_pairs": 940,
+          "effective_users_with_empty_recommendations": 0,
+          "eligible_purchase_pairs": 895,
+          "future_item_purchase_pairs": 45,
+          "purchase_users_without_eligible_targets": 27,
+          "repeat_purchase_pairs": 0,
+          "users": 7715,
+          "users_with_eligible_targets": 641,
+          "users_with_empty_recommendations": 0,
+          "users_with_future_item_purchases": 43,
+          "users_with_less_than_k_recommendations": 0,
+          "users_with_purchases": 668,
+          "users_with_repeat_purchases": 0,
+          "users_without_eligible_targets": 7074,
+          "users_without_purchases": 7047
+        },
+        "primary": {
+          "hr": 0.21528861154446177,
+          "ndcg": 0.10574078999507054,
+          "precision": 0.02402496099843994,
+          "recall": 0.17492216571779753,
+          "users": 641
+        }
+      },
+      "high": {
+        "all_purchase_targets": {
+          "hr": 0.13160854893138357,
+          "ndcg": 0.052762925304804136,
+          "precision": 0.014735658042744659,
+          "recall": 0.086948283250308,
+          "users": 889
+        },
+        "counts": {
+          "distinct_user_item_purchase_pairs": 1453,
+          "effective_users_with_empty_recommendations": 0,
+          "eligible_purchase_pairs": 1230,
+          "future_item_purchase_pairs": 89,
+          "purchase_users_without_eligible_targets": 98,
+          "repeat_purchase_pairs": 134,
+          "users": 4905,
+          "users_with_eligible_targets": 791,
+          "users_with_empty_recommendations": 0,
+          "users_with_future_item_purchases": 78,
+          "users_with_less_than_k_recommendations": 0,
+          "users_with_purchases": 889,
+          "users_with_repeat_purchases": 115,
+          "users_without_eligible_targets": 4114,
+          "users_without_purchases": 4016
+        },
+        "primary": {
+          "hr": 0.14791403286978508,
+          "ndcg": 0.06213587425432259,
+          "precision": 0.016561314791403287,
+          "recall": 0.10469568358316779,
+          "users": 791
+        }
+      },
+      "low": {
+        "all_purchase_targets": {
+          "hr": 0.14545454545454545,
+          "ndcg": 0.06814451909031975,
+          "precision": 0.016363636363636365,
+          "recall": 0.1159090909090909,
+          "users": 165
+        },
+        "counts": {
+          "distinct_user_item_purchase_pairs": 237,
+          "effective_users_with_empty_recommendations": 0,
+          "eligible_purchase_pairs": 219,
+          "future_item_purchase_pairs": 16,
+          "purchase_users_without_eligible_targets": 11,
+          "repeat_purchase_pairs": 2,
+          "users": 1637,
+          "users_with_eligible_targets": 154,
+          "users_with_empty_recommendations": 0,
+          "users_with_future_item_purchases": 16,
+          "users_with_less_than_k_recommendations": 0,
+          "users_with_purchases": 165,
+          "users_with_repeat_purchases": 2,
+          "users_without_eligible_targets": 1483,
+          "users_without_purchases": 1472
+        },
+        "primary": {
+          "hr": 0.15584415584415584,
+          "ndcg": 0.0730119847396283,
+          "precision": 0.017532467532467535,
+          "recall": 0.1241883116883117,
+          "users": 154
+        }
+      },
+      "medium": {
+        "all_purchase_targets": {
+          "hr": 0.17958412098298676,
+          "ndcg": 0.07263502282382528,
+          "precision": 0.019281663516068054,
+          "recall": 0.13949500405076964,
+          "users": 529
+        },
+        "counts": {
+          "distinct_user_item_purchase_pairs": 790,
+          "effective_users_with_empty_recommendations": 0,
+          "eligible_purchase_pairs": 719,
+          "future_item_purchase_pairs": 43,
+          "purchase_users_without_eligible_targets": 46,
+          "repeat_purchase_pairs": 28,
+          "users": 4181,
+          "users_with_eligible_targets": 483,
+          "users_with_empty_recommendations": 0,
+          "users_with_future_item_purchases": 37,
+          "users_with_less_than_k_recommendations": 0,
+          "users_with_purchases": 529,
+          "users_with_repeat_purchases": 27,
+          "users_without_eligible_targets": 3698,
+          "users_without_purchases": 3652
+        },
+        "primary": {
+          "hr": 0.19668737060041408,
+          "ndcg": 0.07962299561911595,
+          "precision": 0.02111801242236025,
+          "recall": 0.15295277531302376,
+          "users": 483
+        }
+      },
+      "overall": {
+        "all_purchase_targets": {
+          "hr": 0.16614837849844513,
+          "ndcg": 0.07284562576896363,
+          "precision": 0.01839182585517548,
+          "recall": 0.12506589183066305,
+          "users": 2251
+        },
+        "counts": {
+          "distinct_user_item_purchase_pairs": 3420,
+          "effective_users_with_empty_recommendations": 0,
+          "eligible_purchase_pairs": 3063,
+          "future_item_purchase_pairs": 193,
+          "purchase_users_without_eligible_targets": 182,
+          "repeat_purchase_pairs": 164,
+          "users": 18438,
+          "users_with_eligible_targets": 2069,
+          "users_with_empty_recommendations": 0,
+          "users_with_future_item_purchases": 174,
+          "users_with_less_than_k_recommendations": 0,
+          "users_with_purchases": 2251,
+          "users_with_repeat_purchases": 144,
+          "users_without_eligible_targets": 16369,
+          "users_without_purchases": 16187
+        },
+        "primary": {
+          "hr": 0.18076365393910102,
+          "ndcg": 0.08053701085352594,
+          "precision": 0.020009666505558243,
+          "recall": 0.13916896298481604,
+          "users": 2069
+        }
+      }
+    },
+    "k": 10,
+    "model_metadata": {
+      "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+      "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "model_version": "popular_v1_validation",
+      "protocol_version": "purchase_global_utc_v1",
+      "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+    },
+    "rankings_sha256": "e64b88d65eff986c36fa1d895814a4428cee5c2cc01f5d423da8d8c5873960fb",
+    "recommendation_source_users": {
+      "cold_start_popular_purchase_count": 7715,
+      "popular_purchase_count": 10723
+    },
+    "repeat_purchase_events": 234,
+    "users_known_in_initial_train": 10723
+  },
+  "history_bands": {
+    "low_max": 2,
+    "medium_max": 15
+  },
+  "phase": "validation",
+  "popular_fallback_model_metadata": {
+    "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1",
+    "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "model_version": "popular_v1_validation",
+    "protocol_version": "purchase_global_utc_v1",
+    "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+  },
+  "protocol": {
+    "handover_website_csv_sha256": "ec64ad5f5c7157d2425710232f550872044d871f88050b211c46ad97869513bc",
+    "model_version": "popular_v1",
+    "naive_timestamp_timezone": "UTC",
+    "observation_end_exclusive": "2019-12-01T00:00:00+00:00",
+    "observation_start": "2019-10-01T00:00:00+00:00",
+    "protocol_version": "purchase_global_utc_v1",
+    "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "top_k": 10,
+    "validation_model_version": "popular_v1_validation"
+  },
+  "provenance": {
+    "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1",
+    "dependencies": {
+      "duckdb": "2.0.0",
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "pyarrow": "26.0.1",
+      "pytest": "9.2.0",
+      "scipy": "1.18.1"
+    },
+    "frozen_popular_report_sha256": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+    "git_branch": "feat/p0-rec-02",
+    "git_head": "fab15a9deec9aca9bd7731e07db1d83daa482b9b",
+    "git_worktree_dirty": true,
+    "logical_cpu_count": 32,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "python": "3.12.6",
+    "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "source_sha256": {
+      "config/itemcf_v1.json": "7355bbaefe1f1efcda57fffbce0cd2af837a852e6e3d44e4a874833a1a90d7c5",
+      "config/popular_v1.json": "cd1c4ff816102edb39c0556aa08f28b3986c8800e74d7ae4aae2c9e4d525dc23",
+      "data_algo/data_algo/__init__.py": "18c58ac3c2897132ca0ae6d8a6d6348160d5a356904b0fd33f4c52a76f9b5bc2",
+      "data_algo/data_algo/io_utils.py": "ef2f4009a8beffd32e85ece543760a802cd33548a8c6d2d1530ed22080817132",
+      "data_algo/data_algo/path_utils.py": "ea4f3d44c66bff49c1a6ae74f393b3f82863d4804b0299e9b31e520d6a32149f",
+      "data_algo/data_algo/schema.py": "7552e6a62da26cd9d3fdabadaaed11c3acda1e849ec8732e356a808576e15429",
+      "data_algo/data_algo/website_export.py": "4ebdf973d4628b80bca0b5582a42fe2c007f825a512eea053e7a17911dcbbda6",
+      "data_algo/requirements.txt": "77771904e0fc13bc8c211e244a4c9b83174ff34276387b31eedada5c3cc4cbac",
+      "docs/P0-REC-01-Benchmark.md": "6b9233e41bb0801cca2b4fdc697ea23b7756348709ffd1bdcb7100782c8e8773",
+      "recommendation/__init__.py": "5c94263bd979aa133c36e9841a3c0541dee642c61d1811faae4a6e2873790527",
+      "recommendation/benchmark.py": "f4d32366e18da9bb135152189be70065b8e1d2a30d56f8ecd8b764440a4fa143",
+      "recommendation/itemcf.py": "9ca00ff10a6124820767036ae39300246a392e37362d9c3768e48b5ad234e766",
+      "recommendation/itemcf_experiment.py": "25d403de5e1096b74b28abf13d5ff914cf335e8ab4045645331a55b5204efefa",
+      "recommendation/popular.py": "43f170dbefa77042c2aec9ac5c7ca4359ea45851e57174cc45a9a980ccf7e12c",
+      "recommendation/requirements.txt": "b13fe5d741a8dc0ca61dd68d44d6e92dd68abd6ba3ed39e4bd22b4bd3b7c3c45",
+      "recommendation/run.py": "9319a8dee1c6079b3a8e5d7aea399ec7b69650504820d59712f7c46ea8e79647",
+      "recommendation/sample.py": "9236cf136843c886335f17a491ebb83cef059edeb60d3fac6f0939382bb19747"
+    }
+  },
+  "rules": {
+    "aggregation": "sum_of_retained_neighbor_similarities",
+    "history_limit_policy": "latest_distinct_items_then_item_id",
+    "implicit_feedback": "binary_user_item",
+    "positive_behaviors": [
+      "pv",
+      "fav",
+      "cart",
+      "buy"
+    ],
+    "random_seed": null,
+    "similarity": "cosine",
+    "test_trials": 1,
+    "tie_break": "item_id_string_ascending"
+  },
+  "runtime": {
+    "popular_fallback_build_seconds": 0.7510974999968312,
+    "process_peak_rss_mib": 814.3359375,
+    "read_split_and_prepare_seconds": 0.9134116999994149,
+    "total_seconds_before_output": 18.886736100001144
+  },
+  "selected_trial": "n80_recent100",
+  "study": {
+    "model_version": "itemcf_v1",
+    "selection_order": [
+      "max_ndcg",
+      "max_recall",
+      "min_neighbors",
+      "prefer_full_history",
+      "config_order"
+    ],
+    "trials": [
+      {
+        "block_rows": 256,
+        "id": "n30_full",
+        "max_history": null,
+        "neighbors": 30
+      },
+      {
+        "block_rows": 256,
+        "id": "n80_full",
+        "max_history": null,
+        "neighbors": 80
+      },
+      {
+        "block_rows": 256,
+        "id": "n80_recent100",
+        "max_history": 100,
+        "neighbors": 80
+      }
+    ]
+  },
+  "trials": [
+    {
+      "evaluation": {
+        "coverage": {
+          "all_window_users_distinct_items": 33536,
+          "all_window_users_rate": 0.5514247661015834,
+          "candidate_catalog": 60817,
+          "primary_distinct_items": 8097,
+          "primary_rate": 0.13313711626683328
+        },
+        "future_items": {
+          "distinct_items_in_window": 14510,
+          "distinct_purchased_items": 190,
+          "distinct_user_item_purchase_pairs": 193,
+          "purchase_events": 219,
+          "share_of_purchase_pairs": 0.056432748538011696
+        },
+        "groups": {
+          "cold": {
+            "all_purchase_targets": {
+              "hr": 0.20658682634730538,
+              "ndcg": 0.10090043456026933,
+              "precision": 0.023053892215568864,
+              "recall": 0.16662940353060113,
+              "users": 668
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 940,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 895,
+              "future_item_purchase_pairs": 45,
+              "purchase_users_without_eligible_targets": 27,
+              "repeat_purchase_pairs": 0,
+              "users": 7715,
+              "users_with_eligible_targets": 641,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 43,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 668,
+              "users_with_repeat_purchases": 0,
+              "users_without_eligible_targets": 7074,
+              "users_without_purchases": 7047
+            },
+            "primary": {
+              "hr": 0.21528861154446177,
+              "ndcg": 0.10574078999507054,
+              "precision": 0.02402496099843994,
+              "recall": 0.17492216571779753,
+              "users": 641
+            }
+          },
+          "high": {
+            "all_purchase_targets": {
+              "hr": 0.1046119235095613,
+              "ndcg": 0.04198161404510571,
+              "precision": 0.011361079865016874,
+              "recall": 0.07261436070491188,
+              "users": 889
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 1453,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 1230,
+              "future_item_purchase_pairs": 89,
+              "purchase_users_without_eligible_targets": 98,
+              "repeat_purchase_pairs": 134,
+              "users": 4905,
+              "users_with_eligible_targets": 791,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 78,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 889,
+              "users_with_repeat_purchases": 115,
+              "users_without_eligible_targets": 4114,
+              "users_without_purchases": 4016
+            },
+            "primary": {
+              "hr": 0.11757269279393173,
+              "ndcg": 0.05023267820431284,
+              "precision": 0.01276864728192162,
+              "recall": 0.08805008729155378,
+              "users": 791
+            }
+          },
+          "low": {
+            "all_purchase_targets": {
+              "hr": 0.07878787878787878,
+              "ndcg": 0.03743821913502235,
+              "precision": 0.008484848484848486,
+              "recall": 0.06818181818181818,
+              "users": 165
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 237,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 219,
+              "future_item_purchase_pairs": 16,
+              "purchase_users_without_eligible_targets": 11,
+              "repeat_purchase_pairs": 2,
+              "users": 1637,
+              "users_with_eligible_targets": 154,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 16,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 165,
+              "users_with_repeat_purchases": 2,
+              "users_without_eligible_targets": 1483,
+              "users_without_purchases": 1472
+            },
+            "primary": {
+              "hr": 0.08441558441558442,
+              "ndcg": 0.040112377644666804,
+              "precision": 0.009090909090909092,
+              "recall": 0.07305194805194805,
+              "users": 154
+            }
+          },
+          "medium": {
+            "all_purchase_targets": {
+              "hr": 0.08695652173913043,
+              "ndcg": 0.0379965456643272,
+              "precision": 0.00945179584120983,
+              "recall": 0.06504635880817355,
+              "users": 529
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 790,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 719,
+              "future_item_purchase_pairs": 43,
+              "purchase_users_without_eligible_targets": 46,
+              "repeat_purchase_pairs": 28,
+              "users": 4181,
+              "users_with_eligible_targets": 483,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 37,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 529,
+              "users_with_repeat_purchases": 27,
+              "users_without_eligible_targets": 3698,
+              "users_without_purchases": 3652
+            },
+            "primary": {
+              "hr": 0.09523809523809523,
+              "ndcg": 0.041615264299025026,
+              "precision": 0.010351966873706004,
+              "recall": 0.0712412501232377,
+              "users": 483
+            }
+          },
+          "overall": {
+            "all_purchase_targets": {
+              "hr": 0.1288316303864949,
+              "ndcg": 0.05819663437852806,
+              "precision": 0.01417147934251444,
+              "recall": 0.0984105428852208,
+              "users": 2251
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 3420,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 3063,
+              "future_item_purchase_pairs": 193,
+              "purchase_users_without_eligible_targets": 182,
+              "repeat_purchase_pairs": 164,
+              "users": 18438,
+              "users_with_eligible_targets": 2069,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 174,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 2251,
+              "users_with_repeat_purchases": 144,
+              "users_without_eligible_targets": 16369,
+              "users_without_purchases": 16187
+            },
+            "primary": {
+              "hr": 0.1401643305944901,
+              "ndcg": 0.06466475285652946,
+              "precision": 0.01541807636539391,
+              "recall": 0.10992375596048867,
+              "users": 2069
+            }
+          }
+        },
+        "k": 10,
+        "model_metadata": {
+          "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1",
+          "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "model_version": "itemcf_v1_validation_n30_full",
+          "protocol_version": "purchase_global_utc_v1",
+          "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+        },
+        "rankings_sha256": "506c5baec803ecfd0ffb863469d1f0af484c3b73dd36ca13da811c648468b484",
+        "recommendation_item_sources": {
+          "cold_start_popular_purchase_count": 77150,
+          "itemcf_cosine": 106353,
+          "popular_fill": 147,
+          "popular_no_neighbors": 730
+        },
+        "recommendation_item_sources_by_band": {
+          "cold": {
+            "cold_start_popular_purchase_count": 77150
+          },
+          "high": {
+            "itemcf_cosine": 49041,
+            "popular_fill": 9
+          },
+          "low": {
+            "itemcf_cosine": 15636,
+            "popular_fill": 84,
+            "popular_no_neighbors": 650
+          },
+          "medium": {
+            "itemcf_cosine": 41676,
+            "popular_fill": 54,
+            "popular_no_neighbors": 80
+          }
+        },
+        "recommendation_source_users": {
+          "cold_start_popular_purchase_count": 7715,
+          "itemcf_cosine": 10629,
+          "itemcf_with_popular_fill": 21,
+          "popular_no_neighbors": 73
+        },
+        "repeat_purchase_events": 234,
+        "users_known_in_initial_train": 10723
+      },
+      "fit_statistics": {
+        "after_history_limit": {
+          "per_user_degree": {
+            "p100": 501,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 338513,
+          "unordered_cooccurrence_contributions": 7199356
+        },
+        "before_history_limit": {
+          "per_user_degree": {
+            "p100": 501,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 338513,
+          "unordered_cooccurrence_contributions": 7199356
+        },
+        "block_rows_upper_bound": 256,
+        "directed_similarity_pairs_before_top_n": 12226216,
+        "interaction_csr_bytes": 2865052,
+        "interaction_nonzeros": 338513,
+        "interaction_shape": [
+          39236,
+          60817
+        ],
+        "items_with_neighbors": 60112,
+        "neighbor_csr_bytes": 19251188,
+        "neighbor_shape": [
+          60817,
+          60817
+        ],
+        "peak_block_csr_bytes": 3233732,
+        "peak_block_nonzeros": 404088,
+        "positive_events": 627023,
+        "retained_neighbors": 1583993,
+        "users_truncated": 0
+      },
+      "id": "n30_full",
+      "parameters": {
+        "block_rows": 256,
+        "max_history": null,
+        "neighbors": 30
+      },
+      "runtime": {
+        "fit_seconds": 1.357050499998877,
+        "process_peak_rss_mib_at_completion": 814.3359375,
+        "validation_evaluation_seconds": 2.615116600001784,
+        "validation_recommend_ms": {
+          "p50": 0.026500001695239916,
+          "p95": 0.41710000004968606,
+          "requests": 18438
+        }
+      }
+    },
+    {
+      "evaluation": {
+        "coverage": {
+          "all_window_users_distinct_items": 34997,
+          "all_window_users_rate": 0.575447654438726,
+          "candidate_catalog": 60817,
+          "primary_distinct_items": 8312,
+          "primary_rate": 0.13667231201802127
+        },
+        "future_items": {
+          "distinct_items_in_window": 14510,
+          "distinct_purchased_items": 190,
+          "distinct_user_item_purchase_pairs": 193,
+          "purchase_events": 219,
+          "share_of_purchase_pairs": 0.056432748538011696
+        },
+        "groups": {
+          "cold": {
+            "all_purchase_targets": {
+              "hr": 0.20658682634730538,
+              "ndcg": 0.10090043456026933,
+              "precision": 0.023053892215568864,
+              "recall": 0.16662940353060113,
+              "users": 668
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 940,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 895,
+              "future_item_purchase_pairs": 45,
+              "purchase_users_without_eligible_targets": 27,
+              "repeat_purchase_pairs": 0,
+              "users": 7715,
+              "users_with_eligible_targets": 641,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 43,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 668,
+              "users_with_repeat_purchases": 0,
+              "users_without_eligible_targets": 7074,
+              "users_without_purchases": 7047
+            },
+            "primary": {
+              "hr": 0.21528861154446177,
+              "ndcg": 0.10574078999507054,
+              "precision": 0.02402496099843994,
+              "recall": 0.17492216571779753,
+              "users": 641
+            }
+          },
+          "high": {
+            "all_purchase_targets": {
+              "hr": 0.10573678290213723,
+              "ndcg": 0.043700783196271895,
+              "precision": 0.011473565804274466,
+              "recall": 0.07543119610048744,
+              "users": 889
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 1453,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 1230,
+              "future_item_purchase_pairs": 89,
+              "purchase_users_without_eligible_targets": 98,
+              "repeat_purchase_pairs": 134,
+              "users": 4905,
+              "users_with_eligible_targets": 791,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 78,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 889,
+              "users_with_repeat_purchases": 115,
+              "users_without_eligible_targets": 4114,
+              "users_without_purchases": 4016
+            },
+            "primary": {
+              "hr": 0.11883691529709228,
+              "ndcg": 0.05256491021025364,
+              "precision": 0.012895069532237674,
+              "recall": 0.09183673469387754,
+              "users": 791
+            }
+          },
+          "low": {
+            "all_purchase_targets": {
+              "hr": 0.07878787878787878,
+              "ndcg": 0.03729958971820605,
+              "precision": 0.008484848484848486,
+              "recall": 0.06818181818181818,
+              "users": 165
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 237,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 219,
+              "future_item_purchase_pairs": 16,
+              "purchase_users_without_eligible_targets": 11,
+              "repeat_purchase_pairs": 2,
+              "users": 1637,
+              "users_with_eligible_targets": 154,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 16,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 165,
+              "users_with_repeat_purchases": 2,
+              "users_without_eligible_targets": 1483,
+              "users_without_purchases": 1472
+            },
+            "primary": {
+              "hr": 0.08441558441558442,
+              "ndcg": 0.03996384612664934,
+              "precision": 0.009090909090909092,
+              "recall": 0.07305194805194805,
+              "users": 154
+            }
+          },
+          "medium": {
+            "all_purchase_targets": {
+              "hr": 0.09262759924385633,
+              "ndcg": 0.0397374722467355,
+              "precision": 0.010207939508506616,
+              "recall": 0.06819695742191016,
+              "users": 529
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 790,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 719,
+              "future_item_purchase_pairs": 43,
+              "purchase_users_without_eligible_targets": 46,
+              "repeat_purchase_pairs": 28,
+              "users": 4181,
+              "users_with_eligible_targets": 483,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 37,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 529,
+              "users_with_repeat_purchases": 27,
+              "users_without_eligible_targets": 3698,
+              "users_without_purchases": 3652
+            },
+            "primary": {
+              "hr": 0.10144927536231885,
+              "ndcg": 0.043521993413091264,
+              "precision": 0.011180124223602485,
+              "recall": 0.07469190574780638,
+              "users": 483
+            }
+          },
+          "overall": {
+            "all_purchase_targets": {
+              "hr": 0.13060861839182586,
+              "ndcg": 0.059274563158495205,
+              "precision": 0.014393602843180808,
+              "recall": 0.10026342308661278,
+              "users": 2251
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 3420,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 3063,
+              "future_item_purchase_pairs": 193,
+              "purchase_users_without_eligible_targets": 182,
+              "repeat_purchase_pairs": 164,
+              "users": 18438,
+              "users_with_eligible_targets": 2069,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 174,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 2251,
+              "users_with_repeat_purchases": 144,
+              "users_without_eligible_targets": 16369,
+              "users_without_purchases": 16187
+            },
+            "primary": {
+              "hr": 0.14209763170613823,
+              "ndcg": 0.06599045214363361,
+              "precision": 0.015659739004349926,
+              "recall": 0.11217697237513574,
+              "users": 2069
+            }
+          }
+        },
+        "k": 10,
+        "model_metadata": {
+          "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1",
+          "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "model_version": "itemcf_v1_validation_n80_full",
+          "protocol_version": "purchase_global_utc_v1",
+          "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+        },
+        "rankings_sha256": "4a597db182af8e13857e153d47fa75add023b332abd6b0f0259ec6c5f7b002b0",
+        "recommendation_item_sources": {
+          "cold_start_popular_purchase_count": 77150,
+          "itemcf_cosine": 106353,
+          "popular_fill": 147,
+          "popular_no_neighbors": 730
+        },
+        "recommendation_item_sources_by_band": {
+          "cold": {
+            "cold_start_popular_purchase_count": 77150
+          },
+          "high": {
+            "itemcf_cosine": 49041,
+            "popular_fill": 9
+          },
+          "low": {
+            "itemcf_cosine": 15636,
+            "popular_fill": 84,
+            "popular_no_neighbors": 650
+          },
+          "medium": {
+            "itemcf_cosine": 41676,
+            "popular_fill": 54,
+            "popular_no_neighbors": 80
+          }
+        },
+        "recommendation_source_users": {
+          "cold_start_popular_purchase_count": 7715,
+          "itemcf_cosine": 10629,
+          "itemcf_with_popular_fill": 21,
+          "popular_no_neighbors": 73
+        },
+        "repeat_purchase_events": 234,
+        "users_known_in_initial_train": 10723
+      },
+      "fit_statistics": {
+        "after_history_limit": {
+          "per_user_degree": {
+            "p100": 501,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 338513,
+          "unordered_cooccurrence_contributions": 7199356
+        },
+        "before_history_limit": {
+          "per_user_degree": {
+            "p100": 501,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 338513,
+          "unordered_cooccurrence_contributions": 7199356
+        },
+        "block_rows_upper_bound": 256,
+        "directed_similarity_pairs_before_top_n": 12226216,
+        "interaction_csr_bytes": 2865052,
+        "interaction_nonzeros": 338513,
+        "interaction_shape": [
+          39236,
+          60817
+        ],
+        "items_with_neighbors": 60112,
+        "neighbor_csr_bytes": 42180476,
+        "neighbor_shape": [
+          60817,
+          60817
+        ],
+        "peak_block_csr_bytes": 3233732,
+        "peak_block_nonzeros": 404088,
+        "positive_events": 627023,
+        "retained_neighbors": 3494767,
+        "users_truncated": 0
+      },
+      "id": "n80_full",
+      "parameters": {
+        "block_rows": 256,
+        "max_history": null,
+        "neighbors": 80
+      },
+      "runtime": {
+        "fit_seconds": 1.4950655000029656,
+        "process_peak_rss_mib_at_completion": 814.3359375,
+        "validation_evaluation_seconds": 4.958505500002502,
+        "validation_recommend_ms": {
+          "p50": 0.05059999966761097,
+          "p95": 0.9739000015542842,
+          "requests": 18438
+        }
+      }
+    },
+    {
+      "evaluation": {
+        "coverage": {
+          "all_window_users_distinct_items": 35975,
+          "all_window_users_rate": 0.5915286844138974,
+          "candidate_catalog": 60817,
+          "primary_distinct_items": 8530,
+          "primary_rate": 0.14025683608201653
+        },
+        "future_items": {
+          "distinct_items_in_window": 14510,
+          "distinct_purchased_items": 190,
+          "distinct_user_item_purchase_pairs": 193,
+          "purchase_events": 219,
+          "share_of_purchase_pairs": 0.056432748538011696
+        },
+        "groups": {
+          "cold": {
+            "all_purchase_targets": {
+              "hr": 0.20658682634730538,
+              "ndcg": 0.10090043456026933,
+              "precision": 0.023053892215568864,
+              "recall": 0.16662940353060113,
+              "users": 668
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 940,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 895,
+              "future_item_purchase_pairs": 45,
+              "purchase_users_without_eligible_targets": 27,
+              "repeat_purchase_pairs": 0,
+              "users": 7715,
+              "users_with_eligible_targets": 641,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 43,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 668,
+              "users_with_repeat_purchases": 0,
+              "users_without_eligible_targets": 7074,
+              "users_without_purchases": 7047
+            },
+            "primary": {
+              "hr": 0.21528861154446177,
+              "ndcg": 0.10574078999507054,
+              "precision": 0.02402496099843994,
+              "recall": 0.17492216571779753,
+              "users": 641
+            }
+          },
+          "high": {
+            "all_purchase_targets": {
+              "hr": 0.10911136107986502,
+              "ndcg": 0.04489299264896251,
+              "precision": 0.012148481439820023,
+              "recall": 0.08000093738282715,
+              "users": 889
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 1453,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 1230,
+              "future_item_purchase_pairs": 89,
+              "purchase_users_without_eligible_targets": 98,
+              "repeat_purchase_pairs": 134,
+              "users": 4905,
+              "users_with_eligible_targets": 791,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 78,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 889,
+              "users_with_repeat_purchases": 115,
+              "users_without_eligible_targets": 4114,
+              "users_without_purchases": 4016
+            },
+            "primary": {
+              "hr": 0.12262958280657396,
+              "ndcg": 0.05352719189828088,
+              "precision": 0.013653603034134008,
+              "recall": 0.09677322256336163,
+              "users": 791
+            }
+          },
+          "low": {
+            "all_purchase_targets": {
+              "hr": 0.07878787878787878,
+              "ndcg": 0.03711081186466233,
+              "precision": 0.008484848484848486,
+              "recall": 0.06818181818181818,
+              "users": 165
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 237,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 219,
+              "future_item_purchase_pairs": 16,
+              "purchase_users_without_eligible_targets": 11,
+              "repeat_purchase_pairs": 2,
+              "users": 1637,
+              "users_with_eligible_targets": 154,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 16,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 165,
+              "users_with_repeat_purchases": 2,
+              "users_without_eligible_targets": 1483,
+              "users_without_purchases": 1472
+            },
+            "primary": {
+              "hr": 0.08441558441558442,
+              "ndcg": 0.039761584140709634,
+              "precision": 0.009090909090909092,
+              "recall": 0.07305194805194805,
+              "users": 154
+            }
+          },
+          "medium": {
+            "all_purchase_targets": {
+              "hr": 0.1001890359168242,
+              "ndcg": 0.043626919082438466,
+              "precision": 0.010964083175803404,
+              "recall": 0.076703573678999,
+              "users": 529
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 790,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 719,
+              "future_item_purchase_pairs": 43,
+              "purchase_users_without_eligible_targets": 46,
+              "repeat_purchase_pairs": 28,
+              "users": 4181,
+              "users_with_eligible_targets": 483,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 37,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 529,
+              "users_with_repeat_purchases": 27,
+              "users_without_eligible_targets": 3698,
+              "users_without_purchases": 3652
+            },
+            "primary": {
+              "hr": 0.10973084886128365,
+              "ndcg": 0.047781863756956415,
+              "precision": 0.012008281573498966,
+              "recall": 0.08400867593414177,
+              "users": 483
+            }
+          },
+          "overall": {
+            "all_purchase_targets": {
+              "hr": 0.13371834740115504,
+              "ndcg": 0.060645617460447276,
+              "precision": 0.01483784984451355,
+              "recall": 0.10406728803552438,
+              "users": 2251
+            },
+            "counts": {
+              "distinct_user_item_purchase_pairs": 3420,
+              "effective_users_with_empty_recommendations": 0,
+              "eligible_purchase_pairs": 3063,
+              "future_item_purchase_pairs": 193,
+              "purchase_users_without_eligible_targets": 182,
+              "repeat_purchase_pairs": 164,
+              "users": 18438,
+              "users_with_eligible_targets": 2069,
+              "users_with_empty_recommendations": 0,
+              "users_with_future_item_purchases": 174,
+              "users_with_less_than_k_recommendations": 0,
+              "users_with_purchases": 2251,
+              "users_with_repeat_purchases": 144,
+              "users_without_eligible_targets": 16369,
+              "users_without_purchases": 16187
+            },
+            "primary": {
+              "hr": 0.14548090865152247,
+              "ndcg": 0.06733773771419026,
+              "precision": 0.016143064282261962,
+              "recall": 0.11623920625853927,
+              "users": 2069
+            }
+          }
+        },
+        "k": 10,
+        "model_metadata": {
+          "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1",
+          "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "model_version": "itemcf_v1_validation_n80_recent100",
+          "protocol_version": "purchase_global_utc_v1",
+          "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+          "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+        },
+        "rankings_sha256": "96b8fcf08df4c7832031db8671627565e42e0af595740d7170510481093190b2",
+        "recommendation_item_sources": {
+          "cold_start_popular_purchase_count": 77150,
+          "itemcf_cosine": 106345,
+          "popular_fill": 155,
+          "popular_no_neighbors": 730
+        },
+        "recommendation_item_sources_by_band": {
+          "cold": {
+            "cold_start_popular_purchase_count": 77150
+          },
+          "high": {
+            "itemcf_cosine": 49041,
+            "popular_fill": 9
+          },
+          "low": {
+            "itemcf_cosine": 15628,
+            "popular_fill": 92,
+            "popular_no_neighbors": 650
+          },
+          "medium": {
+            "itemcf_cosine": 41676,
+            "popular_fill": 54,
+            "popular_no_neighbors": 80
+          }
+        },
+        "recommendation_source_users": {
+          "cold_start_popular_purchase_count": 7715,
+          "itemcf_cosine": 10628,
+          "itemcf_with_popular_fill": 22,
+          "popular_no_neighbors": 73
+        },
+        "repeat_purchase_events": 234,
+        "users_known_in_initial_train": 10723
+      },
+      "fit_statistics": {
+        "after_history_limit": {
+          "per_user_degree": {
+            "p100": 100,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 325389,
+          "unordered_cooccurrence_contributions": 5046092
+        },
+        "before_history_limit": {
+          "per_user_degree": {
+            "p100": 501,
+            "p50": 3,
+            "p90": 21,
+            "p95": 34,
+            "p99": 79
+          },
+          "positive_users": 39236,
+          "unique_pairs": 338513,
+          "unordered_cooccurrence_contributions": 7199356
+        },
+        "block_rows_upper_bound": 256,
+        "directed_similarity_pairs_before_top_n": 8293012,
+        "interaction_csr_bytes": 2760060,
+        "interaction_nonzeros": 325389,
+        "interaction_shape": [
+          39236,
+          60817
+        ],
+        "items_with_neighbors": 57766,
+        "neighbor_csr_bytes": 38921564,
+        "neighbor_shape": [
+          60817,
+          60817
+        ],
+        "peak_block_csr_bytes": 2673140,
+        "peak_block_nonzeros": 334014,
+        "positive_events": 627023,
+        "retained_neighbors": 3223191,
+        "users_truncated": 234
+      },
+      "id": "n80_recent100",
+      "parameters": {
+        "block_rows": 256,
+        "max_history": 100,
+        "neighbors": 80
+      },
+      "runtime": {
+        "fit_seconds": 1.507252299998072,
+        "process_peak_rss_mib_at_completion": 814.3359375,
+        "validation_evaluation_seconds": 4.560977000001003,
+        "validation_recommend_ms": {
+          "p50": 0.04909999915980734,
+          "p95": 0.9375000008731149,
+          "requests": 18438
+        }
+      }
+    }
+  ],
+  "windows": {
+    "fit_end_exclusive": "2019-11-12T16:48:00+00:00",
+    "fit_rows": 627023,
+    "fit_start_inclusive": "2019-10-01T00:00:00+00:00",
+    "target_end_exclusive": "2019-11-21T20:24:00+00:00",
+    "target_rows": 302804,
+    "target_start_inclusive": "2019-11-12T16:48:00+00:00"
+  }
+}

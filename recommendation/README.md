@@ -1,5 +1,7 @@
 # 推荐算法与实验
 
+P0-REC-02 的 ItemCF、真实对照结果、手算案例和 VSCode 复跑说明见 [ItemCF 对照实验与复现](../docs/P0-REC-02-实验与复现.md)。
+
 P0-REC-01 在真实交接样本上验收数据，并建立未来购买 Benchmark 与热门基线。统一候选、标签和分组后，后续 ItemCF、BPR 才能与热门做可比较的实验。
 
 - [工程审查、真实实验与下一阶段建议](../docs/P0-REC-01-验收记录.md)
@@ -49,7 +51,7 @@ $sample = '..\交接包_张凯博_2026-11-20\data\processed\events_sample.parque
 | --- | --- |
 | `py -3.12 -m venv .venv` | 建立推荐和数据组共用的本地虚拟环境。直接调用其 python.exe 即可。后端依赖安装在自己的 backend/.venv。 |
 | `pip install -r recommendation/requirements.txt` | 安装沿用数据组锁定的 Parquet、数据分析与测试依赖。 |
-| `pytest -q recommendation/tests` | 检查人工构造的边界案例，预期为 16 passed。 |
+| `pytest -q recommendation/tests` | 检查人工构造的边界案例。阶段一基线为 16 项，目前含阶段二用例共 30 项。 |
 | `recommendation.run audit` | 校验真实样本并生成 audit.json。终端打印 rows=1079354 users=52687 purchase_users=6976。 |
 | `recommendation.run benchmark` | 构建验证和测试快照并输出 benchmark.json。验证与测试主口径分别有 2,069 和 1,122 个用户。测试 Recall@10 约为 0.17365，NDCG@10 约为 0.10100。 |
 

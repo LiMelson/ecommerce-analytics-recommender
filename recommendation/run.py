@@ -14,18 +14,46 @@ from time import perf_counter
 
 from data_algo.data_algo.path_utils import atomic_output
 
-from .benchmark import History, HistoryBands, evaluate, nearest_rank, split_events, time_boundaries, window_summary
+from .benchmark import (
+    BenchmarkStage,
+    History,
+    HistoryBands,
+    evaluate,
+    nearest_rank,
+    split_events,
+    time_boundaries,
+    window_summary,
+)
 from .popular import PopularModel, local_dataset_id
 from .sample import audit_sample, read_sample
 
 HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
 
 
-def _code_sha256(config_path):
-    digest = hashlib.sha256()
-    for path in [*sorted(HERE.glob("*.py")), HERE / "requirements.txt", config_path]:
-        digest.update(path.name.encode() + b"\0" + path.read_bytes().replace(b"\r\n", b"\n") + b"\0")
-    return digest.hexdigest()
+def source_fingerprints(*configs):
+    pipeline = ROOT / "data_algo"
+    files = [
+        *sorted(HERE.glob("*.py")),
+        HERE / "requirements.txt",
+        pipeline / "requirements.txt",
+        *(
+            pipeline / "data_algo" / name
+            for name in ("__init__.py", "schema.py", "io_utils.py", "path_utils.py", "website_export.py")
+        ),
+        ROOT / "docs" / "P0-REC-01-Benchmark.md",
+    ]
+    paths = {path.relative_to(ROOT).as_posix(): path for path in files}
+    paths.update({f"config/{path.name}": path for path in configs})
+    return {
+        key: hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+        for key, path in sorted(paths.items())
+    }
+
+
+def _code_sha256(*configs):
+    fingerprints = json.dumps(source_fingerprints(*configs), sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(fingerprints.encode()).hexdigest()
 
 
 def _peak_rss_mib():
@@ -65,13 +93,17 @@ def _peak_rss_mib():
 
 
 def _environment():
-    revision = None
+    git = {}
     if (HERE.parent / ".git").exists() and shutil.which("git"):
-        revision = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=HERE, capture_output=True, text=True, check=False
-        ).stdout.strip()
+        for name, args in (
+            ("git_head", ["rev-parse", "HEAD"]),
+            ("git_branch", ["branch", "--show-current"]),
+            ("git_worktree_dirty", ["status", "--porcelain"]),
+        ):
+            stdout = subprocess.run(["git", *args], cwd=HERE, capture_output=True, text=True, check=True).stdout.strip()
+            git[name] = bool(stdout) if name == "git_worktree_dirty" else stdout or None
     return {
-        "git_head": revision or None,
+        **git,
         "python": platform.python_version(),
         "platform": platform.platform(),
         "processor": platform.processor(),
@@ -80,8 +112,10 @@ def _environment():
     }
 
 
-def _evaluate_stage(name, window, model, bands, k, initial_train):
+def _evaluate_stage(name, stage, model, bands, k, initial_train, *, track_item_sources=False):
     source_counts = Counter()
+    item_sources = Counter()
+    item_sources_by_band = {name: Counter() for name in ("cold", "low", "medium", "high")}
     latency_ms = []
     rankings_digest = hashlib.sha256()
 
@@ -91,21 +125,33 @@ def _evaluate_stage(name, window, model, bands, k, initial_train):
         latency_ms.append((perf_counter() - start) * 1000)
         source_counts[ranking.source] += 1
         item_ids = tuple(item.item_id for item in ranking.items)
-        line = json.dumps((user_id, ranking.source, item_ids), ensure_ascii=False, separators=(",", ":"))
+        trace = (user_id, ranking.source, item_ids)
+        if track_item_sources:
+            sources = [item.source for item in ranking.items]
+            item_sources.update(sources)
+            band = bands.segment(model.history.event_counts.get(user_id, 0))
+            item_sources_by_band[band].update(sources)
+            trace += (sources,)
+        line = json.dumps(trace, ensure_ascii=False, separators=(",", ":"))
         rankings_digest.update(line.encode("utf-8") + b"\n")
         return item_ids
 
     start = perf_counter()
-    scores = evaluate(window, model.history, bands, rank, k)
+    scores = evaluate(stage, model.history, bands, rank, k)
     seconds = perf_counter() - start
     latency_ms.sort()
     summary = {
         "model_metadata": vars(model.metadata),
-        "users_known_in_initial_train": len(set(window["user_id"]) & initial_train.event_counts.keys()),
+        "users_known_in_initial_train": len(set(stage.target_events["user_id"]) & initial_train.event_counts.keys()),
         "recommendation_source_users": dict(source_counts),
         "rankings_sha256": rankings_digest.hexdigest(),
         **scores,
     }
+    if track_item_sources:
+        summary["recommendation_item_sources"] = dict(item_sources)
+        summary["recommendation_item_sources_by_band"] = {
+            band: dict(counts) for band, counts in item_sources_by_band.items()
+        }
     runtime = {
         f"{name}_evaluation_seconds": seconds,
         f"{name}_recommend_ms": {
@@ -119,7 +165,9 @@ def _evaluate_stage(name, window, model, bands, k, initial_train):
 
 def run_benchmark(events, config, digest, code_sha256):
     boundaries = time_boundaries(config["observation_start"], config["observation_end_exclusive"])
-    train, validation, test = split_events(events, boundaries)
+    split = split_events(events, boundaries)
+    train, validation, test = split
+    validation_stage = BenchmarkStage.from_split(split, boundaries, "validation")
     bands = HistoryBands.fit(train)
     metadata = {
         "dataset_id": local_dataset_id(digest),
@@ -130,21 +178,21 @@ def run_benchmark(events, config, digest, code_sha256):
     }
     start = perf_counter()
     validation_metadata = {**metadata, "model_version": config["validation_model_version"]}
-    validation_model = PopularModel.fit(train, boundaries[1], **validation_metadata)
+    validation_model = PopularModel.fit(train, boundaries[1], fit_start=boundaries[0], **validation_metadata)
     validation_build = perf_counter() - start
 
     # Freeze configuration and training-derived bands before evaluating the test window.
     initial_train = validation_model.history
     validation_results, validation_runtime = _evaluate_stage(
-        "validation", validation, validation_model, bands, config["top_k"], initial_train
+        "validation", validation_stage, validation_model, bands, config["top_k"], initial_train
     )
     del validation_model
 
+    test_stage = BenchmarkStage.from_split(split, boundaries, "test")
     start = perf_counter()
-    refit_events = events.loc[events["event_time"].lt(boundaries[2])]
-    test_model = PopularModel.fit(refit_events, boundaries[2], **metadata)
+    test_model = PopularModel.fit(test_stage.fit_events, test_stage.cutoff, fit_start=test_stage.fit_start, **metadata)
     test_build = perf_counter() - start
-    test_results, test_runtime = _evaluate_stage("test", test, test_model, bands, config["top_k"], initial_train)
+    test_results, test_runtime = _evaluate_stage("test", test_stage, test_model, bands, config["top_k"], initial_train)
 
     empty = History.fit(train.iloc[:0], boundaries[0])
     history_counts = sorted(initial_train.event_counts.values())
@@ -205,7 +253,7 @@ def main():
         result, timings = run_benchmark(events, config, digest, code_sha256)
     payload = {
         "result": result,
-        "provenance": {"code_sha256": code_sha256, **_environment()},
+        "provenance": {"code_sha256": code_sha256, "source_sha256": source_fingerprints(args.config), **_environment()},
         "runtime": {
             "read_and_validate_seconds": read_seconds,
             **timings,
