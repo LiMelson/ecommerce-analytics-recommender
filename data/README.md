@@ -1,6 +1,7 @@
 # 数据获取与本地存放
 
-仓库不包含真实电商数据或已训练模型。前端默认数据由 `frontend/src/data/behavior.js` 生成，是虚构演示样本。
+仓库不包含真实电商数据或已训练模型。网站联调可使用明确标记的虚构样本，
+不能当作 Kaggle 真实数据或算法效果。
 
 ## v0.1 主数据集
 
@@ -47,8 +48,15 @@ data/
 │   └── 2019-Nov.csv
 ├── processed/         # 清洗与抽样后的 Parquet，本地保存，不提交
 │   └── events_sample.parquet
+├── exports/           # 网站标准入库 CSV/Parquet，本地生成，不提交
+│   └── website_events.csv
 └── splits/            # 固定训练/验证/测试划分，本地保存，不提交
 ```
+
+网站入库文件由 `data_algo.cli export-website` 生成，只含
+`user_id,item_id,category_id,behavior_type,timestamp` 五列；
+timestamp 为 UTC 毫秒，未知类目为空，remove_from_cart 等非核心行为排除。
+完整训练文件仍保留品牌、价格、会话等特征。
 
 除本说明外，`data/` 内文件均已加入根目录忽略规则。数据下载地址、版本、清洗方式、质量统计和评估口径写入文档，不通过 Git 传递大文件。
 

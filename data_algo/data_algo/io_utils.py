@@ -14,6 +14,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from .path_utils import atomic_output
+
 
 def to_native(value: Any) -> Any:
     """把 numpy / pandas 类型转成 Python 原生类型。"""
@@ -48,18 +50,22 @@ def to_native(value: Any) -> Any:
 
 
 def write_json(obj: Any, path: str | Path) -> Path:
-    """写 JSON，自动创建父目录，使用 UTF-8 与缩进。"""
+    """写 JSON，自动创建父目录，使用 UTF-8 与缩进。
+
+    先写临时文件再原子替换，失败时保留上一次可用报告。
+    """
     p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(
-        json.dumps(to_native(obj), ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    with atomic_output(p) as tmp:
+        tmp.write_text(
+            json.dumps(to_native(obj), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
     return p
 
 
 def write_text(text: str, path: str | Path) -> Path:
+    """写文本，原子替换，避免失败时留下半个报告。"""
     p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
+    with atomic_output(p) as tmp:
+        tmp.write_text(text, encoding="utf-8")
     return p

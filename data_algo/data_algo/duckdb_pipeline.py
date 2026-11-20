@@ -11,6 +11,8 @@ DuckDB 可以在几分钟内完成全量质量统计 + 按用户抽样。
 
 from __future__ import annotations
 
+import os
+import shutil
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +20,19 @@ from typing import Sequence
 
 from .cleaning import render_quality_markdown, validate_header
 from .io_utils import write_json, write_text
+from .path_utils import ensure_distinct_paths, temp_output_path
+
+RAW_COLUMNS = [
+    "event_time",
+    "event_type",
+    "product_id",
+    "category_id",
+    "category_code",
+    "brand",
+    "price",
+    "user_id",
+    "user_session",
+]
 
 
 def _q(value: str) -> str:
@@ -25,22 +40,30 @@ def _q(value: str) -> str:
     return "'" + str(value).replace("'", "''") + "'"
 
 
-def _paths_sql(paths: Sequence[Path]) -> str:
-    return "[" + ", ".join(_q(p.resolve().as_posix()) for p in paths) + "]"
+def _create_views(con, inputs: Sequence[Path], headers: dict[Path, list[str]]) -> None:
+    """按每个文件的实际表头建 raw 视图。
 
-
-def _create_views(con, inputs: Sequence[Path]) -> None:
-    paths = _paths_sql(inputs)
-    con.execute(
-        f"""
-        CREATE OR REPLACE VIEW raw AS
-        SELECT * FROM read_csv(
-            {paths},
-            header = true,
-            all_varchar = true,
-            filename = true
+    缺失的可选列补 ``NULL::VARCHAR``，这样“只有必需列”的合法 CSV
+    也能被默认 DuckDB 引擎处理，不会出现表头校验通过、建视图却 BinderException。
+    """
+    selects = []
+    for path in inputs:
+        header = set(headers[path])
+        expressions = [
+            f'"{column}"'
+            if column in header
+            else f'NULL::VARCHAR AS "{column}"'
+            for column in RAW_COLUMNS
+        ]
+        expressions.append(f"{_q(path.resolve().as_posix())} AS filename")
+        selects.append(
+            "SELECT "
+            + ", ".join(expressions)
+            + f" FROM read_csv({_q(path.resolve().as_posix())}, "
+            "header = true, all_varchar = true)"
         )
-        """
+    con.execute(
+        "CREATE OR REPLACE VIEW raw AS " + " UNION ALL ".join(selects)
     )
     con.execute(
         """
@@ -233,15 +256,21 @@ def build_sample_duckdb(
         raise ValueError("threads 必须在 1 到 32 之间")
 
     input_paths = [Path(p) for p in inputs]
+    output_parquet = Path(output_parquet)
+    ensure_distinct_paths(
+        input_paths,
+        [
+            ("抽样 Parquet", output_parquet),
+            ("质量报告 JSON", quality_json),
+            ("质量报告 Markdown", quality_md),
+            ("抽样元信息", sample_meta),
+        ],
+    )
+    headers: dict[Path, list[str]] = {}
     for path in input_paths:
         if not path.exists():
             raise FileNotFoundError(path)
-        validate_header(path)
-
-    output_parquet = Path(output_parquet)
-    output_parquet.parent.mkdir(parents=True, exist_ok=True)
-    if output_parquet.exists():
-        output_parquet.unlink()
+        headers[path] = validate_header(path)
 
     import duckdb
 
@@ -252,7 +281,7 @@ def build_sample_duckdb(
     started = time.perf_counter()
     if progress:
         print("[duckdb] 创建 CSV / 清洗视图 ...", flush=True)
-    _create_views(con, input_paths)
+    _create_views(con, input_paths, headers)
 
     if progress:
         print("[duckdb] 全量质量统计（约 1 分钟）...", flush=True)
@@ -276,6 +305,7 @@ def build_sample_duckdb(
     """
     if progress:
         print("[duckdb] 写入抽样 Parquet（约 1 分钟）...", flush=True)
+    temp_dir, temp_output = temp_output_path(output_parquet)
     con.execute(
         f"""
         COPY (
@@ -285,7 +315,7 @@ def build_sample_duckdb(
             FROM cleaned
             WHERE is_valid AND {condition}
             ORDER BY event_time, user_id, item_id
-        ) TO {_q(output_parquet.resolve().as_posix())}
+        ) TO {_q(temp_output.resolve().as_posix())}
         (FORMAT PARQUET, COMPRESSION ZSTD)
         """
     )
@@ -304,9 +334,11 @@ def build_sample_duckdb(
             count(*) FILTER (WHERE behavior_type = 'remove_from_cart') AS remove_from_cart,
             count(price) AS price_count,
             sum(price) AS price_sum
-        FROM read_parquet({_q(output_parquet.resolve().as_posix())})
+        FROM read_parquet({_q(temp_output.resolve().as_posix())})
         """
     ).fetchone()
+    os.replace(temp_output, output_parquet)
+    shutil.rmtree(temp_dir, ignore_errors=True)
 
     sample = {
         "engine": "duckdb",

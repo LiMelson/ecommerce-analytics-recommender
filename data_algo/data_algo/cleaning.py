@@ -16,6 +16,8 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import shutil
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,6 +28,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from .io_utils import write_json, write_text
+from .path_utils import ensure_distinct_paths, temp_output_path
 from .schema import (
     BEHAVIOR_MAP,
     CANONICAL_COLUMNS,
@@ -351,17 +354,25 @@ def build_sample(
     避免对 13GB 数据重复扫描。
     """
     input_paths = [Path(p) for p in inputs]
+    output_parquet = Path(output_parquet)
+    # 必须在 mkdir/unlink/打开 writer 之前检查，防止把输入文件当输出删掉
+    ensure_distinct_paths(
+        input_paths,
+        [
+            ("抽样 Parquet", output_parquet),
+            ("质量报告 JSON", quality_json),
+            ("质量报告 Markdown", quality_md),
+            ("抽样元信息", sample_meta),
+        ],
+    )
     for path in input_paths:
         if not path.exists():
             raise FileNotFoundError(path)
         validate_header(path)
 
-    output_parquet = Path(output_parquet)
-    output_parquet.parent.mkdir(parents=True, exist_ok=True)
-    if output_parquet.exists():
-        output_parquet.unlink()
-
-    writer = pq.ParquetWriter(output_parquet, SAMPLE_SCHEMA, compression="zstd")
+    # 先写独立临时文件，成功关闭后再原子替换最终输出
+    temp_dir, temp_output = temp_output_path(output_parquet)
+    writer = pq.ParquetWriter(temp_output, SAMPLE_SCHEMA, compression="zstd")
 
     quality = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -549,6 +560,8 @@ def build_sample(
             )
 
     writer.close()
+    os.replace(temp_output, output_parquet)
+    shutil.rmtree(temp_dir, ignore_errors=True)
 
     sample["users"] = len(sample_users)
     sample["price_sum"] = round(sample_price_sum, 2)
@@ -594,6 +607,15 @@ def render_quality_markdown(report: dict) -> str:
     price = report.get("price", {})
     timerange = report.get("time_range", {})
     sample = report.get("sample", {})
+    price_count = int(price.get("count", 0) or 0)
+    price_sum = float(price.get("sum", 0) or 0)
+    price_mean = f"{price_sum / price_count:.2f}" if price_count else "—"
+    price_min = price.get("min")
+    price_max = price.get("max")
+    price_range = (
+        f"{price_min if price_min is not None else '—'} 至 "
+        f"{price_max if price_max is not None else '—'}"
+    )
 
     def pct(n: int, d: int) -> str:
         return f"{n / d * 100:.2f}%" if d else "—"
@@ -639,7 +661,7 @@ def render_quality_markdown(report: dict) -> str:
         f"- `price` 缺失：{missing.get('price', 0):,}",
         f"- `price = 0`：{price.get('zero', 0):,}",
         f"- 负价格：{price.get('negative', 0):,}",
-        f"- 价格范围：{price.get('min', '—')} 至 {price.get('max', '—')}，均值 {price.get('sum', 0) / price.get('count', 1):.2f}",
+        f"- 价格范围：{price_range}，均值 {price_mean}",
         "",
         "## 唯一值（全量扫描）",
         "",

@@ -3,8 +3,9 @@
 这是「电商平台用户行为分析与精准推荐系统」的**数据处理与分析模块**，
 由何彦彬负责，与张凯博的推荐/评估模块对接。
 
-它不依赖前端，也不依赖组长后续搭建的 FastAPI 服务：
-输入是一份原始 CSV，输出是干净的行为数据、质量报告和统计 JSON。
+本包用于数据清洗、离线统计、训练数据准备和网站标准入库导出，不依赖后端服务；
+主分支后端已实现数据版本、导入、统计和推荐适配。输入是一份原始 CSV，
+输出是干净的行为数据、质量报告、离线统计 JSON 和网站五列标准入库文件。
 
 ---
 
@@ -104,6 +105,11 @@ python -m venv .venv
 
 # 7. 查看抽样数据概况
 .venv/Scripts/python -m data_algo.cli info
+
+# 8. 导出网站标准入库文件（五列；也可把 --output 改成 .parquet）
+.venv/Scripts/python -m data_algo.cli export-website \
+  --input ../data/processed/events_sample.parquet \
+  --output ../data/exports/website_events.csv
 ```
 
 默认会按顺序查找：
@@ -126,7 +132,7 @@ python -m venv .venv
 - 被抽中的用户保留其在 10-11 月的**完整行为历史**，避免“历史碎片化”；
 - 随机种子固定（默认 `20261116`），结果可复现；
 - 非数字 user_id 会用带种子的 blake2b 散列，保证同样可复现；
-- 抽样结果写入团队仓库约定的 `data/processed/events_sample.parquet`（在 `data_algo/` 内运行时默认 `../data/processed/`），元信息写入 `outputs/sample_meta.json`。
+- 抽样结果写入 `data/processed/events_sample.parquet`，元信息写入 `outputs/sample_meta.json`。
 
 为什么不全量训练？
 - 13.7GB 全量在普通笔记本上做 ItemCF/BPR 很慢，且课程项目不需要；
@@ -162,7 +168,8 @@ python -m venv .venv
 ### 顺序漏斗
 
 - 以“同一 user_id + 同一 item_id”为单位；
-- 按 event_time 排序，要求 **浏览 → 加购 → 购买** 依次发生；
+- 要求 **浏览时间 < 加购时间 < 购买时间**，严格递增；
+- 同一时间戳最多推进一个阶段，不能靠文件行序推断先后；
 - 先购买后加购不算完成；收藏不是必经阶段；
 - 每个用户商品对在每个阶段最多计一次；
 - 与首页“行为总量漏斗”口径不同，页面上会说明。
@@ -213,17 +220,16 @@ python -m venv .venv
 运行 `build-sample` 后：
 
 ```
-data/processed/events_sample.parquet   # 抽样行为数据
-outputs/quality_report.json            # 机器可读质量报告
-outputs/quality_report.md              # 可贴进报告的 Markdown
-outputs/sample_meta.json               # 抽样参数与统计
+../data/processed/events_sample.parquet  # 抽样行为数据（完整训练特征）
+outputs/quality_report.json              # 机器可读质量报告
+outputs/quality_report.md                # 可贴进报告的 Markdown
+outputs/sample_meta.json                 # 抽样参数与统计
 ```
 
 运行 `analytics` 后：
 
 ```
-../data/processed/events_sample.parquet  # 抽样行为数据（团队仓库约定）
-outputs/analytics/overview.json          # 概览 + 每日 + 每时
+outputs/analytics/overview.json        # 概览 + 每日 + 每时
 outputs/analytics/daily.json
 outputs/analytics/hourly.json
 outputs/analytics/funnel.json
@@ -235,33 +241,46 @@ outputs/analytics/profiles.parquet     # 每个用户的画像标量字段
 outputs/analytics/profiles_sample.json # 20 个完整画像样例
 outputs/analytics/retention.json
 outputs/analytics/rankings.json
-outputs/analytics/meta.json            # 数据版本、口径、限制
+outputs/analytics/meta.json              # 数据版本、口径、限制
+```
+
+运行 `export-website` 后：
+
+```
+../data/exports/website_events.csv      # 网站标准入库五列（或 .parquet）
+outputs/website_export_report.json      # 导出/排除/时间戳报告
 ```
 
 ---
 
-## 七、和前端 / 后端对接
+## 七、和网站 / 后端对接
 
-当前前端 [behavior.js](../frontend/src/data/behavior.js) 里的统计函数是演示口径，
-后续把数据源换成我们的 JSON 即可。建议接口：
+主分支已经实现 Vue 工作台、FastAPI、MySQL/ClickHouse、数据版本、导入与统计接口，
+契约见 `docs/数据与算法交付约定.md`。本模块的定位：
 
-| 页面 | 建议接口 | 对应输出 |
-| --- | --- | --- |
-| 首页 / 数据大屏 | `GET /api/v1/overview` | `overview.json` |
-| 每日趋势 | `GET /api/v1/analytics/daily` | `daily.json` |
-| 每时趋势 | `GET /api/v1/analytics/hourly` | `hourly.json` |
-| 漏斗 | `GET /api/v1/analytics/funnel` | `funnel.json` |
-| RFM | `GET /api/v1/analytics/rfm` | `rfm_summary.json` + `rfm.parquet` |
-| 用户画像 | `GET /api/v1/users/{id}/profile` | `user_profile()` 的返回值 |
-| 留存 | `GET /api/v1/analytics/retention` | `retention.json` |
-| 排行 | `GET /api/v1/analytics/rankings` | `rankings.json` |
-| 智能推荐 | 后续由张凯博模块提供 | — |
+- **完整训练文件**：`events_sample.parquet`，保留品牌、价格、会话等特征，供离线统计和推荐实验；
+- **网站标准入库文件**：五列 CSV/Parquet，供后端导入；
+- **离线 JSON**：用于核对口径和实验报告，不重新开发网站已经具备的统计接口。
 
-前端需要逐步适配的字段：
-- `category_code` / `brand` 可选展示，替换现在的“类目 982926”；
-- `remove_from_cart` 单独展示“购物车放弃率”；
-- 推荐卡片可以显示“品牌 + 类目 + 价格”，不再只有匿名 ID；
-- RFM 页面可以把 M 从“缺失”改为“行为口径消费额”，并注明不是订单 GMV。
+### 网站标准入库导出
+
+```bash
+.venv/Scripts/python -m data_algo.cli export-website \
+  --input ../data/processed/events_sample.parquet \
+  --output ../data/exports/website_events.csv
+```
+
+- 只保留五列：`user_id,item_id,category_id,behavior_type,timestamp`；
+- `timestamp` 为 UTC 毫秒（13 位）；
+- `behavior_type` 只保留 `pv/fav/cart/buy`；`remove_from_cart` 等排除并计入报告；
+- 未知类目导出为空，不编造；
+- 用主分支 `backend/app/importing.py` 对实际 CSV/Parquet 产出做兼容测试。
+
+### 与推荐模块
+
+推荐训练直接 `from data_algo.cleaning import load_events` 读取完整 Parquet；
+网站入库文件不用于训练，避免丢失品牌、价格和会话特征。推荐推理服务按
+`docs/数据与算法交付约定.md` 的 HTTP 协议接入。
 
 ---
 
@@ -291,8 +310,13 @@ outputs/analytics/meta.json            # 数据版本、口径、限制
 当前覆盖：
 - CSV 解析、行为映射、UTC 时间、北京时间派生；
 - 无效行、重复行、缺失 category/brand、负价格；
+- 输入/输出路径冲突、原子写入、失败时保留旧输出；
+- 同时间戳漏斗严格递增、正序/逆序结果一致；
+- DuckDB 必需列/可选列缺失、多文件不同字段；
+- 全部价格缺失、全无效行、空输入的报告；
 - 按用户抽样稳定性与完整历史；
-- 概览、每日/每时、顺序漏斗、RFM 缺失 R、留存 null/0、排行、购物车放弃、用户画像。
+- 概览、每日/每时、顺序漏斗、RFM 缺失 R、留存 null/0、排行、购物车放弃、用户画像；
+- 网站五列导出、时间戳毫秒、未知类目为空、与 `backend/app/importing.py` 的 CSV/Parquet 兼容。
 
 ---
 
@@ -302,7 +326,7 @@ outputs/analytics/meta.json            # 数据版本、口径、限制
 2. 不要提交 `data/raw/`、`data/processed/`、`outputs/`、`.venv/`；
 3. 组长/队友拉代码后执行一次 `pip install -r requirements.txt`；
 4. 需要重新生成数据时，把原始 CSV 放到 `data/raw/`（或本地 `archive/`），运行 `build-sample`；
-5. 如果后端用 FastAPI，直接 `from data_algo.analytics import overview, conversion_funnel, ...`，
-   或读取 `data_algo/reports/` 里的 JSON 快照；
-6. 推荐/评测模块可以直接 import `load_events`，拿到干净的 DataFrame；
-7. 真实的 20MB 抽样 Parquet 不提交；需要时按 `build-sample` 重新生成，或向数据负责人索取。
+5. 网站后端已实现；入库文件用 `export-website` 生成五列标准格式，后端 `backend/app/importing.py` 负责校验；
+6. 离线统计可以 `from data_algo.analytics import overview, conversion_funnel, ...`，或读取 `data_algo/reports/` 里的聚合快照；
+7. 推荐/评测模块可以直接 import `load_events`，拿到干净的 DataFrame；
+8. 真实的 20MB 抽样 Parquet 不提交；需要时按 `build-sample` 重新生成，或向数据负责人索取。

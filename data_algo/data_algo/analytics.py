@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from itertools import groupby
 from pathlib import Path
 from typing import Any
 
@@ -151,11 +152,12 @@ def overview(df: pd.DataFrame) -> dict:
 def conversion_funnel(df: pd.DataFrame) -> dict:
     """同一用户 + 同一商品，按时间识别 浏览 -> 加购 -> 购买。
 
-    规则：
+    规则（与后端 ``strict_increase`` 口径一致）：
+    - 要求 ``view_time < cart_time < buy_time``，严格递增；
+    - 同一时间戳最多推进一个阶段，不能靠文件行序推断先后；
     - 每个用户商品对最多计一次；
     - 先购买后加购不构成完成路径；
-    - 收藏不是必经阶段；
-    - 没有可靠事件序号时，同一时间戳不推断先后（这里按稳定排序处理）。
+    - 收藏不是必经阶段。
     """
     stages = {"pv": 0, "cart": 0, "buy": 0}
     pairs = 0
@@ -174,13 +176,18 @@ def conversion_funnel(df: pd.DataFrame) -> dict:
     for _, group in relevant.groupby(["user_id", "item_id"], sort=False):
         pairs += 1
         state = 0
-        for behavior in group["behavior_type"].to_numpy():
-            if state == 0 and behavior == "pv":
+        # 按时间戳分组：同一秒的事件一起判断，最多推进一个阶段
+        for _, time_group in groupby(
+            group.itertuples(index=False), key=lambda row: row.event_time
+        ):
+            behaviors = {row.behavior_type for row in time_group}
+            if state == 0 and "pv" in behaviors:
                 state = 1
-            elif state == 1 and behavior == "cart":
+            elif state == 1 and "cart" in behaviors:
                 state = 2
-            elif state == 2 and behavior == "buy":
+            elif state == 2 and "buy" in behaviors:
                 state = 3
+            if state == 3:
                 break
         if state >= 1:
             stages["pv"] += 1
@@ -202,7 +209,10 @@ def conversion_funnel(df: pd.DataFrame) -> dict:
             "cart_to_buy": _round(_rate(buy, cart)),
             "pv_to_buy": _round(_rate(buy, pv)),
         },
-        "note": "同用户同商品的顺序路径；先购买后加购不计完成；与首页行为量口径不同",
+        "note": (
+            "同用户同商品的顺序路径；要求时间严格递增，"
+            "同一时间戳不推进多个阶段；先购买后加购不计完成；与首页行为量口径不同"
+        ),
     }
 
 

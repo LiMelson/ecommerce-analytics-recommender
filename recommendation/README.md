@@ -23,3 +23,5 @@
 清洗后的行为数据、字段映射和统计口径见 [data_algo](../data_algo/README.md) 与 [数据选型与处理说明](../docs/数据选型与处理说明.md)。
 
 推荐实验可直接使用 `from data_algo.cleaning import load_events` 读取干净 DataFrame；按全局时间切分训练/验证/测试，不使用未来行为。
+
+网站入库用 `data_algo.cli export-website` 生成五列标准文件；推荐训练读取完整 Parquet（含品牌、价格、会话等特征），两者用途不同。

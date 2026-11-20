@@ -185,3 +185,44 @@ def test_export_analytics_writes_files(events, tmp_path: Path) -> None:
         "profiles_sample.json",
     ]:
         assert (tmp_path / name).exists(), name
+
+
+def _write_funnel_rows(path: Path, rows: list[str]) -> None:
+    header = (
+        "event_time,event_type,product_id,category_id,category_code,"
+        "brand,price,user_id,user_session\n"
+    )
+    path.write_text(header + "\n".join(rows) + "\n", encoding="utf-8")
+
+
+def test_funnel_same_timestamp_is_order_independent(tmp_path: Path) -> None:
+    # u1: 浏览/加购/购买都在同一秒 -> 只能推进到浏览
+    # u2: 浏览+加购同秒；下一分钟加购；购买与加购同秒；再下一分钟购买 -> 完整路径
+    # u3: 严格递增的浏览 -> 加购 -> 购买 -> 完整路径
+    # u4: 浏览+加购同秒，下一分钟购买（没有严格晚于浏览的加购）-> 只到浏览
+    rows = [
+        "2019-10-01 10:00:00 UTC,view,1001,2001,electronics.smartphone,xiaomi,100.0,u1,s1",
+        "2019-10-01 10:00:00 UTC,cart,1001,2001,electronics.smartphone,xiaomi,100.0,u1,s1",
+        "2019-10-01 10:00:00 UTC,purchase,1001,2001,electronics.smartphone,xiaomi,100.0,u1,s1",
+        "2019-10-01 10:00:00 UTC,view,1002,2001,electronics.smartphone,xiaomi,100.0,u2,s2",
+        "2019-10-01 10:00:00 UTC,cart,1002,2001,electronics.smartphone,xiaomi,100.0,u2,s2",
+        "2019-10-01 10:01:00 UTC,cart,1002,2001,electronics.smartphone,xiaomi,100.0,u2,s2",
+        "2019-10-01 10:01:00 UTC,purchase,1002,2001,electronics.smartphone,xiaomi,100.0,u2,s2",
+        "2019-10-01 10:02:00 UTC,purchase,1002,2001,electronics.smartphone,xiaomi,100.0,u2,s2",
+        "2019-10-01 10:00:00 UTC,view,1003,2001,electronics.smartphone,xiaomi,100.0,u3,s3",
+        "2019-10-01 10:01:00 UTC,cart,1003,2001,electronics.smartphone,xiaomi,100.0,u3,s3",
+        "2019-10-01 10:02:00 UTC,purchase,1003,2001,electronics.smartphone,xiaomi,100.0,u3,s3",
+        "2019-10-01 10:00:00 UTC,view,1004,2001,electronics.smartphone,xiaomi,100.0,u4,s4",
+        "2019-10-01 10:00:00 UTC,cart,1004,2001,electronics.smartphone,xiaomi,100.0,u4,s4",
+        "2019-10-01 10:01:00 UTC,purchase,1004,2001,electronics.smartphone,xiaomi,100.0,u4,s4",
+    ]
+
+    results = []
+    for index, ordered in enumerate((rows, list(reversed(rows)))):
+        path = tmp_path / f"funnel_{index}.csv"
+        _write_funnel_rows(path, ordered)
+        result = conversion_funnel(load_events(path))
+        results.append({stage["key"]: stage["value"] for stage in result["stages"]})
+
+    assert results[0] == {"pv": 4, "cart": 2, "buy": 2}
+    assert results[1] == results[0]

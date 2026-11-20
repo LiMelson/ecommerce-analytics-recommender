@@ -17,6 +17,7 @@ from pathlib import Path
 from .analytics import export_analytics, user_profile
 from .cleaning import build_sample, load_events
 from .io_utils import to_native
+from .website_export import export_website
 
 
 DEFAULT_INPUT_PAIRS = [
@@ -146,6 +147,24 @@ def cmd_info(args: argparse.Namespace) -> None:
     )
 
 
+def cmd_export_website(args: argparse.Namespace) -> None:
+    df = load_events(args.input)
+    report = export_website(
+        df,
+        args.output,
+        source_path=args.input,
+        report_path=args.report,
+    )
+    print("\n=== 网站入库导出完成 ===")
+    print(f"输入行数: {report['source_rows']:,}")
+    print(f"导出行数: {report['exported_rows']:,}")
+    print(f"排除行数: {report['excluded_rows']:,} {report['excluded_by_type']}")
+    print(f"未知类目行: {report['unknown_category_rows']:,}")
+    print(f"时间戳单位: {report['timestamp_unit']}")
+    print(f"输出: {report['output']}")
+    print(f"报告: {args.report}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="电商用户行为数据清洗、抽样与统计分析"
@@ -157,7 +176,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--output",
         default="../data/processed/events_sample.parquet",
-        help="抽样 Parquet 输出路径（团队仓库约定 data/processed/）",
+        help="抽样 Parquet 输出路径",
     )
     p.add_argument("--quality-json", default="outputs/quality_report.json")
     p.add_argument("--quality-md", default="outputs/quality_report.md")
@@ -180,7 +199,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--input",
         default="../data/processed/events_sample.parquet",
-        help="抽样 Parquet / CSV（团队仓库约定 data/processed/）",
+        help="抽样 Parquet / CSV",
     )
     p.add_argument("--outdir", default="outputs/analytics")
     p.add_argument("--sample-meta", default="outputs/sample_meta.json")
@@ -196,6 +215,16 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("info", help="查看抽样数据概况")
     p.add_argument("--input", default="../data/processed/events_sample.parquet")
     p.set_defaults(func=cmd_info)
+
+    p = sub.add_parser("export-website", help="导出网站标准入库 CSV/Parquet（五列）")
+    p.add_argument("--input", default="../data/processed/events_sample.parquet")
+    p.add_argument(
+        "--output",
+        default="../data/exports/website_events.csv",
+        help="网站入库文件；后缀 .parquet 可导出 Parquet",
+    )
+    p.add_argument("--report", default="outputs/website_export_report.json")
+    p.set_defaults(func=cmd_export_website)
 
     return parser
 
