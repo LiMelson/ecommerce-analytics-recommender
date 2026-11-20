@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-11-16T04:30:41.242275+00:00",
+  "engine": "duckdb",
+  "inputs": [
+    {
+      "path": "2019-Oct.csv",
+      "size_bytes": 5668612855,
+      "rows": 42448764,
+      "valid": 42448764,
+      "invalid": 0,
+      "duplicates": 0,
+      "kept": 42448764
+    },
+    {
+      "path": "2019-Nov.csv",
+      "size_bytes": 9006762395,
+      "rows": 67501979,
+      "valid": 67501979,
+      "invalid": 0,
+      "duplicates": 0,
+      "kept": 67501979
+    }
+  ],
+  "rows_scanned": 109950743,
+  "valid_rows": 109950743,
+  "invalid_rows": 0,
+  "duplicate_rows": 0,
+  "duplicate_scope": "sample_deduped",
+  "kept_rows": 109950743,
+  "behavior_type_counts": {
+    "pv": 104335509,
+    "fav": 0,
+    "cart": 3955446,
+    "buy": 1659788,
+    "remove_from_cart": 0
+  },
+  "raw_event_type_counts": {
+    "view": 104335509,
+    "cart": 3955446,
+    "purchase": 1659788
+  },
+  "invalid_reasons": {},
+  "missing_counts": {
+    "category_code": 35413780,
+    "brand": 15331243,
+    "price": 0
+  },
+  "price": {
+    "count": 109950743,
+    "sum": 32065463200.9,
+    "min": 0.0,
+    "max": 2574.07,
+    "zero": 256761,
+    "negative": 0
+  },
+  "time_range": {
+    "min": "2019-10-01T00:00:00",
+    "max": "2019-11-30T23:59:59"
+  },
+  "unique": {
+    "users": {
+      "count": 5316649,
+      "truncated": false,
+      "note": "精确计数"
+    },
+    "items": {
+      "count": 206876,
+      "truncated": false,
+      "note": "精确计数"
+    },
+    "categories": {
+      "count": 691,
+      "truncated": false,
+      "note": "精确计数"
+    },
+    "brands": {
+      "count": 4303,
+      "truncated": false,
+      "note": "精确计数"
+    }
+  },
+  "invalid_examples": [],
+  "sample": {
+    "engine": "duckdb",
+    "per_mille": 10,
+    "seed": 20261116,
+    "rows": 1079354,
+    "users": 52687,
+    "time_min": "2019-10-01T00:08:55",
+    "time_max": "2019-11-30T23:59:58",
+    "behavior_counts": {
+      "pv": 1024977,
+      "fav": 0,
+      "cart": 37698,
+      "buy": 16679,
+      "remove_from_cart": 0
+    },
+    "price_count": 1079354,
+    "price_sum": 312643973.25,
+    "output": "data\\processed\\events_sample.parquet",
+    "dedupe": "SELECT DISTINCT（写入时去重）",
+    "elapsed_seconds": 213.9,
+    "generated_at": "2026-11-16T04:30:41.240236+00:00"
+  },
+  "notes": [
+    "全量质量统计由 DuckDB 完成，无效行、缺失值、价格异常均为精确计数。",
+    "抽样以用户为单位，保留被抽中用户的完整历史；写入时执行 SELECT DISTINCT 去重。",
+    "全量重复行未逐行统计；本次抽样写入时已去重，加载数据时还会再次去重。",
+    "金额为购买事件单价汇总，每条购买事件按 1 件计，不等同于订单 GMV。",
+    "category_code / brand 的缺失保持为空，不编造商品名或品牌。"
+  ],
+  "distribution_note": "仓库仅提交聚合质量报告；原始数据、抽样 Parquet 和用户级画像均不提交。"
+}

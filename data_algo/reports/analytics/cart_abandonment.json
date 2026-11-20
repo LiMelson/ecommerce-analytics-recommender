@@ -1,0 +1,15 @@
+{
+  "sessions": {
+    "cart_sessions": 22759,
+    "converted_sessions": 9288,
+    "abandoned_sessions": 13471,
+    "abandonment_rate": 0.5919,
+    "sessions_with_removal": 0
+  },
+  "user_item_pairs": {
+    "cart_pairs": 20727,
+    "abandoned_pairs": 12100,
+    "abandonment_rate": 0.5838
+  },
+  "note": "按会话是否存在加购/购买事件统计；没有 remove_from_cart 时只判断加购后是否购买；不是严格顺序归因"
+}

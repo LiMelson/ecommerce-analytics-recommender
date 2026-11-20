@@ -1,0 +1,21 @@
+{
+  "reference_time": "2019-11-30T23:59:58+00:00",
+  "timezone": "Asia/Shanghai",
+  "thresholds": {
+    "recent_days": 7,
+    "high_frequency": 3,
+    "note": "阈值针对当前抽样窗口，可在验证集/分位数上调整"
+  },
+  "users": 52687,
+  "buyers": 6976,
+  "non_buyers": 45711,
+  "segment_counts": {
+    "潜在转化用户": 45711,
+    "低频待唤回用户": 4666,
+    "高频待唤回用户": 1183,
+    "近期购买用户": 697,
+    "高频活跃用户": 430
+  },
+  "monetary_caliber": "购买事件单价汇总，每条按 1 件计，不是订单 GMV",
+  "m_missing_note": "没有购买或没有有效价格时 M 为 null，不用 0 或虚构金额填充"
+}

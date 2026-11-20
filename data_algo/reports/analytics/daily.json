@@ -1,0 +1,625 @@
+{
+  "daily": [
+    {
+      "date": "2019-10-01",
+      "pv": 8666,
+      "fav": 0,
+      "cart": 170,
+      "buy": 180,
+      "remove_from_cart": 0,
+      "users": 1570,
+      "purchase_amount": 60425.689999999995
+    },
+    {
+      "date": "2019-10-02",
+      "pv": 11678,
+      "fav": 0,
+      "cart": 126,
+      "buy": 179,
+      "remove_from_cart": 0,
+      "users": 1845,
+      "purchase_amount": 54389.270000000004
+    },
+    {
+      "date": "2019-10-03",
+      "pv": 10518,
+      "fav": 0,
+      "cart": 158,
+      "buy": 166,
+      "remove_from_cart": 0,
+      "users": 1676,
+      "purchase_amount": 63173.35999999999
+    },
+    {
+      "date": "2019-10-04",
+      "pv": 13246,
+      "fav": 0,
+      "cart": 388,
+      "buy": 239,
+      "remove_from_cart": 0,
+      "users": 2048,
+      "purchase_amount": 69635.17
+    },
+    {
+      "date": "2019-10-05",
+      "pv": 12192,
+      "fav": 0,
+      "cart": 369,
+      "buy": 218,
+      "remove_from_cart": 0,
+      "users": 1963,
+      "purchase_amount": 80154.94000000002
+    },
+    {
+      "date": "2019-10-06",
+      "pv": 12518,
+      "fav": 0,
+      "cart": 384,
+      "buy": 211,
+      "remove_from_cart": 0,
+      "users": 1956,
+      "purchase_amount": 61032.48
+    },
+    {
+      "date": "2019-10-07",
+      "pv": 10855,
+      "fav": 0,
+      "cart": 177,
+      "buy": 172,
+      "remove_from_cart": 0,
+      "users": 1842,
+      "purchase_amount": 56157.439999999995
+    },
+    {
+      "date": "2019-10-08",
+      "pv": 12965,
+      "fav": 0,
+      "cart": 173,
+      "buy": 223,
+      "remove_from_cart": 0,
+      "users": 2179,
+      "purchase_amount": 64397.01000000001
+    },
+    {
+      "date": "2019-10-09",
+      "pv": 13007,
+      "fav": 0,
+      "cart": 151,
+      "buy": 258,
+      "remove_from_cart": 0,
+      "users": 2145,
+      "purchase_amount": 71562.91
+    },
+    {
+      "date": "2019-10-10",
+      "pv": 11983,
+      "fav": 0,
+      "cart": 196,
+      "buy": 203,
+      "remove_from_cart": 0,
+      "users": 1974,
+      "purchase_amount": 64573.45
+    },
+    {
+      "date": "2019-10-11",
+      "pv": 14970,
+      "fav": 0,
+      "cart": 174,
+      "buy": 268,
+      "remove_from_cart": 0,
+      "users": 2300,
+      "purchase_amount": 96145.04000000002
+    },
+    {
+      "date": "2019-10-12",
+      "pv": 14136,
+      "fav": 0,
+      "cart": 216,
+      "buy": 258,
+      "remove_from_cart": 0,
+      "users": 2103,
+      "purchase_amount": 73239.76
+    },
+    {
+      "date": "2019-10-13",
+      "pv": 15765,
+      "fav": 0,
+      "cart": 233,
+      "buy": 268,
+      "remove_from_cart": 0,
+      "users": 2240,
+      "purchase_amount": 77646.87
+    },
+    {
+      "date": "2019-10-14",
+      "pv": 14471,
+      "fav": 0,
+      "cart": 392,
+      "buy": 290,
+      "remove_from_cart": 0,
+      "users": 2093,
+      "purchase_amount": 92040.36
+    },
+    {
+      "date": "2019-10-15",
+      "pv": 14419,
+      "fav": 0,
+      "cart": 435,
+      "buy": 285,
+      "remove_from_cart": 0,
+      "users": 2258,
+      "purchase_amount": 102491.12000000001
+    },
+    {
+      "date": "2019-10-16",
+      "pv": 13743,
+      "fav": 0,
+      "cart": 393,
+      "buy": 295,
+      "remove_from_cart": 0,
+      "users": 2278,
+      "purchase_amount": 102981.9
+    },
+    {
+      "date": "2019-10-17",
+      "pv": 13320,
+      "fav": 0,
+      "cart": 414,
+      "buy": 272,
+      "remove_from_cart": 0,
+      "users": 2049,
+      "purchase_amount": 94570.57
+    },
+    {
+      "date": "2019-10-18",
+      "pv": 12689,
+      "fav": 0,
+      "cart": 384,
+      "buy": 253,
+      "remove_from_cart": 0,
+      "users": 2220,
+      "purchase_amount": 76272.26000000001
+    },
+    {
+      "date": "2019-10-19",
+      "pv": 13436,
+      "fav": 0,
+      "cart": 351,
+      "buy": 224,
+      "remove_from_cart": 0,
+      "users": 2168,
+      "purchase_amount": 62233.0
+    },
+    {
+      "date": "2019-10-20",
+      "pv": 13506,
+      "fav": 0,
+      "cart": 318,
+      "buy": 219,
+      "remove_from_cart": 0,
+      "users": 2269,
+      "purchase_amount": 64572.90000000001
+    },
+    {
+      "date": "2019-10-21",
+      "pv": 14945,
+      "fav": 0,
+      "cart": 380,
+      "buy": 284,
+      "remove_from_cart": 0,
+      "users": 2340,
+      "purchase_amount": 87047.35
+    },
+    {
+      "date": "2019-10-22",
+      "pv": 13277,
+      "fav": 0,
+      "cart": 372,
+      "buy": 261,
+      "remove_from_cart": 0,
+      "users": 2159,
+      "purchase_amount": 81445.44
+    },
+    {
+      "date": "2019-10-23",
+      "pv": 13055,
+      "fav": 0,
+      "cart": 360,
+      "buy": 255,
+      "remove_from_cart": 0,
+      "users": 2133,
+      "purchase_amount": 73256.45
+    },
+    {
+      "date": "2019-10-24",
+      "pv": 13381,
+      "fav": 0,
+      "cart": 394,
+      "buy": 285,
+      "remove_from_cart": 0,
+      "users": 2172,
+      "purchase_amount": 76470.7
+    },
+    {
+      "date": "2019-10-25",
+      "pv": 13918,
+      "fav": 0,
+      "cart": 390,
+      "buy": 251,
+      "remove_from_cart": 0,
+      "users": 2297,
+      "purchase_amount": 65951.94
+    },
+    {
+      "date": "2019-10-26",
+      "pv": 14198,
+      "fav": 0,
+      "cart": 379,
+      "buy": 241,
+      "remove_from_cart": 0,
+      "users": 2113,
+      "purchase_amount": 69600.46
+    },
+    {
+      "date": "2019-10-27",
+      "pv": 14059,
+      "fav": 0,
+      "cart": 367,
+      "buy": 242,
+      "remove_from_cart": 0,
+      "users": 2042,
+      "purchase_amount": 77020.36000000002
+    },
+    {
+      "date": "2019-10-28",
+      "pv": 11656,
+      "fav": 0,
+      "cart": 209,
+      "buy": 258,
+      "remove_from_cart": 0,
+      "users": 1921,
+      "purchase_amount": 68426.91
+    },
+    {
+      "date": "2019-10-29",
+      "pv": 12839,
+      "fav": 0,
+      "cart": 125,
+      "buy": 228,
+      "remove_from_cart": 0,
+      "users": 2026,
+      "purchase_amount": 73581.51000000001
+    },
+    {
+      "date": "2019-10-30",
+      "pv": 12295,
+      "fav": 0,
+      "cart": 146,
+      "buy": 169,
+      "remove_from_cart": 0,
+      "users": 1919,
+      "purchase_amount": 52090.51
+    },
+    {
+      "date": "2019-10-31",
+      "pv": 13197,
+      "fav": 0,
+      "cart": 175,
+      "buy": 224,
+      "remove_from_cart": 0,
+      "users": 1995,
+      "purchase_amount": 73660.15999999999
+    },
+    {
+      "date": "2019-11-01",
+      "pv": 12948,
+      "fav": 0,
+      "cart": 158,
+      "buy": 207,
+      "remove_from_cart": 0,
+      "users": 2188,
+      "purchase_amount": 58795.78999999999
+    },
+    {
+      "date": "2019-11-02",
+      "pv": 14055,
+      "fav": 0,
+      "cart": 175,
+      "buy": 224,
+      "remove_from_cart": 0,
+      "users": 2281,
+      "purchase_amount": 60271.06
+    },
+    {
+      "date": "2019-11-03",
+      "pv": 14308,
+      "fav": 0,
+      "cart": 195,
+      "buy": 271,
+      "remove_from_cart": 0,
+      "users": 2422,
+      "purchase_amount": 72375.88
+    },
+    {
+      "date": "2019-11-04",
+      "pv": 16517,
+      "fav": 0,
+      "cart": 224,
+      "buy": 270,
+      "remove_from_cart": 0,
+      "users": 2659,
+      "purchase_amount": 76711.63
+    },
+    {
+      "date": "2019-11-05",
+      "pv": 17121,
+      "fav": 0,
+      "cart": 178,
+      "buy": 252,
+      "remove_from_cart": 0,
+      "users": 2682,
+      "purchase_amount": 69184.19
+    },
+    {
+      "date": "2019-11-06",
+      "pv": 15634,
+      "fav": 0,
+      "cart": 166,
+      "buy": 245,
+      "remove_from_cart": 0,
+      "users": 2465,
+      "purchase_amount": 63051.08
+    },
+    {
+      "date": "2019-11-07",
+      "pv": 17974,
+      "fav": 0,
+      "cart": 172,
+      "buy": 255,
+      "remove_from_cart": 0,
+      "users": 2763,
+      "purchase_amount": 77384.73000000001
+    },
+    {
+      "date": "2019-11-08",
+      "pv": 16528,
+      "fav": 0,
+      "cart": 609,
+      "buy": 238,
+      "remove_from_cart": 0,
+      "users": 2772,
+      "purchase_amount": 87640.58
+    },
+    {
+      "date": "2019-11-09",
+      "pv": 17267,
+      "fav": 0,
+      "cart": 691,
+      "buy": 253,
+      "remove_from_cart": 0,
+      "users": 2724,
+      "purchase_amount": 79715.94
+    },
+    {
+      "date": "2019-11-10",
+      "pv": 17893,
+      "fav": 0,
+      "cart": 662,
+      "buy": 234,
+      "remove_from_cart": 0,
+      "users": 2725,
+      "purchase_amount": 63875.060000000005
+    },
+    {
+      "date": "2019-11-11",
+      "pv": 18436,
+      "fav": 0,
+      "cart": 857,
+      "buy": 268,
+      "remove_from_cart": 0,
+      "users": 2918,
+      "purchase_amount": 80500.25
+    },
+    {
+      "date": "2019-11-12",
+      "pv": 18458,
+      "fav": 0,
+      "cart": 623,
+      "buy": 175,
+      "remove_from_cart": 0,
+      "users": 2757,
+      "purchase_amount": 50303.33
+    },
+    {
+      "date": "2019-11-13",
+      "pv": 19000,
+      "fav": 0,
+      "cart": 688,
+      "buy": 221,
+      "remove_from_cart": 0,
+      "users": 2850,
+      "purchase_amount": 57661.53
+    },
+    {
+      "date": "2019-11-14",
+      "pv": 22140,
+      "fav": 0,
+      "cart": 959,
+      "buy": 314,
+      "remove_from_cart": 0,
+      "users": 3061,
+      "purchase_amount": 102467.01
+    },
+    {
+      "date": "2019-11-15",
+      "pv": 49752,
+      "fav": 0,
+      "cart": 4584,
+      "buy": 30,
+      "remove_from_cart": 0,
+      "users": 3536,
+      "purchase_amount": 11683.01
+    },
+    {
+      "date": "2019-11-16",
+      "pv": 56013,
+      "fav": 0,
+      "cart": 3994,
+      "buy": 691,
+      "remove_from_cart": 0,
+      "users": 4701,
+      "purchase_amount": 235822.00999999998
+    },
+    {
+      "date": "2019-11-17",
+      "pv": 60052,
+      "fav": 0,
+      "cart": 3952,
+      "buy": 1571,
+      "remove_from_cart": 0,
+      "users": 4953,
+      "purchase_amount": 496425.98000000004
+    },
+    {
+      "date": "2019-11-18",
+      "pv": 23801,
+      "fav": 0,
+      "cart": 1328,
+      "buy": 574,
+      "remove_from_cart": 0,
+      "users": 3234,
+      "purchase_amount": 192496.41
+    },
+    {
+      "date": "2019-11-19",
+      "pv": 15905,
+      "fav": 0,
+      "cart": 653,
+      "buy": 259,
+      "remove_from_cart": 0,
+      "users": 2901,
+      "purchase_amount": 87177.93000000001
+    },
+    {
+      "date": "2019-11-20",
+      "pv": 15591,
+      "fav": 0,
+      "cart": 642,
+      "buy": 238,
+      "remove_from_cart": 0,
+      "users": 2808,
+      "purchase_amount": 77350.56
+    },
+    {
+      "date": "2019-11-21",
+      "pv": 16327,
+      "fav": 0,
+      "cart": 710,
+      "buy": 247,
+      "remove_from_cart": 0,
+      "users": 2936,
+      "purchase_amount": 74728.51
+    },
+    {
+      "date": "2019-11-22",
+      "pv": 14446,
+      "fav": 0,
+      "cart": 719,
+      "buy": 271,
+      "remove_from_cart": 0,
+      "users": 2509,
+      "purchase_amount": 90367.29
+    },
+    {
+      "date": "2019-11-23",
+      "pv": 14306,
+      "fav": 0,
+      "cart": 561,
+      "buy": 226,
+      "remove_from_cart": 0,
+      "users": 2380,
+      "purchase_amount": 66177.73999999999
+    },
+    {
+      "date": "2019-11-24",
+      "pv": 15424,
+      "fav": 0,
+      "cart": 630,
+      "buy": 193,
+      "remove_from_cart": 0,
+      "users": 2375,
+      "purchase_amount": 56624.280000000006
+    },
+    {
+      "date": "2019-11-25",
+      "pv": 15329,
+      "fav": 0,
+      "cart": 786,
+      "buy": 266,
+      "remove_from_cart": 0,
+      "users": 2490,
+      "purchase_amount": 74040.4
+    },
+    {
+      "date": "2019-11-26",
+      "pv": 15370,
+      "fav": 0,
+      "cart": 633,
+      "buy": 218,
+      "remove_from_cart": 0,
+      "users": 2645,
+      "purchase_amount": 60678.91
+    },
+    {
+      "date": "2019-11-27",
+      "pv": 14674,
+      "fav": 0,
+      "cart": 694,
+      "buy": 264,
+      "remove_from_cart": 0,
+      "users": 2397,
+      "purchase_amount": 67034.01999999999
+    },
+    {
+      "date": "2019-11-28",
+      "pv": 15471,
+      "fav": 0,
+      "cart": 667,
+      "buy": 217,
+      "remove_from_cart": 0,
+      "users": 2464,
+      "purchase_amount": 63050.469999999994
+    },
+    {
+      "date": "2019-11-29",
+      "pv": 17852,
+      "fav": 0,
+      "cart": 872,
+      "buy": 292,
+      "remove_from_cart": 0,
+      "users": 2827,
+      "purchase_amount": 81603.52
+    },
+    {
+      "date": "2019-11-30",
+      "pv": 16787,
+      "fav": 0,
+      "cart": 859,
+      "buy": 264,
+      "remove_from_cart": 0,
+      "users": 2578,
+      "purchase_amount": 81640.68
+    },
+    {
+      "date": "2019-12-01",
+      "pv": 4695,
+      "fav": 0,
+      "cart": 158,
+      "buy": 52,
+      "remove_from_cart": 0,
+      "users": 698,
+      "purchase_amount": 18652.050000000003
+    }
+  ],
+  "timezone": "Asia/Shanghai"
+}
