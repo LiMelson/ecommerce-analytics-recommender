@@ -1,0 +1,2 @@
+# Keep the Parquet reader and data contract on the same versions as the data pipeline.
+-r ../data_algo/requirements.txt
