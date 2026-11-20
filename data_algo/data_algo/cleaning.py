@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import hashlib
-import os
-import shutil
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,7 +26,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from .io_utils import write_json, write_text
-from .path_utils import ensure_distinct_paths, temp_output_path
+from .path_utils import atomic_output, ensure_distinct_paths
 from .schema import (
     BEHAVIOR_MAP,
     CANONICAL_COLUMNS,
@@ -370,10 +368,6 @@ def build_sample(
             raise FileNotFoundError(path)
         validate_header(path)
 
-    # 先写独立临时文件，成功关闭后再原子替换最终输出
-    temp_dir, temp_output = temp_output_path(output_parquet)
-    writer = pq.ParquetWriter(temp_output, SAMPLE_SCHEMA, compression="zstd")
-
     quality = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "inputs": [],
@@ -429,139 +423,139 @@ def build_sample(
     sample_price_sum = 0.0
     sample_price_count = 0
 
-    for path in input_paths:
-        file_stats = {
-            "path": str(path),
-            "size_bytes": path.stat().st_size,
-            "rows": 0,
-            "valid": 0,
-            "invalid": 0,
-            "duplicates": 0,
-            "kept": 0,
-        }
-        offset = 0
-        chunk_no = 0
-        if progress:
-            print(f"[scan] {path.name} ({file_stats['size_bytes'] / 1e9:.2f} GB) ...", flush=True)
+    with (
+        atomic_output(output_parquet) as temp_output,
+        pq.ParquetWriter(temp_output, SAMPLE_SCHEMA, compression="zstd") as writer,
+    ):
+        for path in input_paths:
+            file_stats = {
+                "path": str(path),
+                "size_bytes": path.stat().st_size,
+                "rows": 0,
+                "valid": 0,
+                "invalid": 0,
+                "duplicates": 0,
+                "kept": 0,
+            }
+            offset = 0
+            chunk_no = 0
+            if progress:
+                print(f"[scan] {path.name} ({file_stats['size_bytes'] / 1e9:.2f} GB) ...", flush=True)
 
-        reader = pd.read_csv(
-            path,
-            dtype="string",
-            keep_default_na=False,
-            encoding="utf-8-sig",
-            chunksize=chunksize,
-            on_bad_lines="warn",
-        )
-        for raw in reader:
-            chunk_no += 1
-            remaining = max(0, max_examples - len(quality["invalid_examples"]))
-            valid, stats, examples = normalize_chunk(
-                raw,
-                row_offset=offset,
-                file_name=path.name,
-                max_examples=remaining,
+            reader = pd.read_csv(
+                path,
+                dtype="string",
+                keep_default_na=False,
+                encoding="utf-8-sig",
+                chunksize=chunksize,
+                on_bad_lines="warn",
             )
-            quality["invalid_examples"].extend(examples)
-
-            # 全局质量统计
-            quality["rows_scanned"] += stats["rows"]
-            quality["valid_rows"] += stats["valid_before_dedupe"]
-            quality["invalid_rows"] += stats["invalid"]
-            quality["duplicate_rows"] += stats["duplicates"]
-            quality["kept_rows"] += stats["kept"]
-            _merge_counts(quality["behavior_type_counts"], stats["behavior_counts"])
-            _merge_counts(quality["raw_event_type_counts"], stats["raw_type_counts"])
-            _merge_counts(quality["invalid_reasons"], stats["invalid_reasons"])
-            quality["missing_counts"]["category_code"] += stats["missing_category_code"]
-            quality["missing_counts"]["brand"] += stats["missing_brand"]
-            quality["missing_counts"]["price"] += stats["missing_price"]
-            quality["price"]["count"] += stats["price_count"]
-            quality["price"]["sum"] += stats["price_sum"]
-            quality["price"]["zero"] += stats["zero_price"]
-            quality["price"]["negative"] += stats["negative_price"]
-            if stats["price_min"] is not None:
-                current = quality["price"]["min"]
-                quality["price"]["min"] = (
-                    stats["price_min"] if current is None else min(current, stats["price_min"])
+            for raw in reader:
+                chunk_no += 1
+                remaining = max(0, max_examples - len(quality["invalid_examples"]))
+                valid, stats, examples = normalize_chunk(
+                    raw,
+                    row_offset=offset,
+                    file_name=path.name,
+                    max_examples=remaining,
                 )
-            if stats["price_max"] is not None:
-                current = quality["price"]["max"]
-                quality["price"]["max"] = (
-                    stats["price_max"] if current is None else max(current, stats["price_max"])
-                )
-            for key in ("time_min", "time_max"):
-                value = stats[key]
-                if value is not None:
-                    current = quality["time_range"]["min" if key == "time_min" else "max"]
-                    if key == "time_min":
-                        quality["time_range"]["min"] = (
-                            value if current is None else min(current, value)
-                        )
-                    else:
-                        quality["time_range"]["max"] = (
-                            value if current is None else max(current, value)
-                        )
+                quality["invalid_examples"].extend(examples)
 
-            if not valid.empty:
-                unique_users.add_many(valid["user_id"])
-                unique_items.add_many(valid["item_id"])
-                unique_categories.add_many(valid["category_id"])
-                unique_brands.add_many(valid["brand"])
-
-            file_stats["rows"] += stats["rows"]
-            file_stats["valid"] += stats["valid_before_dedupe"]
-            file_stats["invalid"] += stats["invalid"]
-            file_stats["duplicates"] += stats["duplicates"]
-            file_stats["kept"] += stats["kept"]
-
-            # 按用户抽样并写入 Parquet
-            if not valid.empty:
-                keep = sample_user_mask(valid["user_id"], per_mille, seed)
-                selected = valid.loc[keep]
-                if not selected.empty:
-                    table = _to_arrow_table(selected)
-                    writer.write_table(table)
-                    sample["rows"] += len(selected)
-                    sample_users.update(selected["user_id"].dropna().astype(str))
-                    _merge_counts(
-                        sample["behavior_counts"],
-                        {
-                            str(k): int(v)
-                            for k, v in selected["behavior_type"].value_counts().items()
-                        },
+                # 全局质量统计
+                quality["rows_scanned"] += stats["rows"]
+                quality["valid_rows"] += stats["valid_before_dedupe"]
+                quality["invalid_rows"] += stats["invalid"]
+                quality["duplicate_rows"] += stats["duplicates"]
+                quality["kept_rows"] += stats["kept"]
+                _merge_counts(quality["behavior_type_counts"], stats["behavior_counts"])
+                _merge_counts(quality["raw_event_type_counts"], stats["raw_type_counts"])
+                _merge_counts(quality["invalid_reasons"], stats["invalid_reasons"])
+                quality["missing_counts"]["category_code"] += stats["missing_category_code"]
+                quality["missing_counts"]["brand"] += stats["missing_brand"]
+                quality["missing_counts"]["price"] += stats["missing_price"]
+                quality["price"]["count"] += stats["price_count"]
+                quality["price"]["sum"] += stats["price_sum"]
+                quality["price"]["zero"] += stats["zero_price"]
+                quality["price"]["negative"] += stats["negative_price"]
+                if stats["price_min"] is not None:
+                    current = quality["price"]["min"]
+                    quality["price"]["min"] = (
+                        stats["price_min"] if current is None else min(current, stats["price_min"])
                     )
-                    times = selected["event_time"]
-                    if times.notna().any():
-                        tmin, tmax = times.min(), times.max()
-                        sample["time_min"] = (
-                            tmin if sample["time_min"] is None else min(sample["time_min"], tmin)
-                        )
-                        sample["time_max"] = (
-                            tmax if sample["time_max"] is None else max(sample["time_max"], tmax)
-                        )
-                    sample_price_sum += float(selected["price"].sum(skipna=True))
-                    sample_price_count += int(selected["price"].notna().sum())
+                if stats["price_max"] is not None:
+                    current = quality["price"]["max"]
+                    quality["price"]["max"] = (
+                        stats["price_max"] if current is None else max(current, stats["price_max"])
+                    )
+                for key in ("time_min", "time_max"):
+                    value = stats[key]
+                    if value is not None:
+                        current = quality["time_range"]["min" if key == "time_min" else "max"]
+                        if key == "time_min":
+                            quality["time_range"]["min"] = (
+                                value if current is None else min(current, value)
+                            )
+                        else:
+                            quality["time_range"]["max"] = (
+                                value if current is None else max(current, value)
+                            )
 
-            offset += stats["rows"]
+                if not valid.empty:
+                    unique_users.add_many(valid["user_id"])
+                    unique_items.add_many(valid["item_id"])
+                    unique_categories.add_many(valid["category_id"])
+                    unique_brands.add_many(valid["brand"])
 
-            if progress and chunk_no % 20 == 0:
+                file_stats["rows"] += stats["rows"]
+                file_stats["valid"] += stats["valid_before_dedupe"]
+                file_stats["invalid"] += stats["invalid"]
+                file_stats["duplicates"] += stats["duplicates"]
+                file_stats["kept"] += stats["kept"]
+
+                # 按用户抽样并写入 Parquet
+                if not valid.empty:
+                    keep = sample_user_mask(valid["user_id"], per_mille, seed)
+                    selected = valid.loc[keep]
+                    if not selected.empty:
+                        table = _to_arrow_table(selected)
+                        writer.write_table(table)
+                        sample["rows"] += len(selected)
+                        sample_users.update(selected["user_id"].dropna().astype(str))
+                        _merge_counts(
+                            sample["behavior_counts"],
+                            {
+                                str(k): int(v)
+                                for k, v in selected["behavior_type"].value_counts().items()
+                            },
+                        )
+                        times = selected["event_time"]
+                        if times.notna().any():
+                            tmin, tmax = times.min(), times.max()
+                            sample["time_min"] = (
+                                tmin if sample["time_min"] is None else min(sample["time_min"], tmin)
+                            )
+                            sample["time_max"] = (
+                                tmax if sample["time_max"] is None else max(sample["time_max"], tmax)
+                            )
+                        sample_price_sum += float(selected["price"].sum(skipna=True))
+                        sample_price_count += int(selected["price"].notna().sum())
+
+                offset += stats["rows"]
+
+                if progress and chunk_no % 20 == 0:
+                    print(
+                        f"  chunk {chunk_no}: rows={offset:,}, "
+                        f"sample_rows={sample['rows']:,}, sample_users={len(sample_users):,}",
+                        flush=True,
+                    )
+
+            quality["inputs"].append(file_stats)
+            if progress:
                 print(
-                    f"  chunk {chunk_no}: rows={offset:,}, "
-                    f"sample_rows={sample['rows']:,}, sample_users={len(sample_users):,}",
+                    f"[scan] {path.name} done: rows={file_stats['rows']:,}, "
+                    f"invalid={file_stats['invalid']:,}, duplicates={file_stats['duplicates']:,}",
                     flush=True,
                 )
-
-        quality["inputs"].append(file_stats)
-        if progress:
-            print(
-                f"[scan] {path.name} done: rows={file_stats['rows']:,}, "
-                f"invalid={file_stats['invalid']:,}, duplicates={file_stats['duplicates']:,}",
-                flush=True,
-            )
-
-    writer.close()
-    os.replace(temp_output, output_parquet)
-    shutil.rmtree(temp_dir, ignore_errors=True)
 
     sample["users"] = len(sample_users)
     sample["price_sum"] = round(sample_price_sum, 2)
@@ -748,5 +742,5 @@ def load_events(
     df["event_time_cn"] = df["event_time"].dt.tz_convert(CN_TZ)
     df["date"] = df["event_time_cn"].dt.strftime("%Y-%m-%d")
     df["hour"] = df["event_time_cn"].dt.hour.astype("int8")
-    df["event_ts"] = df["event_time"].astype("int64")
+    df["event_ts"] = df["event_time"].dt.as_unit("ns").astype("int64")
     return df

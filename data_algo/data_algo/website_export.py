@@ -17,10 +17,9 @@ import pandas as pd
 
 from .io_utils import write_json
 from .path_utils import atomic_output, ensure_distinct_paths
+from .schema import CORE_BEHAVIORS
 
 WEBSITE_COLUMNS = ["user_id", "item_id", "category_id", "behavior_type", "timestamp"]
-CORE_BEHAVIORS = {"pv", "fav", "cart", "buy"}
-EPOCH = pd.Timestamp("1970-01-01", tz="UTC")
 MIN_MS = 946684800000  # 2000-01-01
 MAX_MS = 4102444800000  # 2100-01-01
 
@@ -63,13 +62,16 @@ def export_website(
     )
 
     source_rows = int(len(df))
-    core = df[df["behavior_type"].isin(CORE_BEHAVIORS)].copy()
-    excluded = df[~df["behavior_type"].isin(CORE_BEHAVIORS)].copy()
+    core_mask = df["behavior_type"].isin(CORE_BEHAVIORS)
+    core = df.loc[core_mask]
+    excluded = df.loc[~core_mask, "behavior_type"]
+    if core.empty:
+        raise ValueError("样本中没有可入库的 pv/fav/cart/buy 行为")
 
     event_time = pd.to_datetime(core["event_time"], utc=True, errors="coerce")
     if event_time.isna().any():
         raise ValueError("存在无法解析的 event_time，不能导出网站入库文件")
-    timestamp = ((event_time - EPOCH).dt.total_seconds() * 1000).round().astype("int64")
+    timestamp = event_time.dt.as_unit("ms").astype("int64")
     if not timestamp.between(MIN_MS, MAX_MS - 1).all():
         raise ValueError("timestamp 超出 2000–2100，不能导出网站入库文件")
 
@@ -113,7 +115,7 @@ def export_website(
         "excluded_rows": int(len(excluded)),
         "excluded_by_type": {
             str(key): int(value)
-            for key, value in excluded["behavior_type"].value_counts().items()
+            for key, value in excluded.value_counts().items()
         },
         "timestamp_unit": "milliseconds since epoch UTC",
         "timestamp_range": {

@@ -97,17 +97,3 @@ def atomic_output(final_path: str | Path) -> Iterator[Path]:
         os.replace(temp_path, final)
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
-
-
-def temp_output_path(final_path: str | Path) -> tuple[Path, Path]:
-    """为非上下文管理器场景返回 (临时目录, 临时文件)。
-
-    调用方成功后必须 ``os.replace(temp, final)`` 并删除临时目录；
-    本函数只负责生成同目录下的唯一临时路径，不创建最终文件。
-    """
-    final = Path(final_path)
-    final.parent.mkdir(parents=True, exist_ok=True)
-    temp_dir = Path(
-        tempfile.mkdtemp(prefix=f".{final.name}.", dir=final.parent)
-    )
-    return temp_dir, temp_dir / final.name

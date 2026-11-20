@@ -8,6 +8,7 @@ from data_algo.cleaning import (
     render_quality_markdown,
 )
 from data_algo.duckdb_pipeline import build_sample_duckdb
+from data_algo import path_utils
 from data_algo.path_utils import atomic_output
 
 FIXTURE = Path(__file__).parent / "fixtures" / "sample_events.csv"
@@ -107,6 +108,7 @@ def test_build_sample_preserves_existing_output_on_writer_failure(
             progress=False,
         )
     assert output.read_bytes() == b"OLD"
+    assert not list(tmp_path.glob(".sample.parquet.*"))
 
 
 def test_duckdb_preserves_existing_output_on_validation_failure(tmp_path: Path) -> None:
@@ -115,6 +117,23 @@ def test_duckdb_preserves_existing_output_on_validation_failure(tmp_path: Path) 
     with pytest.raises(ValueError):
         build_sample_duckdb([FIXTURE], output, per_mille=0)
     assert output.read_bytes() == b"OLD"
+
+
+def test_duckdb_cleans_temporary_output_on_replace_failure(tmp_path: Path, monkeypatch) -> None:
+    output = tmp_path / "sample.parquet"
+    output.write_bytes(b"OLD")
+
+    def fail_replace(source, destination):
+        assert source.is_file()
+        assert destination == output
+        raise PermissionError("output is locked")
+
+    monkeypatch.setattr(path_utils.os, "replace", fail_replace)
+    with pytest.raises(PermissionError, match="output is locked"):
+        build_sample_duckdb([FIXTURE], output, progress=False)
+
+    assert output.read_bytes() == b"OLD"
+    assert not list(tmp_path.glob(".sample.parquet.*"))
 
 
 def test_duckdb_supports_required_only_columns(tmp_path: Path) -> None:
@@ -133,6 +152,7 @@ def test_duckdb_supports_required_only_columns(tmp_path: Path) -> None:
     )
     assert result["sample"]["rows"] == 3
     df = load_events(output)
+    assert df["event_ts"].iloc[0] == 1569924000000000000
     assert set(df["category_id"]) == {"unknown"}
     assert df["category_code"].isna().all()
     assert df["brand"].isna().all()
@@ -146,7 +166,8 @@ def test_duckdb_supports_multiple_files_with_different_optional_columns(
 ) -> None:
     required = tmp_path / "required.csv"
     _write_required_only(required)
-    full = tmp_path / "full.csv"
+    full = tmp_path / "second" / required.name
+    full.parent.mkdir()
     full.write_text(
         "event_time,event_type,product_id,category_id,category_code,brand,price,user_id,user_session\n"
         "2019-10-02 10:00:00 UTC,view,1002,2002,electronics.audio.headphone,sony,99.0,2,s2\n"
@@ -165,6 +186,7 @@ def test_duckdb_supports_multiple_files_with_different_optional_columns(
         progress=False,
     )
     assert result["sample"]["rows"] == 5
+    assert [entry["rows"] for entry in result["quality"]["inputs"]] == [3, 2]
     df = load_events(output)
     assert len(df) == 5
     assert df["price"].notna().sum() == 2

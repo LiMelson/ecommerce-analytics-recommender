@@ -95,3 +95,23 @@ def test_export_website_rejects_output_equal_input(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="输入文件"):
         export_website(df, source, source_path=source)
     assert source.read_bytes() == before
+
+
+def test_export_website_truncates_to_integer_milliseconds(tmp_path: Path) -> None:
+    df = load_events(FIXTURE).iloc[:1].copy()
+    df["event_time"] = pd.to_datetime(["2099-12-31T23:59:59.999900Z"], utc=True)
+    output = tmp_path / "website.parquet"
+    export_website(df, output)
+
+    assert pd.read_parquet(output)["timestamp"].tolist() == [4102444799999]
+
+
+def test_export_website_rejects_sample_with_no_importable_rows(tmp_path: Path) -> None:
+    df = load_events(FIXTURE)
+    df = df[df["behavior_type"] == "remove_from_cart"]
+    output = tmp_path / "website.csv"
+    output.write_bytes(b"old export")
+    with pytest.raises(ValueError, match="没有可入库"):
+        export_website(df, output)
+
+    assert output.read_bytes() == b"old export"

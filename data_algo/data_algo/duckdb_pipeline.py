@@ -11,16 +11,16 @@ DuckDB 可以在几分钟内完成全量质量统计 + 按用户抽样。
 
 from __future__ import annotations
 
-import os
-import shutil
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Sequence
 
+import duckdb
+
 from .cleaning import render_quality_markdown, validate_header
 from .io_utils import write_json, write_text
-from .path_utils import ensure_distinct_paths, temp_output_path
+from .path_utils import atomic_output, ensure_distinct_paths
 
 RAW_COLUMNS = [
     "event_time",
@@ -272,73 +272,68 @@ def build_sample_duckdb(
             raise FileNotFoundError(path)
         headers[path] = validate_header(path)
 
-    import duckdb
+    with atomic_output(output_parquet) as temp_output, duckdb.connect() as con:
+        con.execute(f"PRAGMA threads = {int(threads)}")
+        con.execute(f"PRAGMA memory_limit = {_q(memory_limit)}")
 
-    con = duckdb.connect()
-    con.execute(f"PRAGMA threads = {int(threads)}")
-    con.execute(f"PRAGMA memory_limit = {_q(memory_limit)}")
+        started = time.perf_counter()
+        if progress:
+            print("[duckdb] 创建 CSV / 清洗视图 ...", flush=True)
+        _create_views(con, input_paths, headers)
 
-    started = time.perf_counter()
-    if progress:
-        print("[duckdb] 创建 CSV / 清洗视图 ...", flush=True)
-    _create_views(con, input_paths, headers)
+        if progress:
+            print("[duckdb] 全量质量统计（约 1 分钟）...", flush=True)
+        q = _quality(con, max_examples)
+        rows_scanned, valid_rows, invalid_rows = q["row"][:3]
+        if progress:
+            print(
+                f"[duckdb] 质量统计完成：{rows_scanned:,} 行，"
+                f"有效 {valid_rows:,}，无效 {invalid_rows:,}",
+                flush=True,
+            )
 
-    if progress:
-        print("[duckdb] 全量质量统计（约 1 分钟）...", flush=True)
-    q = _quality(con, max_examples)
-    rows_scanned, valid_rows, invalid_rows = q["row"][:3]
-    if progress:
-        print(
-            f"[duckdb] 质量统计完成：{rows_scanned:,} 行，"
-            f"有效 {valid_rows:,}，无效 {invalid_rows:,}",
-            flush=True,
+        condition = f"""
+            (
+                (TRY_CAST(user_id AS BIGINT) IS NOT NULL
+                 AND TRY_CAST(user_id AS BIGINT) % 1000 < {int(per_mille)})
+                OR
+                (TRY_CAST(user_id AS BIGINT) IS NULL
+                 AND hash(user_id || ':' || CAST({int(seed)} AS VARCHAR)) % 1000 < {int(per_mille)})
+            )
+        """
+        if progress:
+            print("[duckdb] 写入抽样 Parquet（约 1 分钟）...", flush=True)
+        con.execute(
+            f"""
+            COPY (
+                SELECT DISTINCT
+                    user_id, item_id, category_id, category_code, brand,
+                    behavior_type, raw_event_type, event_time, price, session_id
+                FROM cleaned
+                WHERE is_valid AND {condition}
+                ORDER BY event_time, user_id, item_id
+            ) TO {_q(temp_output.resolve().as_posix())}
+            (FORMAT PARQUET, COMPRESSION ZSTD)
+            """
         )
 
-    condition = f"""
-        (
-            (TRY_CAST(user_id AS BIGINT) IS NOT NULL
-             AND TRY_CAST(user_id AS BIGINT) % 1000 < {int(per_mille)})
-            OR
-            (TRY_CAST(user_id AS BIGINT) IS NULL
-             AND hash(user_id || ':' || CAST({int(seed)} AS VARCHAR)) % 1000 < {int(per_mille)})
-        )
-    """
-    if progress:
-        print("[duckdb] 写入抽样 Parquet（约 1 分钟）...", flush=True)
-    temp_dir, temp_output = temp_output_path(output_parquet)
-    con.execute(
-        f"""
-        COPY (
-            SELECT DISTINCT
-                user_id, item_id, category_id, category_code, brand,
-                behavior_type, raw_event_type, event_time, price, session_id
-            FROM cleaned
-            WHERE is_valid AND {condition}
-            ORDER BY event_time, user_id, item_id
-        ) TO {_q(temp_output.resolve().as_posix())}
-        (FORMAT PARQUET, COMPRESSION ZSTD)
-        """
-    )
-
-    sample_row = con.execute(
-        f"""
-        SELECT
-            count(*) AS rows,
-            count(DISTINCT user_id) AS users,
-            min(event_time) AS time_min,
-            max(event_time) AS time_max,
-            count(*) FILTER (WHERE behavior_type = 'pv') AS pv,
-            count(*) FILTER (WHERE behavior_type = 'fav') AS fav,
-            count(*) FILTER (WHERE behavior_type = 'cart') AS cart,
-            count(*) FILTER (WHERE behavior_type = 'buy') AS buy,
-            count(*) FILTER (WHERE behavior_type = 'remove_from_cart') AS remove_from_cart,
-            count(price) AS price_count,
-            sum(price) AS price_sum
-        FROM read_parquet({_q(temp_output.resolve().as_posix())})
-        """
-    ).fetchone()
-    os.replace(temp_output, output_parquet)
-    shutil.rmtree(temp_dir, ignore_errors=True)
+        sample_row = con.execute(
+            f"""
+            SELECT
+                count(*) AS rows,
+                count(DISTINCT user_id) AS users,
+                min(event_time) AS time_min,
+                max(event_time) AS time_max,
+                count(*) FILTER (WHERE behavior_type = 'pv') AS pv,
+                count(*) FILTER (WHERE behavior_type = 'fav') AS fav,
+                count(*) FILTER (WHERE behavior_type = 'cart') AS cart,
+                count(*) FILTER (WHERE behavior_type = 'buy') AS buy,
+                count(*) FILTER (WHERE behavior_type = 'remove_from_cart') AS remove_from_cart,
+                count(price) AS price_count,
+                sum(price) AS price_sum
+            FROM read_parquet({_q(temp_output.resolve().as_posix())})
+            """
+        ).fetchone()
 
     sample = {
         "engine": "duckdb",
@@ -365,9 +360,9 @@ def build_sample_duckdb(
 
     # 组装成与 pandas 版本一致的 quality 结构
     inputs_meta = []
-    per_file_map = {Path(row[0]).name: row for row in q["per_file"]}
+    per_file_map = {row[0]: row for row in q["per_file"]}
     for path in input_paths:
-        matched = per_file_map.get(path.name)
+        matched = per_file_map.get(path.resolve().as_posix())
         inputs_meta.append(
             {
                 "path": str(path),
