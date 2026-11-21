@@ -1,0 +1,107 @@
+{
+  "baseline_verification": {
+    "archive_sha256": "d3591f9b9c8671d839d24c4aa08c92920f54ea4a043cc0cc6d4a66acc22ba440",
+    "archived_repository_files_with_identical_bytes": 56,
+    "local_baseline_commit": "9b226b3efc3963f5346cb874cf3b55b17e186f5d",
+    "main_commit_unchanged": "7a6d85addd92d3ce0d55259f77dc6b13e6e93bce"
+  },
+  "http_smoke": {
+    "all_responses_equal_python_api": true,
+    "assets_byte_identical_before_and_after_to_04b": true,
+    "concurrency": 4,
+    "http_200": 18,
+    "loaded_versions": [
+      "bpr_mf_buy_v1",
+      "itemcf_v1",
+      "popular_v1"
+    ],
+    "no_parquet_read_or_label_scoring": true,
+    "registry_and_model_asset_count": 4,
+    "requests": 18,
+    "user_types": [
+      "buyer",
+      "warm_without_buy",
+      "cold_synthetic"
+    ]
+  },
+  "validation_replay": {
+    "first_aggregate_report_sha256": "ed5f460ed93c0596f1f0d46c1c09b881fe4888708c4c400f9458ec5e4dc9b367",
+    "replay_aggregate_report_sha256": "9ac17fac5df23a0b9878dd0f2923ca53ea18433f84563d48002ac2eb3522c2bb",
+    "replay_runtime": {
+      "process_peak_rss_mib": 791.80859375,
+      "seconds": 33.73016069999994
+    },
+    "selected_trial": "A",
+    "trial_fit_statistics_benchmark_metrics_ranking_sha256_and_bootstrap_equal": true,
+    "trials": [
+      {
+        "id": "A",
+        "rankings_sha256": "96b8fcf08df4c7832031db8671627565e42e0af595740d7170510481093190b2",
+        "runtime": {
+          "fit_seconds": 2.0016716999999744,
+          "process_peak_rss_mib_after_fit": 791.80859375,
+          "validation_evaluation_seconds": 4.767182000000048,
+          "validation_recommend_ms": {
+            "p50": 0.053200000024844485,
+            "p95": 0.9472000000414482,
+            "requests": 18438
+          }
+        },
+        "status": "ok"
+      },
+      {
+        "id": "B",
+        "rankings_sha256": "5cfcb210ddd3684c7e0d70548a02f6ae11b88cd34b3088a69836b5901de038f1",
+        "runtime": {
+          "fit_seconds": 3.2977250999999796,
+          "process_peak_rss_mib_after_fit": 791.80859375,
+          "validation_evaluation_seconds": 5.175799200000029,
+          "validation_recommend_ms": {
+            "p50": 0.0560999999379419,
+            "p95": 1.0523000000830507,
+            "requests": 18438
+          }
+        },
+        "status": "ok"
+      },
+      {
+        "id": "C",
+        "rankings_sha256": "112bbc757699ea958ed7a01fa4ddc178f728029695c2ba25df28d47906629e79",
+        "runtime": {
+          "fit_seconds": 2.753739400000086,
+          "process_peak_rss_mib_after_fit": 791.80859375,
+          "validation_evaluation_seconds": 4.412358699999913,
+          "validation_recommend_ms": {
+            "p50": 0.051500000040505256,
+            "p95": 0.9063999999625594,
+            "requests": 18438
+          }
+        },
+        "status": "ok"
+      },
+      {
+        "id": "D",
+        "rankings_sha256": "a026bf22dc3bdf44df344e78b8e904a5d5addffb2c7baa42784827fa0a7b447c",
+        "runtime": {
+          "fit_seconds": 2.901461100000006,
+          "process_peak_rss_mib_after_fit": 791.80859375,
+          "validation_evaluation_seconds": 4.699368800000002,
+          "validation_recommend_ms": {
+            "p50": 0.0529999999798747,
+            "p95": 0.9759000000713058,
+            "requests": 18438
+          }
+        },
+        "status": "ok"
+      }
+    ]
+  },
+  "workspace_testing": {
+    "pytest_exit": 0,
+    "pytest_passed": 127,
+    "pytest_warning_count": 1,
+    "ruff_check_exit": 0,
+    "ruff_format_check_exit": 0,
+    "ruff_version": "0.17.5"
+  }
+}
