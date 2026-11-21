@@ -1,5 +1,7 @@
 # 推荐算法与实验
 
+P0-REC-04B 提供独立 HTTP 推理服务、错误契约和本机并发实测，见 [HTTP 推理服务交接](../docs/P0-REC-04B-HTTP推理服务交接.md)。
+
 P0-REC-04A 提供纯 Python 统一引擎、独立模型资产和推理命令，见 [算法模块交付与 VSCode 运行](../docs/P0-REC-04A-算法模块交付.md)。
 
 P0-REC-03 的 BPR-MF 训练、模型保存加载、三模型统一结果和 Windows 命令见 [BPR 实验与复现](../docs/P0-REC-03-BPR实验与复现.md)。
@@ -43,7 +45,7 @@ B 和 C 的热度相同，按 ID 顺序排列，因此榜单为 A、B、C、D、
 ~~~powershell
 py -3.12 -m venv .venv
 $py = '.\.venv\Scripts\python.exe'
-& $py -m pip install -r recommendation/requirements.txt
+& $py -m pip install -r recommendation/requirements-http.txt
 $sample = '..\交接包_张凯博_2026-11-20\data\processed\events_sample.parquet'
 
 & $py -m pytest -q recommendation/tests
@@ -54,8 +56,8 @@ $sample = '..\交接包_张凯博_2026-11-20\data\processed\events_sample.parque
 | 命令 | 意义与成功输出 |
 | --- | --- |
 | `py -3.12 -m venv .venv` | 建立推荐和数据组共用的本地虚拟环境。直接调用其 python.exe 即可。后端依赖安装在自己的 backend/.venv。 |
-| `pip install -r recommendation/requirements.txt` | 安装沿用数据组锁定的 Parquet、数据分析与测试依赖。 |
-| `pytest -q recommendation/tests` | 检查人工构造的边界案例。当前含统一引擎与持久化用例共 84 项。 |
+| `pip install -r recommendation/requirements-http.txt` | 安装算法依赖，以及运行完整测试套件所需的 HTTP 依赖。 |
+| `pytest -q recommendation/tests` | 检查算法、资产与服务回归。安装 `recommendation/requirements-http.txt` 后运行完整套件，共 118 项。 |
 | `recommendation.run audit` | 校验真实样本并生成 audit.json。终端打印 rows=1079354 users=52687 purchase_users=6976。 |
 | `recommendation.run benchmark` | 构建验证和测试快照并输出 benchmark.json。验证与测试主口径分别有 2,069 和 1,122 个用户。测试 Recall@10 约为 0.17365，NDCG@10 约为 0.10100。 |
 

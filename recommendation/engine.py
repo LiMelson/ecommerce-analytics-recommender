@@ -180,9 +180,10 @@ class RecommendationEngine:
                 }
             )
         response = {"user_id": user_id, "dataset_id": dataset_id, "model_version": model_version, "items": items}
-        fallback_reason = None
-        if sources and any(source not in ("itemcf_cosine", "bpr_mf", "popular_purchase_count") for source in sources):
-            fallback_reason = ranking.source
+        fallback_reason = next(
+            (source for source in sources if source not in ("itemcf_cosine", "bpr_mf", "popular_purchase_count")),
+            None,
+        )
         if not model.history.catalog:
             fallback_reason = "empty_candidate_catalog"
         return response, {"source": ranking.source, "item_sources": sources, "fallback_reason": fallback_reason}
