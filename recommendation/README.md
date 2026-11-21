@@ -1,5 +1,24 @@
 # 推荐算法与实验
 
+模块根据历史行为提供 Top10 商品排序，支持离线评估、模型保存加载、Python 单用户/批量与独立 HTTP 推理。正式模型为 `popular_v1`、`itemcf_v1`、`bpr_mf_buy_v1`。
+
+- [同学接手说明与请求示例](../docs/推荐算法-接手说明.md)
+- [AI 接手指南、资产哈希与验收标准](../docs/推荐算法-AI接手指南.md)
+- [最终技术报告](../docs/P0-REC-06-推荐算法最终技术报告.md) · [最后一次优化实验](../docs/P0-REC-07-最后一次推荐优化实验.md)
+
+从仓库根目录用 Windows PowerShell 安装、测试。将课程组受控资产 ZIP 的四个原文件解压到 `artifacts/p0-rec-04a/release-assets/` 后启动服务。正式网站的数据库版本绑定和端到端接入由集成组负责。
+
+~~~powershell
+py -3.12 -m venv .venv
+$py = (Resolve-Path '.venv/Scripts/python.exe').Path
+$env:PYTHONUTF8 = '1'
+& $py -m pip install -r recommendation/requirements-http.txt
+& $py -m pytest -q recommendation/tests
+& $py -m recommendation.http_service --host 127.0.0.1 --port 9001
+~~~
+
+## 历史技术资料
+
 P0-REC-04B 提供独立 HTTP 推理服务、错误契约和本机并发实测，见 [HTTP 推理服务交接](../docs/P0-REC-04B-HTTP推理服务交接.md)。
 
 P0-REC-04A 提供纯 Python 统一引擎、独立模型资产和推理命令，见 [算法模块交付与 VSCode 运行](../docs/P0-REC-04A-算法模块交付.md)。
@@ -57,7 +76,7 @@ $sample = '..\交接包_张凯博_2026-11-20\data\processed\events_sample.parque
 | --- | --- |
 | `py -3.12 -m venv .venv` | 建立推荐和数据组共用的本地虚拟环境。直接调用其 python.exe 即可。后端依赖安装在自己的 backend/.venv。 |
 | `pip install -r recommendation/requirements-http.txt` | 安装算法依赖，以及运行完整测试套件所需的 HTTP 依赖。 |
-| `pytest -q recommendation/tests` | 检查算法、资产与服务回归。安装 `recommendation/requirements-http.txt` 后运行完整套件，共 118 项。 |
+| `pytest -q recommendation/tests` | 检查算法、资产与服务回归。安装 `recommendation/requirements-http.txt` 后运行完整套件。 |
 | `recommendation.run audit` | 校验真实样本并生成 audit.json。终端打印 rows=1079354 users=52687 purchase_users=6976。 |
 | `recommendation.run benchmark` | 构建验证和测试快照并输出 benchmark.json。验证与测试主口径分别有 2,069 和 1,122 个用户。测试 Recall@10 约为 0.17365，NDCG@10 约为 0.10100。 |
 
@@ -79,6 +98,6 @@ print("benchmark results and ranking fingerprints match")
 '@ | & $py -
 ~~~
 
-后端现有适配使用 `user_id / dataset_id / model_version / limit`，核心的 `PopularModel.predict` 生成对应响应。线下使用 `local-parquet-sha256-…`。待取得真实导入版本和校验记录后，再为实际网站版本登记兼容模型及部署预加载推理服务。BPR 的本轮离线结果等待阶段审查。
+后端现有适配使用 `user_id / dataset_id / model_version / limit`，当前对接入口为统一引擎和 HTTP 服务。线下使用 `local-parquet-sha256-…`。待取得真实导入版本和校验记录后，再为实际网站版本登记兼容模型及部署预加载推理服务。
 
 详见 [后端交付约定](../docs/数据与算法交付约定.md) 与 [数据组说明](../data_algo/README.md)。

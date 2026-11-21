@@ -93,6 +93,7 @@ docs/              接口、数据库、协议、调研与验收记录
 - [数据库设计](docs/数据库设计.md)
 - [前端说明](frontend/README.md)
 - [后端说明](backend/README.md)
+- [推荐算法模块与交接](recommendation/README.md)
 - [数据来源说明](data/README.md)
 - [数据选型与处理说明](docs/数据选型与处理说明.md)
 - [data_algo 模块说明](data_algo/README.md)
