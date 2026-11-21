@@ -29,6 +29,16 @@ REASONS = {
 }
 
 
+def _training_identity(model):
+    fallback = model if isinstance(model, PopularModel) else model.fallback
+    return (
+        fallback.metadata.protocol_version,
+        fallback.history.fit_start,
+        fallback.history.cutoff,
+        fallback.training_snapshot_sha256,
+    )
+
+
 class RecommendationEngine:
     def __init__(self):
         self._registrations = {}
@@ -89,6 +99,12 @@ class RecommendationEngine:
             for name in ("dataset_id", "sample_sha256", "protocol_version", "train_cutoff_exclusive", "code_sha256")
         ):
             raise AssetError("model_identity_mismatch", "Model and fallback identity differ")
+        identity = _training_identity(model)
+        for existing in self._models.values():
+            if existing.metadata.dataset_id == model.metadata.dataset_id and _training_identity(existing) != identity:
+                raise AssetError(
+                    "model_identity_mismatch", "Models for the same dataset must share a training snapshot"
+                )
         self._models[version] = model
         self._categories[version] = MappingProxyType({item.item_id: item.category_id for item in fallback.ordered})
 

@@ -152,6 +152,8 @@ def representative_users(fit, models):
 
 
 def verify_real(sample, out_dir):
+    if not __debug__:
+        raise RuntimeError("Run delivery verification without Python optimization so all checks execute")
     models, build_report = build_assets(sample, out_dir)
     original = RecommendationEngine.from_models([model for _, model, _, _ in models])
     loaded = RecommendationEngine.from_registry(out_dir / "registry.json")

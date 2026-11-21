@@ -191,6 +191,8 @@ def file_state(paths):
 
 
 def verify_http(registry, sample, out_dir):
+    if not __debug__:
+        raise RuntimeError("Run HTTP verification without Python optimization so all checks execute")
     registry = registry.resolve()
     directory = out_dir.resolve()
     if directory.exists() and any(directory.iterdir()):

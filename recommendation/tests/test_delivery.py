@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from dataclasses import asdict
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -76,6 +78,46 @@ def test_three_models_roundtrip_continuous_batch_and_exact_contract(bundle, tmp_
             assert set(ids).isdisjoint(model.history.blocked(user))
             assert [item["rank"] for item in expected["items"]] == list(range(1, len(ids) + 1))
             assert all(set(item) == {"item_id", "category_id", "rank", "score", "reason"} for item in expected["items"])
+
+
+def test_models_for_one_dataset_must_share_the_training_snapshot(bundle, tmp_path):
+    _, itemcf_config, _ = bundle[1]
+    data = frame(("other", "B", "buy"), ("new-train-user", "A", "pv"))
+    other_fallback = PopularModel.fit(data, CUTOFF, fit_start=START, **META)
+    itemcf, summary = ItemCFModel.fit(data, other_fallback, ItemCFConfig(**itemcf_config), model_version="itemcf_v1")
+    popular = bundle[0][0]
+    assert itemcf.metadata.train_cutoff_exclusive == popular.metadata.train_cutoff_exclusive
+    assert other_fallback.training_snapshot_sha256 != popular.training_snapshot_sha256
+
+    with pytest.raises(AssetError, match="training snapshot") as failure:
+        RecommendationEngine.from_models([popular, itemcf])
+    assert failure.value.code == "model_identity_mismatch"
+
+    path = save_bundle(tmp_path, [bundle[0], (itemcf, itemcf_config, summary)])
+    engine = RecommendationEngine.from_registry(path, preload=False)
+    engine.load("popular_v1")
+    with pytest.raises(AssetError, match="training snapshot") as failure:
+        engine.load("itemcf_v1")
+    assert failure.value.code == "model_identity_mismatch"
+    assert engine.describe("popular_v1")["loaded"]
+    with pytest.raises(AssetError) as failure:
+        engine.describe("itemcf_v1")
+    assert failure.value.code == "model_not_loaded"
+    with pytest.raises(AssetError, match="training snapshot"):
+        RecommendationEngine.from_registry(path)
+
+
+@pytest.mark.parametrize(
+    ("module", "function", "arguments"),
+    [("delivery_check", "verify_real", "None, None"), ("http_check", "verify_http", "None, None, None")],
+)
+def test_acceptance_checks_refuse_optimized_python(module, function, arguments):
+    command = f"from recommendation.{module} import {function}; {function}({arguments})"
+    result = subprocess.run(
+        [sys.executable, "-X", "utf8", "-O", "-c", command], capture_output=True, text=True, check=False
+    )
+    assert result.returncode != 0
+    assert "without Python optimization so all checks execute" in result.stderr
 
 
 @pytest.mark.parametrize(
