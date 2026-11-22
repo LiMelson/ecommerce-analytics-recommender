@@ -1,0 +1,11 @@
+{
+  "protocol_version": "purchase_global_utc_v1",
+  "model_version": "popular_v1",
+  "validation_model_version": "popular_v1_validation",
+  "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+  "handover_website_csv_sha256": "ec64ad5f5c7157d2425710232f550872044d871f88050b211c46ad97869513bc",
+  "observation_start": "2019-10-01T00:00:00+00:00",
+  "observation_end_exclusive": "2019-12-01T00:00:00+00:00",
+  "naive_timestamp_timezone": "UTC",
+  "top_k": 10
+}

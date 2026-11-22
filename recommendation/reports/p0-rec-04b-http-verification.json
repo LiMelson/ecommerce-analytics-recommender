@@ -1,0 +1,227 @@
+{
+  "aggregate_request_count": 1320,
+  "asset_hash_and_mtime_unchanged": true,
+  "asset_sha256": {
+    "bpr_mf_buy_v1.asset": "27dcd8d1bdda54387d2bd9ee303a8aade1022a3afb4bb076b7843572810b1155",
+    "itemcf_v1.asset": "d0cd836bb123ab0d67a9945b2160a201ac7713dbcf93e01ed6239ca79b91f739",
+    "popular_v1.asset": "9b5877926de569427d9a79b0a8adac1242d63ea93cbad8accb5224e8fc1abd5f",
+    "registry.json": "ab60e041a5c93b68e4f569cd11c714bf4ab99ca54278cbc0c188ad69e60d17e0"
+  },
+  "client_timeout_seconds": 5,
+  "environment": {
+    "dependencies": {
+      "duckdb": "2.0.0",
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "pyarrow": "26.0.1",
+      "pytest": "9.2.0",
+      "scipy": "1.18.1"
+    },
+    "fastapi": "0.163.1",
+    "git_branch": "feat/p0-rec-04b",
+    "git_head": "fdeeb734858f29d32e83c8a2333c801767b9d1eb",
+    "git_worktree_dirty": true,
+    "httpx": "0.28.1",
+    "logical_cpu_count": 32,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "pydantic": "2.14.3",
+    "python": "3.12.6",
+    "starlette": "1.10.0",
+    "uvicorn": "0.54.0"
+  },
+  "frozen_python_request_regression": {
+    "bpr": {
+      "rankings_sha256": "710a1fa370ab8caf60a794dc8178dea975db61ff9e1f68b7157882a3d7991292",
+      "requests": 15158
+    },
+    "itemcf": {
+      "rankings_sha256": "f4af9094a1322c08e0b9411b1bd047639181ec9d2b3e37429717c9bb9e815ed5",
+      "requests": 15158
+    },
+    "popular": {
+      "rankings_sha256": "7a613ab215451f01ada3a07701587aed4e5b589ebe9a30aec9e5c08e6005fd72",
+      "requests": 15158
+    }
+  },
+  "historical_report_sha256": {
+    "p0-rec-01-audit.json": "56328f100350dfaf04e2807ffaa0df92538adf9487e330100510f8f2e8a9beff",
+    "p0-rec-01-benchmark.json": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+    "p0-rec-02-test.json": "dadb3c416943740f7643ab655b6fa162ac08c08c526725cca1a4ddd7d9ef95e8",
+    "p0-rec-02-validation.json": "bb98fef56f4c7d74f698285aaa3d8a8889b3177bb4a5a0ac323772480d5a1c55",
+    "p0-rec-02-verification.json": "d89436a92cf94a8ca450e21f2b4a801ec9da520dcd642a7159cd6fa75769bad6",
+    "p0-rec-03-test.json": "456b549eaa673af9e8005bd0034dc627cf8cb165b2c38d02ea00bafc711b9922",
+    "p0-rec-03-validation.json": "d5386f7a4bc46e3d4a171724e7b17a5ec98fb81940f4a14c82b59a484af748c3",
+    "p0-rec-04a-metadata.json": "3a4db892e1ca4fe0ce615567691c3b463cc50618dfa1dc50e9692700c07e444a",
+    "p0-rec-04a-verification.json": "092df51daa1493dcdf877ebc9f6925514c2608452d530616de756cb81d7b988e"
+  },
+  "intentional_error_checks": {
+    "dataset": {
+      "error": {
+        "code": "dataset_mismatch",
+        "message": "Dataset does not match the selected model"
+      },
+      "status": 409
+    },
+    "invalid_limit": {
+      "error": {
+        "code": "invalid_limit",
+        "message": "limit must be an integer between 1 and 10"
+      },
+      "status": 422
+    },
+    "unknown": {
+      "error": {
+        "code": "unknown_model",
+        "message": "Model version is not registered"
+      },
+      "status": 404
+    }
+  },
+  "measurement_scope": "real_HTTP_loopback_Uvicorn_single_process_existing_04A_assets",
+  "mixed_concurrent": {
+    "concurrency": 8,
+    "error_rate": 0.0,
+    "errors": {},
+    "max_ms": 31.73130000504898,
+    "max_response_bytes": 1859,
+    "p50_ms": 6.656199999270029,
+    "p95_ms": 12.928900003316812,
+    "requests": 240,
+    "requests_per_second": 1080.7515005535763,
+    "seconds": 0.22206770000047982
+  },
+  "models": {
+    "bpr": {
+      "concurrent": {
+        "concurrency": 8,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 31.242099998053163,
+        "max_response_bytes": 1859,
+        "p50_ms": 9.816799996769987,
+        "p95_ms": 20.606900005077478,
+        "requests": 240,
+        "requests_per_second": 764.8298110341537,
+        "seconds": 0.31379529999685474
+      },
+      "serial": {
+        "concurrency": 1,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 15.956099996401463,
+        "max_response_bytes": 1859,
+        "p50_ms": 1.13229999988107,
+        "p95_ms": 4.75150000420399,
+        "requests": 120,
+        "requests_per_second": 479.2225093941792,
+        "seconds": 0.2504056000034325
+      },
+      "single_cold_http_ms": 1.7837999985204078,
+      "single_response_bytes": 1677
+    },
+    "itemcf": {
+      "concurrent": {
+        "concurrency": 8,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 10.292999999364838,
+        "max_response_bytes": 1813,
+        "p50_ms": 5.296700001053978,
+        "p95_ms": 8.032000005187001,
+        "requests": 240,
+        "requests_per_second": 1444.5883014047781,
+        "seconds": 0.1661372999951709
+      },
+      "serial": {
+        "concurrency": 1,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 2.838799999153707,
+        "max_response_bytes": 1813,
+        "p50_ms": 0.9181999994325452,
+        "p95_ms": 2.2892999986652285,
+        "requests": 120,
+        "requests_per_second": 903.7730264652034,
+        "seconds": 0.13277669999661157
+      },
+      "single_cold_http_ms": 1.0611000034259632,
+      "single_response_bytes": 1673
+    },
+    "popular": {
+      "concurrent": {
+        "concurrency": 8,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 10.001299997384194,
+        "max_response_bytes": 1674,
+        "p50_ms": 4.732400004286319,
+        "p95_ms": 8.17069999902742,
+        "requests": 240,
+        "requests_per_second": 1536.5566022087387,
+        "seconds": 0.15619340000557713
+      },
+      "serial": {
+        "concurrency": 1,
+        "error_rate": 0.0,
+        "errors": {},
+        "max_ms": 16.528200001630466,
+        "max_response_bytes": 1674,
+        "p50_ms": 0.8871999962138943,
+        "p95_ms": 1.1630999943008646,
+        "requests": 120,
+        "requests_per_second": 935.9206338965676,
+        "seconds": 0.1282160000046133
+      },
+      "single_cold_http_ms": 1.0926999966613948,
+      "single_response_bytes": 1674
+    }
+  },
+  "passed": true,
+  "prior_archived_reports_match_byte_for_byte": true,
+  "response_limit_bytes": 1048576,
+  "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+  "server_memory_mib": {
+    "after_requests": {
+      "peak_working_set": 385.1328125,
+      "working_set": 311.4296875
+    },
+    "at_readiness": {
+      "peak_working_set": 385.1328125,
+      "working_set": 309.1015625
+    },
+    "process_identity": "uvicorn_server_pid_from_startup_log"
+  },
+  "service_source_sha256": {
+    "recommendation/engine.py": "87e571c53f6127f62b00ff1d2338de5041de474d02fb2a95543166420a8ddaca",
+    "recommendation/http_check.py": "6893355cf2aef2b9306366511c921884fca11b8d7489792f64dce8370538cf0a",
+    "recommendation/http_service.py": "53d00a2a155ee7a8ac1e0afd7d35e1e77dcdfbdfea8a2d9d190638e6d62083db",
+    "recommendation/requirements-http.txt": "7db893b590da23e977414aa3179caf10216080a99174619d4c385caf1c4dc63b"
+  },
+  "startup": {
+    "loopback_port": 58993,
+    "model_load_seconds": 1.510522899996431,
+    "spawn_to_ready_seconds": 3.5919692999959807,
+    "versions": [
+      "bpr_mf_buy_v1",
+      "itemcf_v1",
+      "popular_v1"
+    ]
+  },
+  "test_labels_scored": false,
+  "workload": {
+    "client_connection_reuse": true,
+    "representative_user_types": [
+      "new_user",
+      "only_view",
+      "cart_without_buy",
+      "purchase_history",
+      "high_activity",
+      "repeat_purchase_history",
+      "no_similar_neighbors"
+    ],
+    "request_timing_includes_http_response_body": true,
+    "seeded_fitted_users": 33
+  },
+  "workspace_base_commit": "fdeeb734858f29d32e83c8a2333c801767b9d1eb"
+}

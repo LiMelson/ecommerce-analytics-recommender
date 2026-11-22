@@ -1,0 +1,47 @@
+{
+  "arms": [
+    "H0",
+    "H1",
+    "H2",
+    "H3"
+  ],
+  "k": 10,
+  "min_distinct": 3,
+  "positive": [
+    "pv",
+    "fav",
+    "cart",
+    "buy"
+  ],
+  "replacement_rank": {
+    "H1": 10,
+    "H2": 5
+  },
+  "itemcf_depth": 11,
+  "itemcf": {
+    "neighbors": 80,
+    "max_history": 100,
+    "block_rows": 256
+  },
+  "popular_pool": 50,
+  "category_bonus": 3,
+  "category_rule": "Count distinct positive (category_id,item_id) pairs in fit rows; exclude missing, empty and unknown categories. Score candidates using the Popular fit category.",
+  "split": "unsigned first byte of SHA256(UTF8 user_id) < 128 selects, otherwise confirms",
+  "selection": "largest unrounded selection NDCG among H1,H2,H3; ties H1,H2,H3 in order; H0 remains comparator",
+  "bootstrap": {
+    "resamples": 2000,
+    "seed": 20261121,
+    "confidence": 0.95
+  },
+  "rolling_fraction": 0.7,
+  "success": {
+    "min_confirmation_ndcg_delta": 0.002,
+    "min_ndcg_lower_exclusive": 0,
+    "min_recall_delta": -0.002,
+    "min_rolling_ndcg_delta": -0.002,
+    "max_p95_ms": 10
+  },
+  "cost_rule": "at most the frozen Popular and ItemCF builds plus per-user category counts; serial in-memory candidate p95 <= 10 ms on each evaluation window",
+  "short_list": "replace only if designated slot exists",
+  "full_validation": "after lock, reuse per-user observations; additional arms on remaining users for pooled description only"
+}

@@ -1,0 +1,550 @@
+{
+  "provenance": {
+    "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+    "dependencies": {
+      "duckdb": "2.0.0",
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "pyarrow": "26.0.1",
+      "pytest": "9.2.0",
+      "scipy": "1.18.1"
+    },
+    "git_head": "6735a2ac2d3542cff855889cb615ca103e6864f1",
+    "logical_cpu_count": 32,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "python": "3.12.6"
+  },
+  "result": {
+    "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+    "config": {
+      "handover_website_csv_sha256": "ec64ad5f5c7157d2425710232f550872044d871f88050b211c46ad97869513bc",
+      "model_version": "popular_v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_end_exclusive": "2019-12-01T00:00:00+00:00",
+      "observation_start": "2019-10-01T00:00:00+00:00",
+      "protocol_version": "purchase_global_utc_v1",
+      "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "top_k": 10,
+      "validation_model_version": "popular_v1_validation"
+    },
+    "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "history_bands": {
+      "initial_train_events_per_user_quantiles": {
+        "p100": 1173,
+        "p25": 2,
+        "p50": 5,
+        "p75": 15,
+        "p90": 38,
+        "p95": 65
+      },
+      "initial_train_users": 39236,
+      "low_max": 2,
+      "medium_max": 15
+    },
+    "model_version": "popular_v1",
+    "protocol_version": "purchase_global_utc_v1",
+    "rules": {
+      "band_thresholds_fitted_on": [
+        "train"
+      ],
+      "block_pre_cutoff_purchases": true,
+      "candidate_catalog": "all_items_observed_before_cutoff",
+      "negative_sampling": false,
+      "random_seed": null,
+      "ranking_fallback": "same_popularity_order_for_users_without_history",
+      "sort": [
+        "purchase_count_desc",
+        "item_id_string_asc"
+      ],
+      "test_fitted_on": [
+        "train",
+        "validation"
+      ],
+      "validation_fitted_on": [
+        "train"
+      ],
+      "weights": {
+        "all_other_events": 0,
+        "buy": 1
+      }
+    },
+    "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "test": {
+      "coverage": {
+        "all_window_users_distinct_items": 16,
+        "all_window_users_rate": 0.00021240723777662723,
+        "candidate_catalog": 75327,
+        "primary_distinct_items": 16,
+        "primary_rate": 0.00021240723777662723
+      },
+      "future_items": {
+        "distinct_items_in_window": 6366,
+        "distinct_purchased_items": 64,
+        "distinct_user_item_purchase_pairs": 64,
+        "purchase_events": 69,
+        "share_of_purchase_pairs": 0.035595105672969966
+      },
+      "groups": {
+        "cold": {
+          "all_purchase_targets": {
+            "hr": 0.2679738562091503,
+            "ndcg": 0.14144588311109577,
+            "precision": 0.02810457516339869,
+            "recall": 0.23830791575889612,
+            "users": 306
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 414,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 397,
+            "future_item_purchase_pairs": 17,
+            "purchase_users_without_eligible_targets": 9,
+            "repeat_purchase_pairs": 0,
+            "users": 5736,
+            "users_with_eligible_targets": 297,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 14,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 306,
+            "users_with_repeat_purchases": 0,
+            "users_without_eligible_targets": 5439,
+            "users_without_purchases": 5430
+          },
+          "primary": {
+            "hr": 0.2760942760942761,
+            "ndcg": 0.14573212199325017,
+            "precision": 0.028956228956228954,
+            "recall": 0.24555274971941637,
+            "users": 297
+          }
+        },
+        "high": {
+          "all_purchase_targets": {
+            "hr": 0.14102564102564102,
+            "ndcg": 0.06049479919233006,
+            "precision": 0.015705128205128205,
+            "recall": 0.10360885108481263,
+            "users": 624
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 975,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 782,
+            "future_item_purchase_pairs": 38,
+            "purchase_users_without_eligible_targets": 98,
+            "repeat_purchase_pairs": 155,
+            "users": 5013,
+            "users_with_eligible_targets": 526,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 36,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 624,
+            "users_with_repeat_purchases": 131,
+            "users_without_eligible_targets": 4487,
+            "users_without_purchases": 4389
+          },
+          "primary": {
+            "hr": 0.16730038022813687,
+            "ndcg": 0.07375552828210467,
+            "precision": 0.018631178707224336,
+            "recall": 0.12912140141227593,
+            "users": 526
+          }
+        },
+        "low": {
+          "all_purchase_targets": {
+            "hr": 0.25925925925925924,
+            "ndcg": 0.14516927006185865,
+            "precision": 0.02592592592592593,
+            "recall": 0.21604938271604937,
+            "users": 54
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 73,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 71,
+            "future_item_purchase_pairs": 2,
+            "purchase_users_without_eligible_targets": 1,
+            "repeat_purchase_pairs": 0,
+            "users": 1253,
+            "users_with_eligible_targets": 53,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 2,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 54,
+            "users_with_repeat_purchases": 0,
+            "users_without_eligible_targets": 1200,
+            "users_without_purchases": 1199
+          },
+          "primary": {
+            "hr": 0.2641509433962264,
+            "ndcg": 0.1479083128932145,
+            "precision": 0.026415094339622643,
+            "recall": 0.220125786163522,
+            "users": 53
+          }
+        },
+        "medium": {
+          "all_purchase_targets": {
+            "hr": 0.18796992481203006,
+            "ndcg": 0.08796184534212653,
+            "precision": 0.02142857142857143,
+            "recall": 0.15898078529657478,
+            "users": 266
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 336,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 311,
+            "future_item_purchase_pairs": 7,
+            "purchase_users_without_eligible_targets": 20,
+            "repeat_purchase_pairs": 18,
+            "users": 3156,
+            "users_with_eligible_targets": 246,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 7,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 266,
+            "users_with_repeat_purchases": 18,
+            "users_without_eligible_targets": 2910,
+            "users_without_purchases": 2890
+          },
+          "primary": {
+            "hr": 0.2032520325203252,
+            "ndcg": 0.09515849600128319,
+            "precision": 0.023170731707317073,
+            "recall": 0.17201897018970191,
+            "users": 246
+          }
+        },
+        "overall": {
+          "all_purchase_targets": {
+            "hr": 0.1872,
+            "ndcg": 0.08981454909788422,
+            "precision": 0.0204,
+            "recall": 0.15322376068376067,
+            "users": 1250
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 1798,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 1561,
+            "future_item_purchase_pairs": 64,
+            "purchase_users_without_eligible_targets": 128,
+            "repeat_purchase_pairs": 173,
+            "users": 15158,
+            "users_with_eligible_targets": 1122,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 59,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 1250,
+            "users_with_repeat_purchases": 149,
+            "users_without_eligible_targets": 14036,
+            "users_without_purchases": 13908
+          },
+          "primary": {
+            "hr": 0.20855614973262032,
+            "ndcg": 0.10100354608559571,
+            "precision": 0.022727272727272728,
+            "recall": 0.17364559460147694,
+            "users": 1122
+          }
+        }
+      },
+      "k": 10,
+      "model_metadata": {
+        "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+        "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "model_version": "popular_v1",
+        "protocol_version": "purchase_global_utc_v1",
+        "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "train_cutoff_exclusive": "2019-11-21T20:24:00+00:00"
+      },
+      "rankings_sha256": "7a613ab215451f01ada3a07701587aed4e5b589ebe9a30aec9e5c08e6005fd72",
+      "recommendation_source_users": {
+        "cold_start_popular_purchase_count": 5736,
+        "popular_purchase_count": 9422
+      },
+      "repeat_purchase_events": 286,
+      "users_known_in_initial_train": 7794
+    },
+    "validation": {
+      "coverage": {
+        "all_window_users_distinct_items": 15,
+        "all_window_users_rate": 0.0002466415640363714,
+        "candidate_catalog": 60817,
+        "primary_distinct_items": 14,
+        "primary_rate": 0.00023019879310061332
+      },
+      "future_items": {
+        "distinct_items_in_window": 14510,
+        "distinct_purchased_items": 190,
+        "distinct_user_item_purchase_pairs": 193,
+        "purchase_events": 219,
+        "share_of_purchase_pairs": 0.056432748538011696
+      },
+      "groups": {
+        "cold": {
+          "all_purchase_targets": {
+            "hr": 0.20658682634730538,
+            "ndcg": 0.10090043456026933,
+            "precision": 0.023053892215568864,
+            "recall": 0.16662940353060113,
+            "users": 668
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 940,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 895,
+            "future_item_purchase_pairs": 45,
+            "purchase_users_without_eligible_targets": 27,
+            "repeat_purchase_pairs": 0,
+            "users": 7715,
+            "users_with_eligible_targets": 641,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 43,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 668,
+            "users_with_repeat_purchases": 0,
+            "users_without_eligible_targets": 7074,
+            "users_without_purchases": 7047
+          },
+          "primary": {
+            "hr": 0.21528861154446177,
+            "ndcg": 0.10574078999507054,
+            "precision": 0.02402496099843994,
+            "recall": 0.17492216571779753,
+            "users": 641
+          }
+        },
+        "high": {
+          "all_purchase_targets": {
+            "hr": 0.13160854893138357,
+            "ndcg": 0.052762925304804136,
+            "precision": 0.014735658042744659,
+            "recall": 0.086948283250308,
+            "users": 889
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 1453,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 1230,
+            "future_item_purchase_pairs": 89,
+            "purchase_users_without_eligible_targets": 98,
+            "repeat_purchase_pairs": 134,
+            "users": 4905,
+            "users_with_eligible_targets": 791,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 78,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 889,
+            "users_with_repeat_purchases": 115,
+            "users_without_eligible_targets": 4114,
+            "users_without_purchases": 4016
+          },
+          "primary": {
+            "hr": 0.14791403286978508,
+            "ndcg": 0.06213587425432259,
+            "precision": 0.016561314791403287,
+            "recall": 0.10469568358316779,
+            "users": 791
+          }
+        },
+        "low": {
+          "all_purchase_targets": {
+            "hr": 0.14545454545454545,
+            "ndcg": 0.06814451909031975,
+            "precision": 0.016363636363636365,
+            "recall": 0.1159090909090909,
+            "users": 165
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 237,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 219,
+            "future_item_purchase_pairs": 16,
+            "purchase_users_without_eligible_targets": 11,
+            "repeat_purchase_pairs": 2,
+            "users": 1637,
+            "users_with_eligible_targets": 154,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 16,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 165,
+            "users_with_repeat_purchases": 2,
+            "users_without_eligible_targets": 1483,
+            "users_without_purchases": 1472
+          },
+          "primary": {
+            "hr": 0.15584415584415584,
+            "ndcg": 0.0730119847396283,
+            "precision": 0.017532467532467535,
+            "recall": 0.1241883116883117,
+            "users": 154
+          }
+        },
+        "medium": {
+          "all_purchase_targets": {
+            "hr": 0.17958412098298676,
+            "ndcg": 0.07263502282382528,
+            "precision": 0.019281663516068054,
+            "recall": 0.13949500405076964,
+            "users": 529
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 790,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 719,
+            "future_item_purchase_pairs": 43,
+            "purchase_users_without_eligible_targets": 46,
+            "repeat_purchase_pairs": 28,
+            "users": 4181,
+            "users_with_eligible_targets": 483,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 37,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 529,
+            "users_with_repeat_purchases": 27,
+            "users_without_eligible_targets": 3698,
+            "users_without_purchases": 3652
+          },
+          "primary": {
+            "hr": 0.19668737060041408,
+            "ndcg": 0.07962299561911595,
+            "precision": 0.02111801242236025,
+            "recall": 0.15295277531302376,
+            "users": 483
+          }
+        },
+        "overall": {
+          "all_purchase_targets": {
+            "hr": 0.16614837849844513,
+            "ndcg": 0.07284562576896363,
+            "precision": 0.01839182585517548,
+            "recall": 0.12506589183066305,
+            "users": 2251
+          },
+          "counts": {
+            "distinct_user_item_purchase_pairs": 3420,
+            "effective_users_with_empty_recommendations": 0,
+            "eligible_purchase_pairs": 3063,
+            "future_item_purchase_pairs": 193,
+            "purchase_users_without_eligible_targets": 182,
+            "repeat_purchase_pairs": 164,
+            "users": 18438,
+            "users_with_eligible_targets": 2069,
+            "users_with_empty_recommendations": 0,
+            "users_with_future_item_purchases": 174,
+            "users_with_less_than_k_recommendations": 0,
+            "users_with_purchases": 2251,
+            "users_with_repeat_purchases": 144,
+            "users_without_eligible_targets": 16369,
+            "users_without_purchases": 16187
+          },
+          "primary": {
+            "hr": 0.18076365393910102,
+            "ndcg": 0.08053701085352594,
+            "precision": 0.020009666505558243,
+            "recall": 0.13916896298481604,
+            "users": 2069
+          }
+        }
+      },
+      "k": 10,
+      "model_metadata": {
+        "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+        "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "model_version": "popular_v1_validation",
+        "protocol_version": "purchase_global_utc_v1",
+        "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+        "train_cutoff_exclusive": "2019-11-12T16:48:00+00:00"
+      },
+      "rankings_sha256": "e64b88d65eff986c36fa1d895814a4428cee5c2cc01f5d423da8d8c5873960fb",
+      "recommendation_source_users": {
+        "cold_start_popular_purchase_count": 7715,
+        "popular_purchase_count": 10723
+      },
+      "repeat_purchase_events": 234,
+      "users_known_in_initial_train": 10723
+    },
+    "windows": {
+      "test": {
+        "end_exclusive": "2019-12-01T00:00:00+00:00",
+        "events": 149527,
+        "events_by_type": {
+          "buy": 2223,
+          "cart": 6455,
+          "pv": 140849
+        },
+        "first_seen_users": 5736,
+        "items": 27617,
+        "items_first_seen_in_window": 6366,
+        "items_in_initial_train": 17923,
+        "items_known_at_window_start": 21251,
+        "known_items_at_window_start": 75327,
+        "purchase_events": 2223,
+        "purchase_users": 1250,
+        "start_inclusive": "2019-11-21T20:24:00+00:00",
+        "users": 15158
+      },
+      "train": {
+        "end_exclusive": "2019-11-12T16:48:00+00:00",
+        "events": 627023,
+        "events_by_type": {
+          "buy": 10276,
+          "cart": 13647,
+          "pv": 603100
+        },
+        "first_seen_users": 39236,
+        "items": 60817,
+        "items_first_seen_in_window": 60817,
+        "items_in_initial_train": 60817,
+        "items_known_at_window_start": 0,
+        "known_items_at_window_start": 0,
+        "purchase_events": 10276,
+        "purchase_users": 4624,
+        "start_inclusive": "2019-10-01T00:00:00+00:00",
+        "users": 39236
+      },
+      "validation": {
+        "end_exclusive": "2019-11-21T20:24:00+00:00",
+        "events": 302804,
+        "events_by_type": {
+          "buy": 4180,
+          "cart": 17596,
+          "pv": 281028
+        },
+        "first_seen_users": 7715,
+        "items": 40513,
+        "items_first_seen_in_window": 14510,
+        "items_in_initial_train": 26003,
+        "items_known_at_window_start": 26003,
+        "known_items_at_window_start": 60817,
+        "purchase_events": 4180,
+        "purchase_users": 2251,
+        "start_inclusive": "2019-11-12T16:48:00+00:00",
+        "users": 18438
+      }
+    }
+  },
+  "runtime": {
+    "process_peak_rss_mib": 1008.13671875,
+    "read_and_validate_seconds": 0.35675460000129533,
+    "test_evaluation_seconds": 0.5729572999989614,
+    "test_recommend_ms": {
+      "p50": 0.0007999988156370819,
+      "p95": 0.0018999999156221747,
+      "requests": 15158
+    },
+    "test_refit_seconds": 1.2248393000008946,
+    "total_seconds_before_output": 5.635957099999359,
+    "validation_build_seconds": 0.8177080000023125,
+    "validation_evaluation_seconds": 0.6532856000012544,
+    "validation_recommend_ms": {
+      "p50": 0.000800002453615889,
+      "p95": 0.0020000006770715117,
+      "requests": 18438
+    }
+  }
+}

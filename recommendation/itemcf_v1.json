@@ -1,0 +1,9 @@
+{
+  "model_version": "itemcf_v1",
+  "selection_order": ["max_ndcg", "max_recall", "min_neighbors", "prefer_full_history", "config_order"],
+  "trials": [
+    {"id": "n30_full", "neighbors": 30, "block_rows": 256, "max_history": null},
+    {"id": "n80_full", "neighbors": 80, "block_rows": 256, "max_history": null},
+    {"id": "n80_recent100", "neighbors": 80, "block_rows": 256, "max_history": 100}
+  ]
+}

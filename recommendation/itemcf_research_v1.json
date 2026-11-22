@@ -1,0 +1,15 @@
+{
+  "study": "p0_rec_05",
+  "phase": "validation",
+  "baseline_trial": "n80_recent100",
+  "selection_order": ["ndcg", "recall", "config_order"],
+  "behavior_weights": {"pv": 1, "cart": 5, "buy": 8},
+  "half_life_days": 7,
+  "bootstrap": {"seed": 20261121, "resamples": 2000, "confidence": 0.95},
+  "trials": [
+    {"id": "A", "model_version": "itemcf_v1", "weighted": false, "decayed": false},
+    {"id": "B", "model_version": "itemcf_weighted_exp_v1", "weighted": true, "decayed": false},
+    {"id": "C", "model_version": "itemcf_decay_exp_v1", "weighted": false, "decayed": true},
+    {"id": "D", "model_version": "itemcf_weighted_decay_exp_v1", "weighted": true, "decayed": true}
+  ]
+}

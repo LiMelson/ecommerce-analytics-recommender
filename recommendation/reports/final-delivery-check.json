@@ -1,0 +1,181 @@
+{
+  "asset_sha256": {
+    "bpr_mf_buy_v1.asset": "27dcd8d1bdda54387d2bd9ee303a8aade1022a3afb4bb076b7843572810b1155",
+    "itemcf_v1.asset": "d0cd836bb123ab0d67a9945b2160a201ac7713dbcf93e01ed6239ca79b91f739",
+    "popular_v1.asset": "9b5877926de569427d9a79b0a8adac1242d63ea93cbad8accb5224e8fc1abd5f",
+    "registry.json": "ab60e041a5c93b68e4f569cd11c714bf4ab99ca54278cbc0c188ad69e60d17e0"
+  },
+  "automated_checks": {
+    "data_algo_pytest": {
+      "failed": 0,
+      "passed": 33,
+      "skipped": 0
+    },
+    "dependency_installation": "Python 3.12 venv; recommendation/requirements-http.txt; ruff==0.17.5; pip check",
+    "known_warning": "Starlette TestClient httpx deprecation",
+    "recommendation_pytest": {
+      "failed": 0,
+      "passed": 137,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "ruff_format": "recommendation; 29 files passed",
+    "ruff_lint": "recommendation; passed"
+  },
+  "checkout": {
+    "asset_placement": "artifacts/p0-rec-04a/release-assets/",
+    "assets_supplied_from_controlled_course_bundle": true,
+    "detached_clean_worktree": true,
+    "tested_commit": "a1713bfaf567f3ae42bbf65fb7c5d3b8d48c93aa"
+  },
+  "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+  "date": "2026-11-21",
+  "environment": {
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python": "3.12.6"
+  },
+  "frozen_request_ranking_regression": {
+    "bpr": {
+      "rankings_sha256": "710a1fa370ab8caf60a794dc8178dea975db61ff9e1f68b7157882a3d7991292",
+      "requests": 15158
+    },
+    "itemcf": {
+      "rankings_sha256": "f4af9094a1322c08e0b9411b1bd047639181ec9d2b3e37429717c9bb9e815ed5",
+      "requests": 15158
+    },
+    "popular": {
+      "rankings_sha256": "7a613ab215451f01ada3a07701587aed4e5b589ebe9a30aec9e5c08e6005fd72",
+      "requests": 15158
+    }
+  },
+  "http": {
+    "examples": {
+      "bpr_mf_buy_v1": {
+        "items": 3,
+        "status": 200
+      },
+      "itemcf_v1": {
+        "items": 3,
+        "status": 200
+      },
+      "popular_v1": {
+        "items": 3,
+        "status": 200
+      }
+    },
+    "intentional_dataset_mismatch": 409,
+    "mixed_concurrent": {
+      "concurrency": 8,
+      "error_rate": 0.0,
+      "errors": {},
+      "max_ms": 35.31289999955334,
+      "max_response_bytes": 674,
+      "p50_ms": 14.459000001806999,
+      "p95_ms": 18.531499998061918,
+      "requests": 240,
+      "requests_per_second": 569.7825780903606,
+      "seconds": 0.4212133000000904
+    },
+    "model_load_seconds": 1.5817654000020411,
+    "readiness": [
+      "health",
+      "ready"
+    ],
+    "startup_seconds": 3.6323663000002853,
+    "timed_requests": 1320,
+    "workloads": {
+      "bpr_mf_buy_v1": {
+        "concurrent": {
+          "concurrency": 8,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 42.53679999965243,
+          "max_response_bytes": 674,
+          "p50_ms": 29.777600000670645,
+          "p95_ms": 35.58260000136215,
+          "requests": 240,
+          "requests_per_second": 271.01305356996096,
+          "seconds": 0.8855661999987205
+        },
+        "serial": {
+          "concurrency": 1,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 19.025099998543737,
+          "max_response_bytes": 674,
+          "p50_ms": 4.583499998261686,
+          "p95_ms": 5.172699999093311,
+          "requests": 120,
+          "requests_per_second": 212.3743075939761,
+          "seconds": 0.5650400999984413
+        }
+      },
+      "itemcf_v1": {
+        "concurrent": {
+          "concurrency": 8,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 12.286799999856157,
+          "max_response_bytes": 657,
+          "p50_ms": 6.927400001586648,
+          "p95_ms": 9.886300002108328,
+          "requests": 240,
+          "requests_per_second": 1125.0286530880687,
+          "seconds": 0.213327899997239
+        },
+        "serial": {
+          "concurrency": 1,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 3.2405999991169665,
+          "max_response_bytes": 657,
+          "p50_ms": 1.1546999994607177,
+          "p95_ms": 2.322100001038052,
+          "requests": 120,
+          "requests_per_second": 752.3525122479804,
+          "seconds": 0.15949970000292524
+        }
+      },
+      "popular_v1": {
+        "concurrent": {
+          "concurrency": 8,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 7.648999999219086,
+          "max_response_bytes": 620,
+          "p50_ms": 3.4916000004159287,
+          "p95_ms": 6.111200000304962,
+          "requests": 240,
+          "requests_per_second": 2056.6521986818298,
+          "seconds": 0.1166945000004489
+        },
+        "serial": {
+          "concurrency": 1,
+          "error_rate": 0.0,
+          "errors": {},
+          "max_ms": 13.78629999817349,
+          "max_response_bytes": 620,
+          "p50_ms": 0.8267000011983328,
+          "p95_ms": 1.3093999987177085,
+          "requests": 120,
+          "requests_per_second": 997.3959653527787,
+          "seconds": 0.12031330000172602
+        }
+      }
+    }
+  },
+  "purchase_labels_loaded": false,
+  "python": {
+    "batch_results_matched": 120,
+    "single_requests": 120,
+    "versions": [
+      "bpr_mf_buy_v1",
+      "itemcf_v1",
+      "popular_v1"
+    ]
+  },
+  "regression_columns": [
+    "user_id",
+    "event_time"
+  ]
+}

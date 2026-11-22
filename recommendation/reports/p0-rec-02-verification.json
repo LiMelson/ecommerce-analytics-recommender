@@ -1,0 +1,25 @@
+{
+  "rec01_baseline_commit": "fab15a9deec9aca9bd7731e07db1d83daa482b9b",
+  "popular_results_equal_after_hardening_and_at_final_code": true,
+  "popular_comparison_excludes_only_code_sha256": true,
+  "validation_repeat_same_except_runtimes": true,
+  "validation_repeat_pythonhashseed": 97,
+  "validation": {
+    "sha256": "bb98fef56f4c7d74f698285aaa3d8a8889b3177bb4a5a0ac323772480d5a1c55",
+    "selected": "n80_recent100",
+    "ranking_fingerprints": {
+      "n30_full": "506c5baec803ecfd0ffb863469d1f0af484c3b73dd36ca13da811c648468b484",
+      "n80_full": "4a597db182af8e13857e153d47fa75add023b332abd6b0f0259ec6c5f7b002b0",
+      "n80_recent100": "96b8fcf08df4c7832031db8671627565e42e0af595740d7170510481093190b2"
+    }
+  },
+  "test": {
+    "sha256": "dadb3c416943740f7643ab655b6fa162ac08c08c526725cca1a4ddd7d9ef95e8",
+    "selected": "n80_recent100",
+    "ranking_fingerprint": "f4af9094a1322c08e0b9411b1bd047639181ec9d2b3e37429717c9bb9e815ed5",
+    "real_test_evaluations_performed": 1
+  },
+  "frozen_popular_report_sha256": "af3cdb999796f0d0c3b530a5ba82022881d030972faf6c6cad75a022f3ec6aec",
+  "archived_baseline_zip_sha256": "0c1ca6a1a21c6ee01084e5e924cf743624333b83abc551bd7a17f3b4462c8f8b",
+  "code_sha256": "bd09a51c0b69acb9cf2569730799a7d95f0732bc17fb0aa6afe55793d74518c1"
+}

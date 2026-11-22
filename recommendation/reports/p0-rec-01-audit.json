@@ -1,0 +1,124 @@
+{
+  "provenance": {
+    "code_sha256": "28c7324be7d73413e233d6a4921cc95b5f3f3bfac1cdc11375a939fcb5f4cad7",
+    "dependencies": {
+      "duckdb": "2.0.0",
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "pyarrow": "26.0.1",
+      "pytest": "9.2.0",
+      "scipy": "1.18.1"
+    },
+    "git_head": "6735a2ac2d3542cff855889cb615ca103e6864f1",
+    "logical_cpu_count": 32,
+    "platform": "Windows-11-10.0.26100-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "python": "3.12.6"
+  },
+  "result": {
+    "behavior_counts": {
+      "buy": 16679,
+      "cart": 37698,
+      "fav": 0,
+      "pv": 1024977,
+      "remove_from_cart": 0
+    },
+    "behavior_mapping_mismatches": 0,
+    "buyer_purchase_event_quantiles": {
+      "p100": 105,
+      "p25": 1,
+      "p50": 1,
+      "p75": 2,
+      "p90": 4,
+      "p95": 7
+    },
+    "distinct_user_item_purchase_pairs": 12560,
+    "effective_timestamp_timezone": "UTC",
+    "exact_duplicate_rows_after_first": 0,
+    "items": 81693,
+    "max_event_time": "2019-11-30T23:59:58+00:00",
+    "min_event_time": "2019-10-01T00:08:55+00:00",
+    "negative_price_rows": 0,
+    "null_rows": {
+      "behavior_type": 0,
+      "brand": 151135,
+      "category_code": 348267,
+      "category_id": 0,
+      "event_time": 0,
+      "item_id": 0,
+      "price": 0,
+      "raw_event_type": 0,
+      "session_id": 0,
+      "user_id": 0
+    },
+    "purchase_items": 4793,
+    "purchase_users": 6976,
+    "raw_behavior_counts": {
+      "cart": 37698,
+      "purchase": 16679,
+      "view": 1024977
+    },
+    "rows": 1079354,
+    "sample_sha256": "7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+    "sampling": {
+      "numeric_users": 52687,
+      "numeric_users_matching_rule": 52687,
+      "other_users": 0,
+      "other_users_matching_seed_20261116": 0,
+      "other_users_matching_seed_20261117": 0
+    },
+    "stored_timestamp_timezone": null,
+    "types": {
+      "behavior_type": "string",
+      "brand": "string",
+      "category_code": "string",
+      "category_id": "string",
+      "event_time": "timestamp[us]",
+      "item_id": "string",
+      "price": "double",
+      "raw_event_type": "string",
+      "session_id": "string",
+      "user_id": "string"
+    },
+    "unknown_category_rows": 0,
+    "user_purchase_event_histogram": {
+      "0": 45711,
+      "1": 3977,
+      "16–31": 59,
+      "2–3": 1993,
+      "32–63": 14,
+      "4–7": 710,
+      "64+": 6,
+      "8–15": 217
+    },
+    "users": 52687,
+    "website_export": {
+      "columns": [
+        "user_id",
+        "item_id",
+        "category_id",
+        "behavior_type",
+        "timestamp"
+      ],
+      "duplicate_projection_rows_after_first": 114,
+      "excluded_by_type": {},
+      "exported_rows": 1079354,
+      "handover_expected_sha256": "ec64ad5f5c7157d2425710232f550872044d871f88050b211c46ad97869513bc",
+      "matches_handover_checksum": true,
+      "regenerated_sha256": "ec64ad5f5c7157d2425710232f550872044d871f88050b211c46ad97869513bc",
+      "source_rows": 1079354,
+      "timestamp_range_ms": {
+        "max": 1575158398000,
+        "min": 1569888535000
+      },
+      "unknown_category_rows": 0
+    },
+    "zero_price_rows": 2508
+  },
+  "runtime": {
+    "audit_seconds": 5.967291699998896,
+    "process_peak_rss_mib": 854.48828125,
+    "read_and_validate_seconds": 0.35757379999995464,
+    "total_seconds_before_output": 6.42848430000231
+  }
+}

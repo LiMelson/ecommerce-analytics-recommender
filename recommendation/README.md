@@ -1,27 +1,103 @@
-# 推荐算法与实验（待实现）
+# 推荐算法与实验
 
-本目录用于数据适配、离线训练、评估与模型导出。目前没有真实训练代码或模型权重，前端的推荐结果来自演示规则。
+模块根据历史行为提供 Top10 商品排序，支持离线评估、模型保存加载、Python 单用户/批量与独立 HTTP 推理。正式模型为 `popular_v1`、`itemcf_v1`、`bpr_mf_buy_v1`。
 
-2026-11-16 接入更新：前端现在调用真实后端，模型未接入时显示未就绪，不再运行前端演示推荐。算法组交付推理服务后可按 [数据与算法交付约定](../docs/数据与算法交付约定.md) 接入；后端已提供版本登记、兼容性校验和推理 HTTP 适配。
+- [同学接手说明与请求示例](../docs/推荐算法-接手说明.md)
+- [AI 接手指南、资产哈希与验收标准](../docs/推荐算法-AI接手指南.md)
+- [最终技术报告](../docs/P0-REC-06-推荐算法最终技术报告.md) · [最后一次优化实验](../docs/P0-REC-07-最后一次推荐优化实验.md)
 
-计划先完成热门推荐与 ItemCF，再训练 BPR；最终算法根据统一协议下的验证结果决定，不预设复杂模型一定更好。
+从带模型的交付分支检出即可在 `artifacts/p0-rec-04a/release-assets/` 获得注册表和三个已训练模型。用 Windows PowerShell 从仓库根目录安装、测试和启动。交付分支在团队 GitHub 提供，正式网站的数据版本绑定和端到端接入由集成组负责。
 
-训练与评估需要统一：
+~~~powershell
+py -3.12 -m venv .venv
+$py = (Resolve-Path '.venv/Scripts/python.exe').Path
+$env:PYTHONUTF8 = '1'
+& $py -m pip install -r recommendation/requirements-http.txt
+& $py -m pytest -q recommendation/tests
+& $py -m recommendation.http_service --host 127.0.0.1 --port 9001
+~~~
 
-- 推荐目标、数据版本、清洗规则与固定实验样本。
-- 按全局时间划分训练、验证与测试窗口；预测使用的统计和特征不包含未来数据。
-- 候选商品、已交互商品过滤、负采样与冷启动规则。
-- Recall@10、NDCG@10、覆盖率及推荐耗时，并说明有效评估用户范围。
-- 随机种子、依赖版本、参数配置与实验结果。
+## 历史技术资料
 
-导出产物应至少包含模型、用户与商品 ID 映射、数据版本、训练截止时间、配置和评估摘要。后端按约定格式加载产物，前端不传学习率、训练次数或算法选择。
+P0-REC-04B 提供独立 HTTP 推理服务、错误契约和本机并发实测，见 [HTTP 推理服务交接](../docs/P0-REC-04B-HTTP推理服务交接.md)。
 
-实际数据和模型产物保留在本地，建议使用根目录 `data/` 与 `artifacts/`，并遵循 [数据说明](../data/README.md)。
+P0-REC-04A 提供纯 Python 统一引擎、独立模型资产和推理命令，见 [算法模块交付与 VSCode 运行](../docs/P0-REC-04A-算法模块交付.md)。
 
-## 数据接口
+P0-REC-03 的 BPR-MF 训练、模型保存加载、三模型统一结果和 Windows 命令见 [BPR 实验与复现](../docs/P0-REC-03-BPR实验与复现.md)。
 
-清洗后的行为数据、字段映射和统计口径见 [data_algo](../data_algo/README.md) 与 [数据选型与处理说明](../docs/数据选型与处理说明.md)。
+P0-REC-02 的 ItemCF、真实对照结果、手算案例和 VSCode 复跑说明见 [ItemCF 对照实验与复现](../docs/P0-REC-02-实验与复现.md)。
 
-推荐实验可直接使用 `from data_algo.cleaning import load_events` 读取干净 DataFrame；按全局时间切分训练/验证/测试，不使用未来行为。
+P0-REC-01 在真实交接样本上验收数据，并建立未来购买 Benchmark 与热门基线。统一候选、标签和分组后，后续 ItemCF、BPR 才能与热门做可比较的实验。
 
-网站入库用 `data_algo.cli export-website` 生成五列标准文件；推荐训练读取完整 Parquet（含品牌、价格、会话等特征），两者用途不同。
+- [工程审查、真实实验与下一阶段建议](../docs/P0-REC-01-验收记录.md)
+- [数据验收及样本限制](../docs/P0-REC-01-数据验收.md)
+- [Benchmark 协议和指标公式](../docs/P0-REC-01-Benchmark.md)
+- [数据验收 JSON](reports/p0-rec-01-audit.json) · [Benchmark JSON](reports/p0-rec-01-benchmark.json)
+
+## 文件入口
+
+| 文件 | 用途 |
+| --- | --- |
+| `sample.py` | 按哈希核对并读取 Parquet，审计字段、购买分布、抽样规则和网站五列导出。 |
+| `benchmark.py` | 时间切分、训练历史、候选约束、标签、分组以及统一指标。 |
+| `popular.py` | 从历史构建购买热度榜、每用户过滤、冷启动兜底和协议响应。 |
+| `run.py` | 离线命令入口，生成聚合结果、排序指纹、版本和资源记录。 |
+| `popular_v1.json`、`requirements.txt` | 固定样本指纹、时间窗口、模型版本、TopK 和依赖入口。 |
+| `tests/test_benchmark.py` | 用人工可复算的输入检查边界、排序与指标。 |
+
+## 三位用户、五件商品
+
+假设训练期内，甲各购买 A、C 一次，乙各购买 A、B 一次。D 被浏览过，E 被加购过。丙在训练期无行为。
+
+| 商品 | A | B | C | D | E |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 购买热度 | 2 | 1 | 1 | 0 | 0 |
+
+B 和 C 的热度相同，按 ID 顺序排列，因此榜单为 A、B、C、D、E。若 K=3，甲从榜单过滤掉已买的 A、C，得到 B、D、E。乙过滤 A、B，得到 C、D、E。丙没有历史，直接从热门榜获得 A、B、C，来源标为热门兜底。
+
+在真实测试窗口中，有 7 名用户恰好有两个可达购买目标且只在第 2 位命中一个。以这种匿名结果手算，Recall@10 为 1 ÷ 2 = 0.5；DCG 为 1 ÷ log₂(3) ≈ 0.63093。两个目标若理想排在第 1、2 位，IDCG 为 1 + 1 ÷ log₂(3) ≈ 1.63093，因此 NDCG@10 ≈ 0.38685。所有用户指标先独立计算，再按协议做宏平均。
+
+## 在 Windows PowerShell 复跑
+
+从仓库根目录执行。样本仍放在工作区的交接包中，可以把 `$sample` 改为其他本地绝对路径。
+
+~~~powershell
+py -3.12 -m venv .venv
+$py = '.\.venv\Scripts\python.exe'
+& $py -m pip install -r recommendation/requirements-http.txt
+$sample = '..\交接包_张凯博_2026-11-20\data\processed\events_sample.parquet'
+
+& $py -m pytest -q recommendation/tests
+& $py -m recommendation.run audit --sample $sample
+& $py -m recommendation.run benchmark --sample $sample
+~~~
+
+| 命令 | 意义与成功输出 |
+| --- | --- |
+| `py -3.12 -m venv .venv` | 建立推荐和数据组共用的本地虚拟环境。直接调用其 python.exe 即可。后端依赖安装在自己的 backend/.venv。 |
+| `pip install -r recommendation/requirements-http.txt` | 安装算法依赖，以及运行完整测试套件所需的 HTTP 依赖。 |
+| `pytest -q recommendation/tests` | 检查算法、资产与服务回归。安装 `recommendation/requirements-http.txt` 后运行完整套件。 |
+| `recommendation.run audit` | 校验真实样本并生成 audit.json。终端打印 rows=1079354 users=52687 purchase_users=6976。 |
+| `recommendation.run benchmark` | 构建验证和测试快照并输出 benchmark.json。验证与测试主口径分别有 2,069 和 1,122 个用户。测试 Recall@10 约为 0.17365，NDCG@10 约为 0.10100。 |
+
+默认运行结果写入忽略目录 `artifacts/p0-rec-01/`。要检查确定性，可以换 Python 的哈希种子并写到另一个目录。
+
+~~~powershell
+$env:PYTHONHASHSEED = '91'
+& $py -m recommendation.run benchmark --sample $sample --out-dir artifacts/p0-rec-01/repeat
+Remove-Item Env:PYTHONHASHSEED
+@'
+import json
+from pathlib import Path
+
+output = Path("artifacts/p0-rec-01")
+first = json.loads((output / "benchmark.json").read_text(encoding="utf-8"))
+repeat = json.loads((output / "repeat/benchmark.json").read_text(encoding="utf-8"))
+assert first["result"] == repeat["result"]
+print("benchmark results and ranking fingerprints match")
+'@ | & $py -
+~~~
+
+后端现有适配使用 `user_id / dataset_id / model_version / limit`，当前对接入口为统一引擎和 HTTP 服务。线下使用 `local-parquet-sha256-…`。待取得真实导入版本和校验记录后，再为实际网站版本登记兼容模型及部署预加载推理服务。
+
+详见 [后端交付约定](../docs/数据与算法交付约定.md) 与 [数据组说明](../data_algo/README.md)。
