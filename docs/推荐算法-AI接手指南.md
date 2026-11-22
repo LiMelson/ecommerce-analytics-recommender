@@ -43,7 +43,7 @@ Parquet SHA-256 为 `7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42
 
 ## 模型资产与版本
 
-固定路径为 `artifacts/p0-rec-04a/release-assets/`。从授权的课程组渠道取得原四文件 ZIP，直接解压到该目录。若部署目录不同，`--registry` 或 `from_registry` 接受明确的注册表路径。四个文件的可信 SHA-256 如下。
+模型资产与源码同在交付分支。Git 检出后直接使用 `artifacts/p0-rec-04a/release-assets/`，其中四个文件保留原始字节。若部署目录不同，`--registry` 或 `from_registry` 接受明确的注册表路径。四个文件的可信 SHA-256 如下。
 
 | 文件 | SHA-256 |
 | --- | --- |
@@ -52,7 +52,7 @@ Parquet SHA-256 为 `7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42
 | `itemcf_v1.asset` | `d0cd836bb123ab0d67a9945b2160a201ac7713dbcf93e01ed6239ca79b91f739` |
 | `bpr_mf_buy_v1.asset` | `27dcd8d1bdda54387d2bd9ee303a8aade1022a3afb4bb076b7843572810b1155` |
 
-归档检查未发现凭证模式。三个资产都带有训练用户 ID 和已购映射，ItemCF 还保存交互矩阵及用户映射，BPR 还保存用户因子及映射。项目来源记录注明天池 CC BY-ND 4.0 和课程范围；Kaggle 发布者允许署名后用于研究、书籍及教学，元数据仍把数据版权归原作者，公开条款未明确授权这种含用户级数据的再发布。本项目对四个原文件使用受控课程组交付，`artifacts/` 由 Git 忽略。 [数据来源记录](数据选型与处理说明.md) · [发布者 Kaggle 数据页](https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store) · [Kaggle 许可元数据](https://www.kaggle.com/api/v1/datasets/view/mkechinov/ecommerce-behavior-data-from-multi-category-store)
+天池 220316 页面标题区显示 CC BY-ND 4.0，说明写明仅供学习使用，正文却标注 CC BY 4.0。CC BY-ND 4.0 不授权公开分享受其约束的改编材料。Kaggle 原发布者允许注明来源后用于相关研究与教学，许可元数据将文件版权归原作者。三个归档直接保存可按原 user_id 读取的用户事件计数和已购映射，ItemCF 另含用户交互矩阵，BPR 另含用户因子和映射。检查了归档 JSON、内嵌 BPR 元数据和数值数组，未发现账号凭证或访问令牌。鉴于许可标注冲突以及资产带有从样本整理出的用户级记录，四个原文件的公开发布须先获得数据权利人对这批资产的明确许可。 [天池数据页](https://tianchi.aliyun.com/dataset/220316) · [CC BY-ND 4.0 第 2(a)(1) 节](https://creativecommons.org/licenses/by-nd/4.0/legalcode.en#s2a1) · [Kaggle 原数据页](https://www.kaggle.com/datasets/mkechinov/ecommerce-behavior-data-from-multi-category-store) · [Kaggle 许可元数据](https://www.kaggle.com/api/v1/datasets/view/mkechinov/ecommerce-behavior-data-from-multi-category-store)
 
 `recommendation-registry-v1` 的 `models` 按模型版本索引 `file, kind, sha256, dataset_id, code_sha256`。相对 `file` 必须解析在注册表目录内。引擎核验完整文件哈希，再校验 JSON 与数值数组成员哈希、类型、ID/维度、版本、数据和构建代码身份。三个正式模型共享 2019-10-01 00:00 到 2019-11-21 20:24 UTC 的训练快照，内容指纹 `95a6fc7a551b2385beac77fa09783ed45d2de9dd7b003e7a725db0f6e6ab1f02`。同一 dataset_id 加载多个模型时，引擎核验快照、协议和拟合边界一致。个性化模型内含同快照 Popular。加载用 `allow_pickle=False`，保存使用临时文件、试加载与原子替换。 [资产协议](P0-REC-04A-算法模块交付.md)
 
@@ -123,8 +123,8 @@ P0-REC-05 在验证集比较原 ItemCF 与行为加权、七天衰减、组合�
 
 1. 从仓库根目录执行 `git status --short --branch` 和 `git log --oneline -15`，确认分支和范围。阶段提交主要锚点如下。最终交付分支 `feat/recommendation-final-delivery` 从研究收尾 `f7c8db4` 建立，正式二进制沿用 P0-REC-04A 原发布资产。
 2. 按下列命令验证固定 Python 3.12 环境。分别启动两套 pytest，避免 `data_algo` 的两种导入路径在同进程冲突。已有 Starlette TestClient 弃用提示。数据组目录存在既有 Ruff 问题，推荐 lint 与 format 配置以 `backend/pyproject.toml` 为准。
-3. 取得受控资产，核验四文件哈希。三个模型必须可实际加载并成功处理 Python 单用户/批量与独立 HTTP 请求。用错误数据版本试验 409；检查 `/ready` 列出三个版本。排序回归使用已冻结的请求用户队列和历史指纹，验收禁止重新读取购买标签评分。
-4. 保留冻结边界、模型版本、随机种子、训练和评估口径、排序与版本校验。研究代码和结果保持隔离。正式资产和 Parquet 放在受控目录。新变更以冻结源码和聚合结果为基准。
+3. 核验交付分支中四个资产文件的哈希。三个模型必须可实际加载并成功处理 Python 单用户/批量与独立 HTTP 请求。用错误数据版本试验 409；检查 `/ready` 列出三个版本。排序回归使用已冻结的请求用户队列和历史指纹，验收禁止重新读取购买标签评分。
+4. 保留冻结边界、模型版本、随机种子、训练和评估口径、排序与版本校验。研究代码和结果保持隔离。正式资产使用交付分支的固定路径，原始 Parquet 保存在受控目录。新变更以冻结源码和聚合结果为基准。
 5. 若接手正式集成，先核对实际入库版本和拟合身份，再配置模型登记与业务后端，之后验收前端展示、目标环境资源、故障状态和端到端行为。 [本轮聚合验收证据](../recommendation/reports/final-delivery-check.json)
 
 | 阶段 | 提交 |

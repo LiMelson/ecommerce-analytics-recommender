@@ -1,0 +1,26 @@
+{
+  "format": "recommendation-registry-v1",
+  "models": {
+    "bpr_mf_buy_v1": {
+      "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+      "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "file": "bpr_mf_buy_v1.asset",
+      "kind": "bpr",
+      "sha256": "27dcd8d1bdda54387d2bd9ee303a8aade1022a3afb4bb076b7843572810b1155"
+    },
+    "itemcf_v1": {
+      "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+      "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "file": "itemcf_v1.asset",
+      "kind": "itemcf",
+      "sha256": "d0cd836bb123ab0d67a9945b2160a201ac7713dbcf93e01ed6239ca79b91f739"
+    },
+    "popular_v1": {
+      "code_sha256": "40ce5eb39f5634ed9535afd09114f479faeece5ef5fb0713dafa10e8609f6645",
+      "dataset_id": "local-parquet-sha256-7f6fe3cf0dee62e04665b09e921be290e127f947e4f6baf97837549cc42cf771",
+      "file": "popular_v1.asset",
+      "kind": "popular",
+      "sha256": "9b5877926de569427d9a79b0a8adac1242d63ea93cbad8accb5224e8fc1abd5f"
+    }
+  }
+}

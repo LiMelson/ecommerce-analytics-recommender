@@ -20,3 +20,9 @@
 *.png binary
 *.docx binary
 *.pdf binary
+
+# Preserve the four published recommendation artifacts byte for byte.
+/artifacts/p0-rec-04a/release-assets/registry.json -text !eol whitespace=trailing-space,space-before-tab,cr-at-eol
+/artifacts/p0-rec-04a/release-assets/popular_v1.asset binary
+/artifacts/p0-rec-04a/release-assets/itemcf_v1.asset binary
+/artifacts/p0-rec-04a/release-assets/bpr_mf_buy_v1.asset binary
