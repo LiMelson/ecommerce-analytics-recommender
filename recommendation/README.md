@@ -6,7 +6,7 @@
 - [AI 接手指南、资产哈希与验收标准](../docs/推荐算法-AI接手指南.md)
 - [最终技术报告](../docs/P0-REC-06-推荐算法最终技术报告.md) · [最后一次优化实验](../docs/P0-REC-07-最后一次推荐优化实验.md)
 
-从带模型的交付分支检出即可在 `artifacts/p0-rec-04a/release-assets/` 获得注册表和三个已训练模型。用 Windows PowerShell 从仓库根目录安装、测试和启动。该分支的公开 GitHub 发布待确认数据权利，正式网站的数据版本绑定和端到端接入由集成组负责。
+从带模型的交付分支检出即可在 `artifacts/p0-rec-04a/release-assets/` 获得注册表和三个已训练模型。用 Windows PowerShell 从仓库根目录安装、测试和启动。交付分支在团队 GitHub 提供，正式网站的数据版本绑定和端到端接入由集成组负责。
 
 ~~~powershell
 py -3.12 -m venv .venv
